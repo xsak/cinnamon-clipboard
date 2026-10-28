@@ -349,7 +349,6 @@ msgid ""
 "The preferences could not be saved. Check the file permissions and try again."
 msgstr ""
 
-
 #: src/cinnamon_clipboard/app.py:235
 msgid ""
 "The saved clipboard history could not be deleted. Check file permissions and "
@@ -367,4 +366,102 @@ msgstr ""
 msgid ""
 "The temporary history will be lost when the application restarts. Persistent "
 "history will start empty."
+msgstr ""
+
+#: src/cinnamon_clipboard/app.py:368
+msgid "Automatic startup could not be configured"
+msgstr ""
+
+#: src/cinnamon_clipboard/app.py:372
+msgid ""
+"Your other settings were saved. Cinnamon Clipboard will continue without "
+"automatic startup."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:91
+msgid "Record clipboard history:"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:261
+msgid "Applies only to unpinned items."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:20
+#: src/cinnamon_clipboard/ui/welcome_window.py:138
+msgid "Welcome to Cinnamon Clipboard"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:48
+msgid "Back"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:51
+msgid "Skip"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:54
+#: src/cinnamon_clipboard/ui/welcome_window.py:306
+msgid "Next"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:147
+msgid ""
+"This quick setup will help you configure your clipboard history, choose how "
+"many items to keep, and decide whether the app starts automatically when you "
+"log in."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:159
+msgid "You can skip this setup and use the default settings."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:171
+msgid "Choose your history mode"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:173
+msgid ""
+"Choose whether your clipboard history should be preserved after closing the "
+"application."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:230
+msgid "History limit"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:231
+msgid "Choose the maximum number of unpinned history items."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:253
+msgid "Maximum history items:"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:263
+msgid "This limit applies only to unpinned items."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:274
+msgid "Start automatically"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:276
+msgid ""
+"Choose whether Cinnamon Clipboard should start automatically when you log in."
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:282
+msgid "Start Cinnamon Clipboard automatically on login"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:303
+msgid "Finish"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:365
+msgid "Unable to save settings"
+msgstr ""
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:369
+msgid "Your settings could not be saved. Please try again."
 msgstr ""
