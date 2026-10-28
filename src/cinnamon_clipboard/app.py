@@ -25,6 +25,10 @@ from .i18n import _
 from ._version import __version__
 from .update_checker import check_for_updates
 from .installation import PACKAGE_MANAGED
+from pathlib import Path
+
+from .core.settings import SettingsManager
+from .ui.welcome_window import WelcomeWindow
 
 from .ui.about_window import AboutWindow
 from .ui.preferences_window import PreferencesWindow
@@ -50,6 +54,10 @@ class ClipboardApp(Gtk.Application):
         self._automatic_update_check_started = False
         self.preferences_window = None
         self.about_window = None
+        self.welcome_window = None
+        self.welcome_settings = None
+        self._welcome_completed = False
+        self._application_held = False
 
     def open_main_window(self):
         """Open the main window or bring it to the front."""
@@ -218,8 +226,31 @@ class ClipboardApp(Gtk.Application):
 
     def do_activate(self):
         # Keep the process alive in the background
-        self.hold()
+        if not self._application_held:
+            self.hold()
+            self._application_held = True
 
+
+        # Show the welcome wizard on first run, before creating ClipboardManager.
+        if self.clipboard_manager is None and not self._welcome_completed:
+            config_path = (
+                Path.home()
+                / ".config"
+                / "cinnamon-clipboard"
+                / "config.json"
+            )
+
+            if not config_path.exists():
+                if self.welcome_window is None:
+                    self.welcome_settings = SettingsManager()
+                    self.welcome_window = WelcomeWindow(
+                        settings=self.welcome_settings,
+                        on_complete=self._on_welcome_complete,
+                    )
+                    self.welcome_window.show_all()
+                return
+
+        
         # Initialize the clipboard manager after the application is active.
         if self.clipboard_manager is None:
             try:
@@ -293,6 +324,68 @@ class ClipboardApp(Gtk.Application):
         ):
             self._automatic_update_check_started = True
             check_for_updates(self)
+
+
+    def _on_welcome_complete(self, values):
+        settings = self.welcome_settings
+
+        if settings is None:
+            logger.error("Welcome wizard settings are not available")
+            return False
+
+        selected_autostart = bool(values.get("autostart", False))
+
+        # Save the selected preferences without enabling autostart yet.
+        values_to_save = values.copy()
+        values_to_save["autostart"] = False
+
+        previous_settings = settings.settings.copy()
+        settings.settings.update(values_to_save)
+
+        if not settings.save():
+            settings.settings = previous_settings
+            logger.error("Failed to save welcome wizard settings")
+            return False
+
+        # Configure autostart only after the other settings are saved.
+        try:
+            autostart_result = settings.set_autostart(selected_autostart)
+        except Exception:
+            logger.exception("Failed to configure application autostart")
+            autostart_result = False
+
+        if autostart_result is False:
+            settings.settings["autostart"] = False
+
+            if not settings.save():
+                logger.error("Failed to save the disabled autostart setting")
+
+            dialog = Gtk.MessageDialog(
+                parent=self.welcome_window,
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.WARNING,
+                buttons=Gtk.ButtonsType.OK,
+                text=_("Automatic startup could not be configured"),
+            )
+            dialog.format_secondary_text(
+                _(
+                    "Your other settings were saved. "
+                    "Cinnamon Clipboard will continue without automatic startup."
+                )
+            )
+            dialog.run()
+            dialog.destroy()
+
+        self._welcome_completed = True
+
+        # Release the window reference before normal activation continues.
+        self.welcome_window = None
+        self.welcome_settings = None
+
+        # Activate the application normally, using the existing do_activate().
+        self.do_activate()
+
+        return True
 
 
 def main():

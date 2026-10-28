@@ -88,9 +88,17 @@ class PreferencesWindow(Gtk.Window):
 
         # Indent the section contents
         lbl_enable = Gtk.Label(
-            label=_("Save history (Private Mode):"), xalign=0
+            label=_("Record clipboard history:"), xalign=0
         )
         lbl_enable.set_margin_start(18)
+
+        lbl_enable_note = Gtk.Label(xalign=0)
+        lbl_enable_note.set_markup(
+            f'<span size="small">{_("When disabled, new clipboard items won\'t be recorded.")}</span>'
+        )
+        lbl_enable_note.set_line_wrap(True)
+        lbl_enable_note.set_max_width_chars(65)
+        lbl_enable_note.set_margin_start(48)
 
         self.switch_enable = Gtk.Switch()
         self.switch_enable.set_halign(Gtk.Align.END)
@@ -102,6 +110,9 @@ class PreferencesWindow(Gtk.Window):
 
         grid.attach(lbl_enable, 0, row, 1, 1)
         grid.attach(self.switch_enable, 1, row, 1, 1)
+        row += 1
+
+        grid.attach(lbl_enable_note, 0, row, 2, 1)
         row += 1
 
         # History storage mode
@@ -242,6 +253,13 @@ class PreferencesWindow(Gtk.Window):
 
         grid.attach(lbl_limit, 0, row, 1, 1)
         grid.attach(box_radio, 1, row, 1, 1)
+        row += 1
+
+        lbl_limit_note = Gtk.Label(
+            label=_("Applies only to unpinned items."), xalign=0
+        )
+        lbl_limit_note.set_margin_start(18)
+        grid.attach(lbl_limit_note, 1, row, 1, 1)
         row += 1
 
         sep1 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
