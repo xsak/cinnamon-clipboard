@@ -1,7 +1,7 @@
-cinnamon-clipboard (1.1.1-1) noble; urgency=medium
+cinnamon-clipboard (1.2.0-1) noble; urgency=medium
 
-  * Fix the Preferences window layout on smaller screens.
-  * Make the Preferences window resizable.
-  * Add vertical scrolling to the Preferences options while keeping the Cancel and Save buttons visible.
+  * Add a first-run welcome wizard for initial configuration.
+  * Clarify configuration options for a better user experience.
+  * Update translations for all supported languages.
 
- -- Pablo <quircopablo@gmail.com>  Sat, 24 Oct 2026 00:00:00 -0300
+ -- Pablo <quircopablo@gmail.com>  Wed, 28 Oct 2026 12:00:00 -0300
