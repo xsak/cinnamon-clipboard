@@ -141,7 +141,7 @@ msgstr "Files"
 #: src/cinnamon_clipboard/ui/main_window.py:84
 #: src/cinnamon_clipboard/ui/menu_window.py:85
 msgid "Clear history"
-msgstr "Search history..."
+msgstr "Clear history"
 
 #: src/cinnamon_clipboard/ui/main_window.py:85
 #: src/cinnamon_clipboard/ui/menu_window.py:86

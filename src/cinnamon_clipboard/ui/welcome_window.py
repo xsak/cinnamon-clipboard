@@ -1,9 +1,11 @@
 import logging
+from pathlib import Path
 
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+gi.require_version("GdkPixbuf", "2.0")
+from gi.repository import Gtk, GLib, GdkPixbuf
 
 from ..i18n import _
 
@@ -16,7 +18,7 @@ class WelcomeWindow(Gtk.Window):
     PAGE_NAMES = ("welcome", "history", "limit", "autostart")
     HISTORY_LIMITS = (10, 25, 50, 75, 100)
 
-    def __init__(self, settings, on_complete):
+    def __init__(self, settings, on_complete, app=None):
         super().__init__(title=_("Welcome to Cinnamon Clipboard"))
 
         self.settings = settings
@@ -33,7 +35,21 @@ class WelcomeWindow(Gtk.Window):
         self.set_default_size(560, 460)
         self.set_resizable(False)
         self.set_border_width(20)
+        self.set_wmclass("cinnamon-clipboard", "CinnamonClipboard")
+        if app is not None:
+            self.set_application(app)
         self.set_icon_name("cinnamon-clipboard")
+
+        icon_path = Path("/usr/share/icons/hicolor/512x512/apps/cinnamon-clipboard.png")
+        if not icon_path.exists():
+            icon_path = Path(__file__).resolve().parents[3] / "data" / "icons" / "cinnamon-clipboard.png"
+
+        if icon_path.exists():
+            try:
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file(str(icon_path))
+                self.set_icon(pixbuf)
+            except Exception as error:
+                logger.warning("Failed to load the welcome window icon: %s", error)
 
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.NONE)

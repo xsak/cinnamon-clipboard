@@ -246,6 +246,7 @@ class ClipboardApp(Gtk.Application):
                     self.welcome_window = WelcomeWindow(
                         settings=self.welcome_settings,
                         on_complete=self._on_welcome_complete,
+                        app=self,
                     )
                     self.welcome_window.show_all()
                 return

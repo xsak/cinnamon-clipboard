@@ -1,7 +1,6 @@
-cinnamon-clipboard (1.2.0-1) noble; urgency=medium
+cinnamon-clipboard (1.2.1-1) noble; urgency=medium
 
-  * Add a first-run welcome wizard for initial configuration.
-  * Clarify configuration options for a better user experience.
-  * Update translations for all supported languages.
+  * Fix english translations.
+  * Fix icon in welcome window
 
  -- Pablo <quircopablo@gmail.com>  Wed, 28 Oct 2026 12:00:00 -0300
