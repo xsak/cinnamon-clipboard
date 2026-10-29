@@ -1,5 +1,6 @@
 import gi
 import logging
+import locale
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
@@ -11,6 +12,67 @@ logger = logging.getLogger(__name__)
 from ..i18n import _
 from ..update_checker import check_for_updates
 from ..installation import PACKAGE_MANAGED
+
+
+TAB_TITLE_FALLBACKS = {
+    "de": {
+        "History and Privacy": "Verlauf und Datenschutz",
+        "Content Capture": "Inhalte erfassen",
+        "System and Shortcut": "System und Tastenkürzel",
+        "Updates": "Aktualisierungen",
+    },
+    "es": {
+        "History and Privacy": "Historial y privacidad",
+        "Content Capture": "Captura de contenido",
+        "System and Shortcut": "Sistema y atajo",
+        "Updates": "Actualizaciones",
+    },
+    "fr": {
+        "History and Privacy": "Historique et confidentialité",
+        "Content Capture": "Capture du contenu",
+        "System and Shortcut": "Système et raccourcis",
+        "Updates": "Mises à jour",
+    },
+    "hu": {
+        "History and Privacy": "Előzmények és adatvédelem",
+        "Content Capture": "Tartalom rögzítése",
+        "System and Shortcut": "Rendszer és gyorsbillentyű",
+        "Updates": "Frissítések",
+    },
+    "it": {
+        "History and Privacy": "Cronologia e privacy",
+        "Content Capture": "Acquisizione dei contenuti",
+        "System and Shortcut": "Sistema e scorciatoia",
+        "Updates": "Aggiornamenti",
+    },
+    "ja": {
+        "History and Privacy": "履歴とプライバシー",
+        "Content Capture": "コンテンツの記録",
+        "System and Shortcut": "システムとショートカット",
+        "Updates": "更新",
+    },
+    "pt": {
+        "History and Privacy": "Histórico e privacidade",
+        "Content Capture": "Captura de conteúdo",
+        "System and Shortcut": "Sistema e atalho",
+        "Updates": "Atualizações",
+    },
+    "ru": {
+        "History and Privacy": "История и конфиденциальность",
+        "Content Capture": "Сохранение содержимого",
+        "System and Shortcut": "Система и горячие клавиши",
+        "Updates": "Обновления",
+    },
+}
+
+
+def _tab_title(text):
+    translated = _(text)
+    if translated != text:
+        return translated
+
+    language = (locale.getlocale()[0] or "").split("_")[0].lower()
+    return TAB_TITLE_FALLBACKS.get(language, {}).get(text, text)
 
 
 class PreferencesWindow(Gtk.Window):
@@ -32,7 +94,7 @@ class PreferencesWindow(Gtk.Window):
         self.on_shortcut_changed_callback = on_shortcut_changed_callback
         self.app = app
 
-        self.set_default_size(520, 620)
+        self.set_default_size(520, 500)
         self.set_resizable(True)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
 
@@ -60,31 +122,32 @@ class PreferencesWindow(Gtk.Window):
         main_box.set_margin_end(20)
         self.add(main_box)
 
-        # Main grid for uniform row alignment
-        grid = Gtk.Grid()
-        grid.set_column_spacing(24)
-        grid.set_row_spacing(14)
-        grid.set_hexpand(True)
+        notebook = Gtk.Notebook()
+        notebook.set_scrollable(True)
+        main_box.pack_start(notebook, True, True, 0)
 
-        scrolled_window = Gtk.ScrolledWindow()
-        scrolled_window.set_policy(
+        # --- SECTION 1: HISTORY AND PRIVACY ---
+        grid_history = Gtk.Grid()
+        grid_history.set_column_spacing(24)
+        grid_history.set_row_spacing(14)
+        grid_history.set_hexpand(True)
+        grid_history.set_margin_start(10)
+        grid_history.set_margin_end(10)
+        grid_history.set_margin_top(8)
+        grid_history.set_margin_bottom(8)
+
+        scrolled_history = Gtk.ScrolledWindow()
+        scrolled_history.set_policy(
             Gtk.PolicyType.NEVER,
             Gtk.PolicyType.AUTOMATIC,
         )
-        scrolled_window.set_hexpand(True)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.add(grid)
-        main_box.pack_start(scrolled_window, True, True, 0)
+        scrolled_history.set_hexpand(True)
+        scrolled_history.set_vexpand(True)
+        scrolled_history.add(grid_history)
+        notebook.append_page(scrolled_history, Gtk.Label(label=_tab_title("History and Privacy")))
 
+        grid = grid_history
         row = 0
-
-                # --- SECTION 1: HISTORY AND PRIVACY ---
-        lbl_sec1 = Gtk.Label(xalign=0)
-        lbl_sec1.set_markup(
-            f'<span size="large"><b>🕘 {_("History and Privacy")}</b></span>'
-        )
-        grid.attach(lbl_sec1, 0, row, 2, 1)
-        row += 1
 
         # Indent the section contents
         lbl_enable = Gtk.Label(
@@ -193,88 +256,52 @@ class PreferencesWindow(Gtk.Window):
         lbl_limit = Gtk.Label(label=_("History limit:"), xalign=0)
         lbl_limit.set_margin_start(18)
 
-        box_radio = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL, spacing=12
-        )
-        box_radio.set_halign(Gtk.Align.END)
-
         current_limit = self.temp_settings["max_history"]
-        self.radio_10 = Gtk.RadioButton.new_with_label(None, "10")
-        self.radio_25 = Gtk.RadioButton.new_with_label_from_widget(
-            self.radio_10, "25"
+        self.combo_history_limit = Gtk.ComboBoxText()
+        self.combo_history_limit.set_halign(Gtk.Align.END)
+        for limit in (10, 25, 50, 75, 100):
+            self.combo_history_limit.append(str(limit), str(limit))
+        if current_limit not in (10, 25, 50, 75, 100):
+            current_limit = 50
+        self.combo_history_limit.set_active_id(str(current_limit))
+        self.combo_history_limit.connect(
+            "changed",
+            self._on_history_limit_changed,
         )
-        self.radio_50 = Gtk.RadioButton.new_with_label_from_widget(
-            self.radio_10, "50"
-        )
-        self.radio_75 = Gtk.RadioButton.new_with_label_from_widget(
-            self.radio_10, "75"
-        )
-        self.radio_100 = Gtk.RadioButton.new_with_label_from_widget(
-            self.radio_10, "100"
-        )
-
-        if current_limit == 10:
-            self.radio_10.set_active(True)
-        elif current_limit == 25:
-            self.radio_25.set_active(True)
-        elif current_limit == 75:
-            self.radio_75.set_active(True)
-        elif current_limit == 100:
-            self.radio_100.set_active(True)
-        else:
-            self.radio_50.set_active(True)
-
-        self.radio_10.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp("max_history", 10)
-        )
-        self.radio_25.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp("max_history", 25)
-        )
-        self.radio_50.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp("max_history", 50)
-        )
-        self.radio_75.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp("max_history", 75)
-        )
-        self.radio_100.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp("max_history", 100)
-        )
-
-        box_radio.pack_start(self.radio_10, False, False, 0)
-        box_radio.pack_start(self.radio_25, False, False, 0)
-        box_radio.pack_start(self.radio_50, False, False, 0)
-        box_radio.pack_start(self.radio_75, False, False, 0)
-        box_radio.pack_start(self.radio_100, False, False, 0)
 
         grid.attach(lbl_limit, 0, row, 1, 1)
-        grid.attach(box_radio, 1, row, 1, 1)
+        grid.attach(self.combo_history_limit, 1, row, 1, 1)
         row += 1
 
         lbl_limit_note = Gtk.Label(
             label=_("Applies only to unpinned items."), xalign=0
         )
-        lbl_limit_note.set_margin_start(18)
+        lbl_limit_note.set_halign(Gtk.Align.END)
         grid.attach(lbl_limit_note, 1, row, 1, 1)
         row += 1
 
-        sep1 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        sep1.set_margin_top(4)
-        sep1.set_margin_bottom(4)
-        grid.attach(sep1, 0, row, 2, 1)
-        row += 1
-
         # --- SECTION 2: CONTENT CAPTURE ---
-        lbl_sec2 = Gtk.Label(xalign=0)
-        lbl_sec2.set_markup(
-            f'<span size="large"><b>📥 {_("Content Capture")}</b></span>'
+        grid_capture = Gtk.Grid()
+        grid_capture.set_column_spacing(24)
+        grid_capture.set_row_spacing(14)
+        grid_capture.set_hexpand(True)
+        grid_capture.set_margin_start(10)
+        grid_capture.set_margin_end(10)
+        grid_capture.set_margin_top(8)
+        grid_capture.set_margin_bottom(8)
+
+        scrolled_capture = Gtk.ScrolledWindow()
+        scrolled_capture.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC,
         )
-        grid.attach(lbl_sec2, 0, row, 2, 1)
-        row += 1
+        scrolled_capture.set_hexpand(True)
+        scrolled_capture.set_vexpand(True)
+        scrolled_capture.add(grid_capture)
+        notebook.append_page(scrolled_capture, Gtk.Label(label=_tab_title("Content Capture")))
+
+        grid = grid_capture
+        row = 0
 
         lbl_img = Gtk.Label(label=_("Capture images:"), xalign=0)
         lbl_img.set_margin_start(18)
@@ -308,19 +335,28 @@ class PreferencesWindow(Gtk.Window):
         grid.attach(self.switch_files, 1, row, 1, 1)
         row += 1
 
-        sep2 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        sep2.set_margin_top(4)
-        sep2.set_margin_bottom(4)
-        grid.attach(sep2, 0, row, 2, 1)
-        row += 1
-
         # --- SECTION 3: SYSTEM AND SHORTCUT ---
-        lbl_sec3 = Gtk.Label(xalign=0)
-        lbl_sec3.set_markup(
-            f'<span size="large"><b>⚙️ {_("System and Shortcut")}</b></span>'
+        grid_system = Gtk.Grid()
+        grid_system.set_column_spacing(24)
+        grid_system.set_row_spacing(14)
+        grid_system.set_hexpand(True)
+        grid_system.set_margin_start(10)
+        grid_system.set_margin_end(10)
+        grid_system.set_margin_top(8)
+        grid_system.set_margin_bottom(8)
+
+        scrolled_system = Gtk.ScrolledWindow()
+        scrolled_system.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC,
         )
-        grid.attach(lbl_sec3, 0, row, 2, 1)
-        row += 1
+        scrolled_system.set_hexpand(True)
+        scrolled_system.set_vexpand(True)
+        scrolled_system.add(grid_system)
+        notebook.append_page(scrolled_system, Gtk.Label(label=_tab_title("System and Shortcut")))
+
+        grid = grid_system
+        row = 0
 
         lbl_auto = Gtk.Label(label=_("Start with session:"), xalign=0)
         lbl_auto.set_margin_start(18)
@@ -394,18 +430,31 @@ class PreferencesWindow(Gtk.Window):
         row += 1
 
         # --- SECTION 4: UPDATES ---
-        sep3 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        sep3.set_margin_top(4)
-        sep3.set_margin_bottom(4)
-        grid.attach(sep3, 0, row, 2, 1)
-        row += 1
+        grid_updates = Gtk.Grid()
+        grid_updates.set_column_spacing(24)
+        grid_updates.set_row_spacing(14)
+        grid_updates.set_hexpand(True)
+        grid_updates.set_margin_start(10)
+        grid_updates.set_margin_end(10)
+        grid_updates.set_margin_top(8)
+        grid_updates.set_margin_bottom(8)
 
-        lbl_sec4 = Gtk.Label(xalign=0)
-        lbl_sec4.set_markup(
-            f'<span size="large"><b>🔄 {_("Updates")}</b></span>'
+        scrolled_updates = Gtk.ScrolledWindow()
+        scrolled_updates.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC,
         )
-        grid.attach(lbl_sec4, 0, row, 2, 1)
-        row += 1
+        scrolled_updates.set_hexpand(True)
+        scrolled_updates.set_vexpand(True)
+        scrolled_updates.add(grid_updates)
+        if not PACKAGE_MANAGED:
+            notebook.append_page(
+                scrolled_updates,
+                Gtk.Label(label=_tab_title("Updates")),
+            )
+
+        grid = grid_updates
+        row = 0
 
         lbl_check_updates = Gtk.Label(
             label=_("Check for updates at startup:"),
@@ -473,6 +522,11 @@ class PreferencesWindow(Gtk.Window):
     def _set_temp(self, key, value):
         self.temp_settings[key] = value
         return False
+
+    def _on_history_limit_changed(self, combo):
+        active_id = combo.get_active_id()
+        if active_id:
+            self._set_temp("max_history", int(active_id))
 
     def _on_check_updates_clicked(self, button):
         if self.app is None:
@@ -755,4 +809,3 @@ class PreferencesWindow(Gtk.Window):
 
         if mode_changed and self.app is not None:
             self.app.restart_app()
-

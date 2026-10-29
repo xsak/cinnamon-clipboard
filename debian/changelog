@@ -1,6 +1,6 @@
-cinnamon-clipboard (1.2.1-1) noble; urgency=medium
+cinnamon-clipboard (1.2.2-1) noble; urgency=medium
 
-  * Fix english translations.
-  * Fix icon in welcome window
+  * Changed the preferences menu to use tabs.
+
 
  -- Pablo <quircopablo@gmail.com>  Wed, 28 Oct 2026 12:00:00 -0300
