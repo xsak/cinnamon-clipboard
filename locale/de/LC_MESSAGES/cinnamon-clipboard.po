@@ -221,6 +221,10 @@ msgstr "Zwischenablageverlauf aufzeichnen:"
 msgid "Persistent history"
 msgstr "Permanenter Verlauf"
 
+#: src/cinnamon_clipboard/ui/preferences_window.py:183
+msgid "History mode"
+msgstr "Verlaufsmodus"
+
 #: src/cinnamon_clipboard/ui/preferences_window.py:135
 #: src/cinnamon_clipboard/ui/welcome_window.py:199
 msgid "Temporary history"
@@ -517,4 +521,3 @@ msgstr "Beim Anmelden starten"
 
 #~ msgid "Updates"
 #~ msgstr "Updates"
-

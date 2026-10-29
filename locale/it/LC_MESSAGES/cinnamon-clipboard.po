@@ -221,6 +221,10 @@ msgstr "Registra la cronologia degli appunti:"
 msgid "Persistent history"
 msgstr "Cronologia persistente"
 
+#: src/cinnamon_clipboard/ui/preferences_window.py:183
+msgid "History mode"
+msgstr "Modalità cronologia"
+
 #: src/cinnamon_clipboard/ui/preferences_window.py:135
 #: src/cinnamon_clipboard/ui/welcome_window.py:199
 msgid "Temporary history"
@@ -506,4 +510,3 @@ msgstr "Avvia con la sessione"
 
 #~ msgid "Updates"
 #~ msgstr "Aggiornamenti"
-

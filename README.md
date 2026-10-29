@@ -51,7 +51,7 @@ Download the latest `.deb` package from the project's [GitHub Releases page](htt
 Install it with:
 
 ```bash
-sudo apt install ./cinnamon-clipboard_1.2.2_all.deb
+sudo apt install ./cinnamon-clipboard_1.2.3_all.deb
 ```
 
 The package installs the application, desktop entry, icon, and available translation catalogs.
@@ -173,7 +173,7 @@ Users should not treat the privacy filter as a substitute for the security featu
 
 ## Project status
 
-Cinnamon Clipboard 1.2.2 is a stable release.
+Cinnamon Clipboard 1.2.3 is a stable release.
 
 This release introduces welcome screen, a temporary clipboard history mode, improves configuration saving reliability, updates the configuration dialog's visual design, and adds Hungarian translation. It also includes updated translations across all supported languages.
 

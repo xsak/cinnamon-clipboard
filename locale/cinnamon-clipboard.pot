@@ -301,6 +301,10 @@ msgstr ""
 msgid "Persistent history"
 msgstr ""
 
+#: src/cinnamon_clipboard/ui/preferences_window.py:183
+msgid "History mode"
+msgstr ""
+
 #: src/cinnamon_clipboard/ui/preferences_window.py:584
 msgid "Restart and switch"
 msgstr ""
