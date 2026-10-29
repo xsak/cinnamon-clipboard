@@ -1,9 +1,9 @@
 # Changelog
 
-## [1.2.3] - 2026-10-29
+## [1.2.4] - 2026-10-29
 
 ### Changed
-- Fix translations.
+- Fix English translation.
 
 ### Supported languages
 English, Spanish, Italian, Brazilian Portuguese, French, German, Russian, Japanese, and Hungarian.

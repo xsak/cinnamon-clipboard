@@ -64,15 +64,17 @@ msgid ""
 "Only some files were added to the clipboard because some are no longer "
 "available."
 msgstr ""
+"Only some files were added to the clipboard because some are no longer "
+"available."
 
 #: src/cinnamon_clipboard/core/clipboard.py:402
 msgid "The file is no longer available for copying."
-msgstr ""
+msgstr "The file is no longer available for copying."
 
 #: src/cinnamon_clipboard/core/clipboard.py:405
 #, python-format
 msgid "%(count)d files are no longer available for copying."
-msgstr ""
+msgstr "%(count)d files are no longer available for copying."
 
 #: src/cinnamon_clipboard/core/clipboard.py:409
 #: src/cinnamon_clipboard/core/clipboard.py:656
@@ -80,7 +82,7 @@ msgstr ""
 #: src/cinnamon_clipboard/ui/main_window.py:15
 #: src/cinnamon_clipboard/ui/tray.py:34
 msgid "Cinnamon Clipboard"
-msgstr "Quit Cinnamon Clipboard"
+msgstr "Cinnamon Clipboard"
 
 #: src/cinnamon_clipboard/core/clipboard.py:470
 #, python-format
@@ -94,7 +96,7 @@ msgstr "%(name)s and %(count)d more file(s)"
 
 #: src/cinnamon_clipboard/core/clipboard.py:657
 msgid "The image is no longer available for copying."
-msgstr ""
+msgstr "The image is no longer available for copying."
 
 #: src/cinnamon_clipboard/core/clipboard.py:664
 msgid "The image could not be copied."
@@ -116,6 +118,15 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
 "more details."
 msgstr ""
+"Cinnamon Clipboard is free software: you can redistribute it and/or modify "
+"it under the terms of the GNU General Public License as published by the "
+"Free Software Foundation, either version 3 of the License, or (at your "
+"option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details."
 
 #: src/cinnamon_clipboard/ui/main_window.py:39
 msgid "Search history..."
@@ -440,7 +451,7 @@ msgstr "History limit"
 
 #: src/cinnamon_clipboard/ui/welcome_window.py:231
 msgid "Choose the maximum number of unpinned history items."
-msgstr "Delete all unpinned history items"
+msgstr "Choose the maximum number of unpinned history items."
 
 #: src/cinnamon_clipboard/ui/welcome_window.py:253
 msgid "Maximum history items:"
@@ -479,7 +490,7 @@ msgid "Cinnamon Clipboard update available"
 msgstr "Cinnamon Clipboard update available"
 
 msgid "When disabled, new clipboard items won't be recorded."
-msgstr "When disabled, new clipboard items won’t be recorded."
+msgstr "When disabled, new clipboard items won't be recorded."
 
 msgid "Start with session"
 msgstr "Start with session"
