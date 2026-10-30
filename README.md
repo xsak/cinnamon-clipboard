@@ -139,6 +139,9 @@ Cinnamon Clipboard includes translations for the following languages:
 
 The application uses the available system locale to select the appropriate translation. English is used as the fallback when a translation is unavailable.
 
+Translation notes:
+Some translations were generated with the assistance of AI and may contain inaccuracies or wording that could be improved. Other translations were reviewed or contributed by community members.
+
 ## Building the Debian package
 
 The repository includes a build script for creating a Debian package:
