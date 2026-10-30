@@ -181,7 +181,7 @@ msgid "History and Privacy"
 msgstr "История и конфиденциальность"
 
 msgid "Record clipboard history"
-msgstr "Вести историю буфера обмена:"
+msgstr "Вести историю буфера обмена"
 
 msgid "When disabled, new clipboard items won't be recorded."
 msgstr ""
@@ -225,13 +225,13 @@ msgid "Content Capture"
 msgstr "Сохранение содержимого"
 
 msgid "Capture images"
-msgstr "Сохранять изображения:"
+msgstr "Сохранять изображения"
 
 msgid "Save images copied to the clipboard."
-msgstr "Не удалось скопировать изображение."
+msgstr "Сохранять изображения, скопированные в буфер обмена."
 
 msgid "Capture files and folders"
-msgstr "Сохранять файлы и папки:"
+msgstr "Сохранять файлы и папки"
 
 msgid "Keep file and folder clipboard entries."
 msgstr "Сохранять записи файлов и папок из буфера обмена."
@@ -243,19 +243,25 @@ msgid "Start with session"
 msgstr "Запускать вместе с сеансом"
 
 msgid "Launch Cinnamon Clipboard when you log in."
-msgstr "Cinnamon Clipboard обновлён."
+msgstr "Запускать Cinnamon Clipboard при входе в систему."
 
 msgid "Tray menu shortcut"
-msgstr "Сочетание клавиш для меню в системном лотке:"
+msgstr "Сочетание клавиш для меню в системном лотке"
 
 msgid "Press the button to record a new key combination."
-msgstr "Нажмите сочетание клавиш…"
+msgstr "Нажмите кнопку, чтобы записать новое сочетание клавиш."
 
 msgid "Focus first item when opening menu"
-msgstr "Фокус на первом элементе при открытии меню:"
+msgstr "Фокус на первом элементе при открытии меню"
+
+msgid "Move keyboard focus to the first item when the tray menu opens."
+msgstr "Переместить фокус клавиатуры на первый элемент при открытии меню в панели."
 
 msgid "Paste automatically when selecting an item"
-msgstr "Автоматически вставлять при выборе элемента:"
+msgstr "Автоматически вставлять при выборе элемента"
+
+msgid "Automatically paste the selected item into the active application."
+msgstr "Автоматически вставлять выбранный элемент в активное приложение."
 
 msgid "Updates"
 msgstr "Обновления"
@@ -264,10 +270,10 @@ msgid "Check for updates now"
 msgstr "Проверить наличие обновлений"
 
 msgid "Check for updates at startup"
-msgstr "Проверять наличие обновлений при запуске:"
+msgstr "Проверять наличие обновлений при запуске"
 
 msgid "Check for a new Cinnamon Clipboard release at startup."
-msgstr "Проверять наличие обновлений при запуске:"
+msgstr "Проверять наличие новой версии Cinnamon Clipboard при запуске."
 
 msgid "Updates are managed by APT."
 msgstr "Обновления управляются APT."

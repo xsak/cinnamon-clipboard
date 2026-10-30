@@ -177,7 +177,7 @@ msgid "History and Privacy"
 msgstr "履歴とプライバシー"
 
 msgid "Record clipboard history"
-msgstr "クリップボード履歴を記録する:"
+msgstr "クリップボード履歴を記録する"
 
 msgid "When disabled, new clipboard items won't be recorded."
 msgstr "無効にすると、新しいクリップボード項目は記録されません。"
@@ -219,13 +219,13 @@ msgid "Content Capture"
 msgstr "コンテンツの記録"
 
 msgid "Capture images"
-msgstr "画像を記録："
+msgstr "画像を記録"
 
 msgid "Save images copied to the clipboard."
-msgstr "画像をコピーできませんでした。"
+msgstr "クリップボードにコピーされた画像を保存します。"
 
 msgid "Capture files and folders"
-msgstr "ファイルとフォルダーを記録："
+msgstr "ファイルとフォルダーを記録"
 
 msgid "Keep file and folder clipboard entries."
 msgstr "ファイルとフォルダーのクリップボード項目を保存します。"
@@ -237,19 +237,25 @@ msgid "Start with session"
 msgstr "セッション開始時に起動"
 
 msgid "Launch Cinnamon Clipboard when you log in."
-msgstr "Cinnamon Clipboard は最新です。"
+msgstr "ログイン時に Cinnamon Clipboard を起動します。"
 
 msgid "Tray menu shortcut"
-msgstr "トレイメニューのショートカット："
+msgstr "トレイメニューのショートカット"
 
 msgid "Press the button to record a new key combination."
-msgstr "キーの組み合わせを押してください…"
+msgstr "新しいキーの組み合わせを記録するにはボタンを押してください。"
 
 msgid "Focus first item when opening menu"
-msgstr "メニューを開いたときに最初の項目にフォーカス："
+msgstr "メニューを開いたときに最初の項目にフォーカス"
+
+msgid "Move keyboard focus to the first item when the tray menu opens."
+msgstr "トレイメニューを開いたとき、キーボードフォーカスを最初の項目に移動します。"
 
 msgid "Paste automatically when selecting an item"
-msgstr "項目を選択したときに自動的に貼り付け："
+msgstr "項目を選択したときに自動的に貼り付け"
+
+msgid "Automatically paste the selected item into the active application."
+msgstr "選択した項目をアクティブなアプリケーションに自動的に貼り付けます。"
 
 msgid "Updates"
 msgstr "更新"
@@ -258,10 +264,10 @@ msgid "Check for updates now"
 msgstr "今すぐ更新を確認"
 
 msgid "Check for updates at startup"
-msgstr "起動時に更新を確認:"
+msgstr "起動時に更新を確認"
 
 msgid "Check for a new Cinnamon Clipboard release at startup."
-msgstr "起動時に更新を確認:"
+msgstr "起動時に新しい Cinnamon Clipboard のリリースがないか確認します。"
 
 msgid "Updates are managed by APT."
 msgstr "更新は APT によって管理されています。"

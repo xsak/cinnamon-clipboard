@@ -182,7 +182,7 @@ msgid "History and Privacy"
 msgstr "Előzmények és adatvédelem"
 
 msgid "Record clipboard history"
-msgstr "Vágólapelőzmények rögzítése:"
+msgstr "Vágólapelőzmények rögzítése"
 
 msgid "When disabled, new clipboard items won't be recorded."
 msgstr "Ha kikapcsolja, az új vágólapelemek nem kerülnek rögzítésre."
@@ -226,13 +226,13 @@ msgid "Content Capture"
 msgstr "Tartalom figyelése"
 
 msgid "Capture images"
-msgstr "Képek figyelése:"
+msgstr "Képek figyelése"
 
 msgid "Save images copied to the clipboard."
-msgstr "A képet nem sikerült másolni."
+msgstr "Mentse el a vágólapra másolt képeket."
 
 msgid "Capture files and folders"
-msgstr "Fájlok és mappák figyelése:"
+msgstr "Fájlok és mappák figyelése"
 
 msgid "Keep file and folder clipboard entries."
 msgstr "Fájl- és mappaelemek megtartása a vágólapon."
@@ -244,31 +244,37 @@ msgid "Start with session"
 msgstr "Indítás a munkamenettel"
 
 msgid "Launch Cinnamon Clipboard when you log in."
-msgstr "Cinnamon Clipboard a legfrissebb verzió."
+msgstr "A Cinnamon Clipboard indítása bejelentkezéskor."
 
 msgid "Tray menu shortcut"
-msgstr "Tálca menü gyorsbillentyű:"
+msgstr "Tálca menü gyorsbillentyű"
 
 msgid "Press the button to record a new key combination."
-msgstr "Nyomja le a billentyűkombinációt..."
+msgstr "Nyomja meg a gombot új billentyűkombináció rögzítéséhez."
 
 msgid "Focus first item when opening menu"
-msgstr "Első elem kijelölése a menü megnyitásakor:"
+msgstr "Első elem kijelölése a menü megnyitásakor"
+
+msgid "Move keyboard focus to the first item when the tray menu opens."
+msgstr "Helyezze a billentyűzet fókuszt az első elemre, amikor a tálca menü megnyílik."
 
 msgid "Paste automatically when selecting an item"
-msgstr "Automatikus beilleszés egy elem kiválasztásakor:"
+msgstr "Automatikus beillesztés egy elem kiválasztásakor"
+
+msgid "Automatically paste the selected item into the active application."
+msgstr "A kijelölt elem automatikus beillesztése az aktív alkalmazásba."
 
 msgid "Updates"
 msgstr "Frissítések"
 
 msgid "Check for updates now"
-msgstr "Frisítések keresése most"
+msgstr "Frissítések keresése most"
 
 msgid "Check for updates at startup"
-msgstr "Frissítések keresése induláskor:"
+msgstr "Frissítések keresése induláskor"
 
 msgid "Check for a new Cinnamon Clipboard release at startup."
-msgstr "Frissítések keresése induláskor:"
+msgstr "Új Cinnamon Clipboard kiadás keresése induláskor."
 
 msgid "Updates are managed by APT."
 msgstr "A frissítéseket az APT kezeli."

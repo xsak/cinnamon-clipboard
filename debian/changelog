@@ -1,17 +1,17 @@
 cinnamon-clipboard (1.3.0-1) noble; urgency=medium
 
-Changed
-- Improved the visual appearance of the Preferences window to provide better integration with the GTK3 desktop environment.
-- Updated text previews in the main window to display a maximum of three lines by default, with an expand/collapse button to show or hide the full content.
-- Improved the expanded text layout in both the main window and the system tray menu. The expand/collapse, pin, and delete buttons now remain positioned at the top of the text content when expanded, keeping the controls easily accessible.
-- Updated the delete icon in the system tray menu to match the one used in the main window, ensuring a consistent visual experience.
+  Changed:
+  * Improved the visual appearance of the Preferences window to provide better integration with the GTK3 desktop environment.
+  * Updated text previews in the main window to display a maximum of three lines by default, with an expand/collapse button to show or hide the full content.
+  * Improved the expanded text layout in both the main window and the system tray menu. The expand/collapse, pin, and delete buttons now remain positioned at the top of the text content when expanded, keeping the controls easily accessible.
+  * Updated the delete icon in the system tray menu to match the one used in the main window, ensuring a consistent visual experience.
 
-Added
-- Added several tooltips to make interface controls and their functions easier to understand.
-- Added a search icon and a "No results found" message when a search returns no matching items.
-- Added a "Clipboard history is empty" message when there are no items in the history.
+  Added:
+  * Added several tooltips to make interface controls and their functions easier to understand.
+  * Added a search icon and a "No results found" message when a search returns no matching items.
+  * Added a "Clipboard history is empty" message when there are no items in the history.
 
-Fixed
-- Updated and synchronized translations across all supported languages.
+  Fixed:
+  * Updated and synchronized translations across all supported languages.
 
- -- Pablo <quircopablo@gmail.com>  Wed, 28 Oct 2026 12:00:00 -0300
+ -- Pablo <quircopablo@gmail.com>  Fri, 30 Oct 2026 12:00:00 -0300

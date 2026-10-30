@@ -120,7 +120,6 @@ class PreferencesWindow(Gtk.Window):
             _("Record clipboard history"),
             _("When disabled, new clipboard items won't be recorded."),
             self.switch_enable,
-            _("When disabled, new clipboard items won't be recorded."),
         )
         enable_list = self._create_settings_list(enable_row)
         enable_list.connect(
@@ -345,7 +344,7 @@ class PreferencesWindow(Gtk.Window):
         )
         focus_row = self._create_switch_row(
             _("Focus first item when opening menu"),
-            None,
+            _("Move keyboard focus to the first item when the tray menu opens."),
             self.switch_focus_first,
         )
 
@@ -360,7 +359,7 @@ class PreferencesWindow(Gtk.Window):
         )
         paste_row = self._create_switch_row(
             _("Paste automatically when selecting an item"),
-            None,
+            _("Automatically paste the selected item into the active application."),
             self.switch_paste_select,
         )
 

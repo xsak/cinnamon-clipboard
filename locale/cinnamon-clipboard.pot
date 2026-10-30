@@ -230,6 +230,9 @@ msgstr ""
 msgid "Focus first item when opening menu"
 msgstr ""
 
+msgid "Move keyboard focus to the first item when the tray menu opens."
+msgstr ""
+
 msgid "Paste automatically when selecting an item"
 msgstr ""
 
