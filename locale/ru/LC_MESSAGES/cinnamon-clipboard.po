@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Буфер обмена Cinnamon 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 22:39-0300\n"
+"POT-Creation-Date: 2026-10-30 12:26-0300\n"
 "PO-Revision-Date: 2026-10-11 15:13-0300\n"
 "Last-Translator: Команда русского перевода\n"
 "Language-Team: Русский\n"
@@ -19,64 +19,74 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: src/cinnamon_clipboard/core/clipboard.py:288
+msgid "Temporary history could not be started"
+msgstr "Не удалось запустить временную историю."
+
+msgid ""
+"The saved clipboard history could not be deleted. Check file permissions and "
+"restart the application."
+msgstr ""
+"Не удалось удалить сохранённую историю буфера обмена. Проверьте права "
+"доступа к файлам и перезапустите приложение."
+
+msgid "Configuration restored"
+msgstr "Настройки восстановлены"
+
+msgid ""
+"The configuration file contained invalid data and was reset to the default "
+"values."
+msgstr ""
+"Файл настроек содержал недопустимые данные, поэтому настройки сброшены к "
+"значениям по умолчанию."
+
+msgid "Automatic startup could not be configured"
+msgstr "Не удалось настроить автоматический запуск"
+
+msgid ""
+"Your other settings were saved. Cinnamon Clipboard will continue without "
+"automatic startup."
+msgstr ""
+"Остальные настройки сохранены. Cinnamon Clipboard продолжит работу без "
+"автоматического запуска."
+
+#, python-format
+msgid "Image (%(width)d×%(height)d px)"
+msgstr "Изображение (%(width)d × %(height)d пикс.)"
+
+msgid ""
+"Only some files were added to the clipboard because some are no longer "
+"available."
+msgstr ""
+"В буфер обмена добавлены только некоторые файлы, так как остальные больше "
+"недоступны."
+
+msgid "The file is no longer available for copying."
+msgstr "Файл больше недоступен для копирования."
+
 #, python-format
 msgid "%(count)d files are no longer available for copying."
 msgstr "%(count)d файлов больше недоступны для копирования."
 
-#: src/cinnamon_clipboard/core/clipboard.py:353
+msgid "Cinnamon Clipboard"
+msgstr "Буфер обмена Cinnamon"
+
+#, python-format
+msgid "File: %(name)s"
+msgstr "Файл: %(name)s"
+
 #, python-format
 msgid "%(name)s and %(count)d more file(s)"
 msgstr "%(name)s и ещё файлов: %(count)d"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:276
-msgid "A new version is available."
-msgstr "Доступна новая версия."
+msgid "The image is no longer available for copying."
+msgstr "Изображение больше недоступно для копирования."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:284
-msgid "A new version of Cinnamon Clipboard is available."
-msgstr "Доступна новая версия Cinnamon Clipboard."
+msgid "The image could not be copied."
+msgstr "Не удалось скопировать изображение."
 
-#: src/cinnamon_clipboard/ui/main_window.py:90
-msgid "About"
-msgstr "О приложении"
+msgid "Clipboard manager for Linux desktops."
+msgstr "Менеджер буфера обмена для рабочих столов Linux."
 
-#: src/cinnamon_clipboard/ui/main_window.py:47
-msgid "All"
-msgstr "Все"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:227
-msgid "Cancel"
-msgstr "Отмена"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:139
-msgid "Capture files and folders:"
-msgstr "Сохранять файлы и папки:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:130
-msgid "Capture images:"
-msgstr "Сохранять изображения:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:190
-msgid "Check for updates at startup:"
-msgstr "Проверять наличие обновлений при запуске:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:207
-msgid "Check for updates now"
-msgstr "Проверить наличие обновлений"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:252
-msgid "Checking for updates..."
-msgstr "Проверка обновлений..."
-
-#: src/cinnamon_clipboard/core/clipboard.py:292
-#: src/cinnamon_clipboard/core/clipboard.py:516
-#: src/cinnamon_clipboard/ui/tray.py:34
-#: src/cinnamon_clipboard/ui/main_window.py:15
-msgid "Cinnamon Clipboard"
-msgstr "Буфер обмена Cinnamon"
-
-#: src/cinnamon_clipboard/ui/about_window.py:56
 msgid ""
 "Cinnamon Clipboard is free software: you can redistribute it and/or modify "
 "it under the terms of the GNU General Public License as published by the "
@@ -97,249 +107,102 @@ msgstr ""
 "КАКИХ-ЛИБО ГАРАНТИЙ, включая подразумеваемые гарантии ТОВАРНОЙ ПРИГОДНОСТИ и "
 "ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Подробнее см. GNU General Public License."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:265
-msgid "Cinnamon Clipboard is up to date."
-msgstr "Cinnamon Clipboard обновлён."
-
-#: src/cinnamon_clipboard/update_checker.py:63
-msgid "Cinnamon Clipboard update available"
-msgstr "Доступно обновление Cinnamon Clipboard"
-
-#: src/cinnamon_clipboard/ui/menu_window.py:77
-#: src/cinnamon_clipboard/ui/main_window.py:84
-msgid "Clear history"
-msgstr "Очистить историю"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:314
-msgid "Click to assign"
-msgstr "Нажмите, чтобы назначить"
-
-#: src/cinnamon_clipboard/ui/about_window.py:31
-msgid "Clipboard manager for Linux desktops."
-msgstr "Менеджер буфера обмена для рабочих столов Linux."
-
-#: src/cinnamon_clipboard/ui/menu_window.py:89
-#: src/cinnamon_clipboard/ui/main_window.py:100
-msgid "Close Cinnamon Clipboard"
-msgstr "Закрыть «Буфер обмена Cinnamon»"
-
-#: src/cinnamon_clipboard/app.py:210
-msgid "Configuration restored"
-msgstr "Настройки восстановлены"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:126
-msgid "Content Capture"
-msgstr "Сохранение содержимого"
-
-#: src/cinnamon_clipboard/ui/main_window.py:222
-msgid "Copy to clipboard"
-msgstr "Копировать в буфер обмена"
-
-#: src/cinnamon_clipboard/ui/main_window.py:228
-msgid "Delete"
-msgstr "Удалить"
-
-#: src/cinnamon_clipboard/ui/menu_window.py:78
-#: src/cinnamon_clipboard/ui/main_window.py:85
-msgid "Delete all unpinned history items"
-msgstr "Удалить все незакреплённые записи истории"
-
-#: src/cinnamon_clipboard/core/clipboard.py:350
-#, python-format
-msgid "File: %(name)s"
-msgstr "Файл: %(name)s"
-
-#: src/cinnamon_clipboard/ui/main_window.py:59
-#: src/cinnamon_clipboard/ui/main_window.py:185
-msgid "Files"
-msgstr "Файлы"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:67
-msgid "History and Privacy"
-msgstr "История и конфиденциальность"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:80
-msgid "History limit:"
-msgstr "Лимит истории:"
-
-#: src/cinnamon_clipboard/ui/main_window.py:176
-msgid "Image"
-msgstr "Изображение"
-
-#: src/cinnamon_clipboard/core/clipboard.py:217
-#, python-format
-msgid "Image (%(width)d×%(height)d px)"
-msgstr "Изображение (%(width)d × %(height)d пикс.)"
-
-#: src/cinnamon_clipboard/ui/main_window.py:55
-msgid "Images"
-msgstr "Изображения"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:302
-msgid "Later"
-msgstr "Позже"
-
-#: src/cinnamon_clipboard/core/clipboard.py:282
-msgid ""
-"Only some files were added to the clipboard because some are no longer "
-"available."
-msgstr ""
-"В буфер обмена добавлены только некоторые файлы, так как остальные больше "
-"недоступны."
-
-#: src/cinnamon_clipboard/ui/menu_window.py:96
-msgid "Open application"
-msgstr "Открыть приложение"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:160
-msgid "Focus first item when opening menu:"
-msgstr "Фокус на первом элементе при открытии меню:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:169
-msgid "Paste automatically when selecting an item:"
-msgstr "Автоматически вставлять при выборе элемента:"
-
-#: src/cinnamon_clipboard/ui/menu_window.py:508
-#: src/cinnamon_clipboard/ui/main_window.py:216
-msgid "Pin to top"
-msgstr "Закрепить вверху"
-
-#: src/cinnamon_clipboard/ui/menu_window.py:83
-#: src/cinnamon_clipboard/ui/main_window.py:95
-#: src/cinnamon_clipboard/ui/preferences_window.py:22
-msgid "Preferences"
-msgstr "Настройки"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:319
-msgid "Press a key combination..."
-msgstr "Нажмите сочетание клавиш…"
-
-#: src/cinnamon_clipboard/ui/main_window.py:99
-msgid "Quit"
-msgstr "Выйти"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:231
-msgid "Save"
-msgstr "Сохранить"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:71
-msgid "Save history (Private Mode):"
-msgstr "Сохранять историю (приватный режим):"
-
-#: src/cinnamon_clipboard/ui/main_window.py:39
 msgid "Search history..."
 msgstr "Поиск по истории…"
 
-#: src/cinnamon_clipboard/ui/menu_window.py:54
-msgid "Search.."
-msgstr "Поиск…"
+msgid "All"
+msgstr "Все"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:160
-msgid "Start with session:"
-msgstr "Запускать при входе в систему:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:156
-msgid "System and Shortcut"
-msgstr "Система и сочетание клавиш"
-
-#: src/cinnamon_clipboard/ui/main_window.py:51
 msgid "Text"
 msgstr "Текст"
 
-#: src/cinnamon_clipboard/app.py:213
-msgid ""
-"The configuration file contained invalid data and was reset to the default "
-"values."
-msgstr ""
-"Файл настроек содержал недопустимые данные, поэтому настройки сброшены к "
-"значениям по умолчанию."
+msgid "Images"
+msgstr "Изображения"
 
-#: src/cinnamon_clipboard/core/clipboard.py:285
-msgid "The file is no longer available for copying."
-msgstr "Файл больше недоступен для копирования."
+msgid "Files"
+msgstr "Файлы"
 
-#: src/cinnamon_clipboard/core/clipboard.py:517
-msgid "The image is no longer available for copying."
-msgstr "Изображение больше недоступно для копирования."
+msgid "Clear history"
+msgstr "Очистить историю"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:169
-msgid "Tray menu shortcut:"
-msgstr "Сочетание клавиш для меню в системном лотке:"
+msgid "Delete all unpinned history items"
+msgstr "Удалить все незакреплённые записи истории"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:247
-#: src/cinnamon_clipboard/ui/preferences_window.py:271
-msgid "Unable to check for updates."
-msgstr "Не удалось проверить наличие обновлений."
+msgid "About"
+msgstr "О приложении"
 
-#: src/cinnamon_clipboard/ui/menu_window.py:508
-#: src/cinnamon_clipboard/ui/main_window.py:216
-msgid "Unpin"
-msgstr "Открепить"
+msgid "Preferences"
+msgstr "Настройки"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:185
-msgid "Updates"
-msgstr "Обновления"
+msgid "Quit"
+msgstr "Выйти"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:246
-msgid "Updates are managed by APT."
-msgstr "Обновления управляются APT."
+msgid "Close Cinnamon Clipboard"
+msgstr "Закрыть «Буфер обмена Cinnamon»"
 
-#: src/cinnamon_clipboard/update_checker.py:65
-#: src/cinnamon_clipboard/ui/preferences_window.py:288
-#, python-format
-msgid "Version %(version)s is available."
-msgstr "Доступна версия %(version)s."
+msgid "Clipboard history is empty"
+msgstr "История буфера обмена пуста"
 
-#: src/cinnamon_clipboard/update_checker.py:72
-#: src/cinnamon_clipboard/ui/preferences_window.py:303
-msgid "View release"
-msgstr "Просмотреть выпуск"
+msgid "No results found"
+msgstr "Ничего не найдено"
 
-#: src/cinnamon_clipboard/ui/main_window.py:172
 msgid "[Image]"
 msgstr "[Изображение]"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:613
-msgid "Could not delete the saved history"
-msgstr "Не удалось удалить сохранённую историю."
+msgid "Image"
+msgstr "Изображение"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:633
-msgid "Could not save preferences"
-msgstr "Не удалось сохранить настройки."
+msgid "Show full content"
+msgstr "Показать весь текст"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:576
-msgid "Delete history and switch"
-msgstr "Удалить историю и переключиться"
+#. Bright / full white when pinned
+msgid "Unpin"
+msgstr "Открепить"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:107
-msgid "Persistent history"
-msgstr "Постоянная история"
+msgid "Pin to top"
+msgstr "Закрепить вверху"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:183
+msgid "Copy to clipboard"
+msgstr "Копировать в буфер обмена"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Collapse content"
+msgstr "Свернуть текст"
+
+msgid "Search.."
+msgstr "Поиск…"
+
+msgid "Open application"
+msgstr "Открыть приложение"
+
+msgid "History and Privacy"
+msgstr "История и конфиденциальность"
+
+msgid "Record clipboard history"
+msgstr "Вести историю буфера обмена:"
+
+msgid "When disabled, new clipboard items won't be recorded."
+msgstr ""
+"Если отключено, новые элементы буфера обмена не будут добавляться в историю."
+
 msgid "History mode"
 msgstr "Режим истории"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:584
-msgid "Restart and switch"
-msgstr "Перезапустить и переключиться"
+msgid "Persistent history"
+msgstr "Постоянная история"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:578
-msgid "Switch to persistent history?"
-msgstr "Переключиться на постоянную историю?"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:569
-msgid "Switch to temporary history?"
-msgstr "Переключиться на временную историю?"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:113
 msgid "Temporary history"
 msgstr "Временная история"
 
-#: src/cinnamon_clipboard/app.py:231
-msgid "Temporary history could not be started"
-msgstr "Не удалось запустить временную историю."
+msgid ""
+"The history is stored in an SQLite database on disk, along with images. "
+"Items are preserved when closing the application or restarting the PC."
+msgstr ""
+"История вместе с изображениями хранится на диске в базе данных SQLite. "
+"Записи сохраняются после закрытия приложения или перезагрузки компьютера."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:150
 msgid ""
 "The history is kept in RAM and is lost when closing the application or "
 "shutting down or restarting the PC. No persistent copy of the history is "
@@ -349,42 +212,106 @@ msgstr ""
 "выключении или перезагрузке компьютера. Постоянная копия истории на диск не "
 "сохраняется."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:137
-msgid ""
-"The history is stored in an SQLite database on disk, along with images. "
-"Items are preserved when closing the application or restarting the PC."
-msgstr ""
-"История вместе с изображениями хранится на диске в базе данных SQLite. "
-"Записи сохраняются после закрытия приложения или перезагрузки компьютера."
+msgid "History limit"
+msgstr "Лимит истории"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:617
-msgid ""
-"The history mode has not been changed. Check the file permissions and try "
-"again."
-msgstr ""
-"Режим истории не изменён. Проверьте права доступа к файлам и повторите "
-"попытку."
+msgid "Applies only to unpinned items."
+msgstr "Применяется только к незакреплённым элементам."
 
-#: src/cinnamon_clipboard/core/clipboard.py:664
-msgid "The image could not be copied."
+msgid "Choose one of: 10, 25, 50, 75, or 100 items."
+msgstr "Выберите 10, 25, 50, 75 или 100 элементов."
+
+msgid "Content Capture"
+msgstr "Сохранение содержимого"
+
+msgid "Capture images"
+msgstr "Сохранять изображения:"
+
+msgid "Save images copied to the clipboard."
 msgstr "Не удалось скопировать изображение."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:637
-msgid ""
-"The preferences could not be saved. Check the file permissions and try again."
-msgstr ""
-"Не удалось сохранить настройки. Проверьте права доступа к файлам и повторите "
-"попытку."
+msgid "Capture files and folders"
+msgstr "Сохранять файлы и папки:"
 
-#: src/cinnamon_clipboard/app.py:235
-msgid ""
-"The saved clipboard history could not be deleted. Check file permissions and "
-"restart the application."
-msgstr ""
-"Не удалось удалить сохранённую историю буфера обмена. Проверьте права "
-"доступа к файлам и перезапустите приложение."
+msgid "Keep file and folder clipboard entries."
+msgstr "Сохранять записи файлов и папок из буфера обмена."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:571
+msgid "System and Shortcut"
+msgstr "Система и сочетание клавиш"
+
+msgid "Start with session"
+msgstr "Запускать вместе с сеансом"
+
+msgid "Launch Cinnamon Clipboard when you log in."
+msgstr "Cinnamon Clipboard обновлён."
+
+msgid "Tray menu shortcut"
+msgstr "Сочетание клавиш для меню в системном лотке:"
+
+msgid "Press the button to record a new key combination."
+msgstr "Нажмите сочетание клавиш…"
+
+msgid "Focus first item when opening menu"
+msgstr "Фокус на первом элементе при открытии меню:"
+
+msgid "Paste automatically when selecting an item"
+msgstr "Автоматически вставлять при выборе элемента:"
+
+msgid "Updates"
+msgstr "Обновления"
+
+msgid "Check for updates now"
+msgstr "Проверить наличие обновлений"
+
+msgid "Check for updates at startup"
+msgstr "Проверять наличие обновлений при запуске:"
+
+msgid "Check for a new Cinnamon Clipboard release at startup."
+msgstr "Проверять наличие обновлений при запуске:"
+
+msgid "Updates are managed by APT."
+msgstr "Обновления управляются APT."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Unable to check for updates."
+msgstr "Не удалось проверить наличие обновлений."
+
+msgid "Checking for updates..."
+msgstr "Проверка обновлений..."
+
+msgid "Cinnamon Clipboard is up to date."
+msgstr "Cinnamon Clipboard обновлён."
+
+msgid "A new version is available."
+msgstr "Доступна новая версия."
+
+msgid "A new version of Cinnamon Clipboard is available."
+msgstr "Доступна новая версия Cinnamon Clipboard."
+
+#, python-format
+msgid "Version %(version)s is available."
+msgstr "Доступна версия %(version)s."
+
+msgid "Later"
+msgstr "Позже"
+
+msgid "View release"
+msgstr "Просмотреть выпуск"
+
+msgid "Click to assign"
+msgstr "Нажмите, чтобы назначить"
+
+msgid "Press a key combination..."
+msgstr "Нажмите сочетание клавиш…"
+
+msgid "Switch to temporary history?"
+msgstr "Переключиться на временную историю?"
+
 msgid ""
 "The saved clipboard history database and its images will be permanently "
 "deleted. The application will restart with an empty history stored only in "
@@ -394,7 +321,12 @@ msgstr ""
 "возможности восстановления. Приложение перезапустится с пустой историей, "
 "хранящейся только в памяти."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:580
+msgid "Delete history and switch"
+msgstr "Удалить историю и переключиться"
+
+msgid "Switch to persistent history?"
+msgstr "Переключиться на постоянную историю?"
+
 msgid ""
 "The temporary history will be lost when the application restarts. Persistent "
 "history will start empty."
@@ -402,45 +334,40 @@ msgstr ""
 "Временная история будет потеряна при перезапуске приложения. Постоянная "
 "история начнётся с пустого списка."
 
-#: src/cinnamon_clipboard/app.py:368
-msgid "Automatic startup could not be configured"
-msgstr "Не удалось настроить автоматический запуск"
+msgid "Restart and switch"
+msgstr "Перезапустить и переключиться"
 
-#: src/cinnamon_clipboard/app.py:372
+msgid "Could not delete the saved history"
+msgstr "Не удалось удалить сохранённую историю."
+
 msgid ""
-"Your other settings were saved. Cinnamon Clipboard will continue without "
-"automatic startup."
+"The history mode has not been changed. Check the file permissions and try "
+"again."
 msgstr ""
-"Остальные настройки сохранены. Cinnamon Clipboard продолжит работу без "
-"автоматического запуска."
+"Режим истории не изменён. Проверьте права доступа к файлам и повторите "
+"попытку."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:91
-msgid "Record clipboard history:"
-msgstr "Вести историю буфера обмена:"
+msgid "Could not save preferences"
+msgstr "Не удалось сохранить настройки."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:261
-msgid "Applies only to unpinned items."
-msgstr "Применяется только к незакреплённым элементам."
+msgid ""
+"The preferences could not be saved. Check the file permissions and try again."
+msgstr ""
+"Не удалось сохранить настройки. Проверьте права доступа к файлам и повторите "
+"попытку."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:20
-#: src/cinnamon_clipboard/ui/welcome_window.py:138
 msgid "Welcome to Cinnamon Clipboard"
 msgstr "Добро пожаловать в Cinnamon Clipboard"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:48
 msgid "Back"
 msgstr "Назад"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:51
 msgid "Skip"
 msgstr "Пропустить"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:54
-#: src/cinnamon_clipboard/ui/welcome_window.py:306
 msgid "Next"
 msgstr "Далее"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:147
 msgid ""
 "This quick setup will help you configure your clipboard history, choose how "
 "many items to keep, and decide whether the app starts automatically when you "
@@ -450,67 +377,46 @@ msgstr ""
 "количество сохраняемых элементов и запускать ли приложение автоматически при "
 "входе в систему."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:159
 msgid "You can skip this setup and use the default settings."
 msgstr "Можно пропустить настройку и использовать параметры по умолчанию."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:171
 msgid "Choose your history mode"
 msgstr "Выберите режим истории"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:173
 msgid ""
 "Choose whether your clipboard history should be preserved after closing the "
 "application."
 msgstr ""
 "Выберите, сохранять ли историю буфера обмена после закрытия приложения."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:230
-msgid "History limit"
-msgstr "Лимит истории"
-
-#: src/cinnamon_clipboard/ui/welcome_window.py:231
 msgid "Choose the maximum number of unpinned history items."
 msgstr "Выберите максимальное количество незакрепленных элементов истории."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:253
 msgid "Maximum history items:"
 msgstr "Максимум элементов истории:"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:263
 msgid "This limit applies only to unpinned items."
 msgstr "Этот лимит применяется только к незакреплённым элементам."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:274
 msgid "Start automatically"
 msgstr "Запускать автоматически"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:276
 msgid ""
 "Choose whether Cinnamon Clipboard should start automatically when you log in."
 msgstr ""
 "Выберите, запускать ли Cinnamon Clipboard автоматически при входе в систему."
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:282
 msgid "Start Cinnamon Clipboard automatically on login"
 msgstr "Запускать Cinnamon Clipboard автоматически при входе в систему"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:303
 msgid "Finish"
 msgstr "Готово"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:365
 msgid "Unable to save settings"
 msgstr "Не удалось сохранить настройки"
 
-#: src/cinnamon_clipboard/ui/welcome_window.py:369
 msgid "Your settings could not be saved. Please try again."
 msgstr "Не удалось сохранить настройки. Повторите попытку."
 
-#~ msgid "When disabled, new clipboard items won't be recorded."
-#~ msgstr ""
-#~ "Если отключено, новые элементы буфера обмена не будут добавляться в "
-#~ "историю."
-
-#~ msgid "Start with session"
-#~ msgstr "Запускать вместе с сеансом"
+msgid "Cinnamon Clipboard update available"
+msgstr "Доступно обновление Cinnamon Clipboard"

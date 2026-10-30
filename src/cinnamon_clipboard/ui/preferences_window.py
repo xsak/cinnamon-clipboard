@@ -32,7 +32,7 @@ class PreferencesWindow(Gtk.Window):
         self.on_shortcut_changed_callback = on_shortcut_changed_callback
         self.app = app
 
-        self.set_default_size(520, 500)
+        self.set_default_size(600, 550)
         self.set_resizable(True)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
 
@@ -59,6 +59,28 @@ class PreferencesWindow(Gtk.Window):
         main_box.set_margin_start(20)
         main_box.set_margin_end(20)
         self.add(main_box)
+
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(b"""
+            list.settings-list row.settings-row {
+                border: 1px solid @borders;
+                border-radius: 6px;
+                margin-top: 3px;
+                margin-bottom: 3px;
+            }
+            list.settings-list row.settings-row:hover {
+                background-color: @theme_bg_color;
+                background-image: linear-gradient(
+                    alpha(@theme_selected_bg_color, 0.10),
+                    alpha(@theme_selected_bg_color, 0.10)
+                );
+            }
+        """)
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(),
+            css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+        )
 
         notebook = Gtk.Notebook()
         notebook.set_scrollable(True)
@@ -87,22 +109,6 @@ class PreferencesWindow(Gtk.Window):
         grid = grid_history
         row = 0
 
-        # Indent the section contents
-        lbl_enable = Gtk.Label(
-            label=_("Record clipboard history:"), xalign=0
-        )
-        lbl_enable.set_margin_start(18)
-
-        lbl_enable_note = Gtk.Label(xalign=0)
-        lbl_enable_note.set_markup(
-            '<span size="small">'
-            f'{GLib.markup_escape_text(_("When disabled, new clipboard items won\'t be recorded."))}'
-            "</span>"
-        )
-        lbl_enable_note.set_line_wrap(True)
-        lbl_enable_note.set_max_width_chars(65)
-        lbl_enable_note.set_margin_start(48)
-
         self.switch_enable = Gtk.Switch()
         self.switch_enable.set_halign(Gtk.Align.END)
         self.switch_enable.set_active(self.temp_settings["enable_history"])
@@ -110,18 +116,27 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("enable_history", state)
         )
-
-        grid.attach(lbl_enable, 0, row, 1, 1)
-        grid.attach(self.switch_enable, 1, row, 1, 1)
-        row += 1
-
-        grid.attach(lbl_enable_note, 0, row, 2, 1)
+        enable_row = self._create_settings_row(
+            _("Record clipboard history"),
+            _("When disabled, new clipboard items won't be recorded."),
+            self.switch_enable,
+            _("When disabled, new clipboard items won't be recorded."),
+        )
+        enable_list = self._create_settings_list(enable_row)
+        enable_list.connect(
+            "row-activated",
+            lambda _list, _row: self.switch_enable.set_active(
+                not self.switch_enable.get_active()
+            ),
+        )
+        grid.attach(enable_list, 0, row, 2, 1)
         row += 1
 
         # History storage mode
         lbl_mode = Gtk.Label(xalign=0)
+        history_mode_label = _("History mode")
         lbl_mode.set_markup(
-            f'<b>{GLib.markup_escape_text(_("History mode"))}</b>'
+            f"<b>{GLib.markup_escape_text(history_mode_label)}</b>"
         )
         lbl_mode.set_margin_start(18)
         lbl_mode.set_halign(Gtk.Align.START)
@@ -156,47 +171,39 @@ class PreferencesWindow(Gtk.Window):
                 "history_mode", "temporary"
             )
         )
-
-        lbl_persistent_desc = Gtk.Label(
-            label=_(
+        lbl_persistent_desc = _(
                 "The history is stored in an SQLite database on disk, "
                 "along with images. Items are preserved when closing "
                 "the application or restarting the PC."
-            ),
-            xalign=0
         )
-        lbl_persistent_desc.set_line_wrap(True)
-        lbl_persistent_desc.set_max_width_chars(55)
-        lbl_persistent_desc.set_halign(Gtk.Align.START)
-        lbl_persistent_desc.set_margin_start(60)
-
-        lbl_temporary_desc = Gtk.Label(
-            label=_(
+        lbl_temporary_desc = _(
                 "The history is kept in RAM and is lost when closing "
                 "the application or shutting down or restarting the PC. "
                 "No persistent copy of the history is saved to disk."
-            ),
-            xalign=0
         )
-        lbl_temporary_desc.set_line_wrap(True)
-        lbl_temporary_desc.set_max_width_chars(55)
-        lbl_temporary_desc.set_halign(Gtk.Align.START)
-        lbl_temporary_desc.set_margin_start(60)
+        self.radio_persistent.set_label("")
+        self.radio_temporary.set_label("")
 
-        grid.attach(self.radio_persistent, 0, row, 2, 1)
+        persistent_row = self._create_settings_row(
+            _("Persistent history"),
+            lbl_persistent_desc,
+            self.radio_persistent,
+        )
+        temporary_row = self._create_settings_row(
+            _("Temporary history"),
+            lbl_temporary_desc,
+            self.radio_temporary,
+        )
+        mode_list = self._create_settings_list(
+            persistent_row,
+            temporary_row,
+        )
+        mode_list.connect(
+            "row-activated",
+            self._on_history_mode_row_activated,
+        )
+        grid.attach(mode_list, 0, row, 2, 1)
         row += 1
-
-        grid.attach(lbl_persistent_desc, 0, row, 2, 1)
-        row += 1
-
-        grid.attach(self.radio_temporary, 0, row, 2, 1)
-        row += 1
-
-        grid.attach(lbl_temporary_desc, 0, row, 2, 1)
-        row += 1
-
-        lbl_limit = Gtk.Label(label=_("History limit:"), xalign=0)
-        lbl_limit.set_margin_start(18)
 
         current_limit = self.temp_settings["max_history"]
         self.combo_history_limit = Gtk.ComboBoxText()
@@ -210,16 +217,14 @@ class PreferencesWindow(Gtk.Window):
             "changed",
             self._on_history_limit_changed,
         )
-
-        grid.attach(lbl_limit, 0, row, 1, 1)
-        grid.attach(self.combo_history_limit, 1, row, 1, 1)
-        row += 1
-
-        lbl_limit_note = Gtk.Label(
-            label=_("Applies only to unpinned items."), xalign=0
+        limit_row = self._create_settings_row(
+            _("History limit"),
+            _("Applies only to unpinned items."),
+            self.combo_history_limit,
+            _("Choose one of: 10, 25, 50, 75, or 100 items."),
         )
-        lbl_limit_note.set_halign(Gtk.Align.END)
-        grid.attach(lbl_limit_note, 1, row, 1, 1)
+        limit_list = self._create_settings_list(limit_row)
+        grid.attach(limit_list, 0, row, 2, 1)
         row += 1
 
         # --- SECTION 2: CONTENT CAPTURE ---
@@ -245,9 +250,6 @@ class PreferencesWindow(Gtk.Window):
         grid = grid_capture
         row = 0
 
-        lbl_img = Gtk.Label(label=_("Capture images:"), xalign=0)
-        lbl_img.set_margin_start(18)
-
         self.switch_images = Gtk.Switch()
         self.switch_images.set_halign(Gtk.Align.END)
         self.switch_images.set_active(self.temp_settings["save_images"])
@@ -255,15 +257,11 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("save_images", state)
         )
-
-        grid.attach(lbl_img, 0, row, 1, 1)
-        grid.attach(self.switch_images, 1, row, 1, 1)
-        row += 1
-
-        lbl_files = Gtk.Label(
-            label=_("Capture files and folders:"), xalign=0
+        images_row = self._create_switch_row(
+            _("Capture images"),
+            _("Save images copied to the clipboard."),
+            self.switch_images,
         )
-        lbl_files.set_margin_start(18)
 
         self.switch_files = Gtk.Switch()
         self.switch_files.set_halign(Gtk.Align.END)
@@ -272,9 +270,17 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("save_files", state)
         )
-
-        grid.attach(lbl_files, 0, row, 1, 1)
-        grid.attach(self.switch_files, 1, row, 1, 1)
+        files_row = self._create_switch_row(
+            _("Capture files and folders"),
+            _("Keep file and folder clipboard entries."),
+            self.switch_files,
+        )
+        capture_list = self._create_settings_list(images_row, files_row)
+        capture_list.connect(
+            "row-activated",
+            self._on_capture_row_activated,
+        )
+        grid.attach(capture_list, 0, row, 1, 1)
         row += 1
 
         # --- SECTION 3: SYSTEM AND SHORTCUT ---
@@ -300,9 +306,6 @@ class PreferencesWindow(Gtk.Window):
         grid = grid_system
         row = 0
 
-        lbl_auto = Gtk.Label(label=_("Start with session:"), xalign=0)
-        lbl_auto.set_margin_start(18)
-
         self.switch_autostart = Gtk.Switch()
         self.switch_autostart.set_halign(Gtk.Align.END)
         self.switch_autostart.set_active(self.temp_settings["autostart"])
@@ -310,13 +313,11 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("autostart", state)
         )
-
-        grid.attach(lbl_auto, 0, row, 1, 1)
-        grid.attach(self.switch_autostart, 1, row, 1, 1)
-        row += 1
-
-        lbl_shortcut = Gtk.Label(label=_("Tray menu shortcut:"), xalign=0)
-        lbl_shortcut.set_margin_start(18)
+        autostart_row = self._create_switch_row(
+            _("Start with session"),
+            _("Launch Cinnamon Clipboard when you log in."),
+            self.switch_autostart,
+        )
 
         self.btn_shortcut = Gtk.Button(
             label=self._format_shortcut_label(
@@ -327,15 +328,11 @@ class PreferencesWindow(Gtk.Window):
         self.btn_shortcut.connect(
             "clicked", self._start_capturing_shortcut
         )
-
-        grid.attach(lbl_shortcut, 0, row, 1, 1)
-        grid.attach(self.btn_shortcut, 1, row, 1, 1)
-        row += 1
-
-        lbl_focus_first = Gtk.Label(
-            label=_("Focus first item when opening menu:"), xalign=0
+        shortcut_row = self._create_settings_row(
+            _("Tray menu shortcut"),
+            _("Press the button to record a new key combination."),
+            self.btn_shortcut,
         )
-        lbl_focus_first.set_margin_start(18)
 
         self.switch_focus_first = Gtk.Switch()
         self.switch_focus_first.set_halign(Gtk.Align.END)
@@ -346,16 +343,11 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("focus_first_item", state)
         )
-
-        grid.attach(lbl_focus_first, 0, row, 1, 1)
-        grid.attach(self.switch_focus_first, 1, row, 1, 1)
-        row += 1
-
-        lbl_paste_select = Gtk.Label(
-            label=_("Paste automatically when selecting an item:"),
-            xalign=0
+        focus_row = self._create_switch_row(
+            _("Focus first item when opening menu"),
+            None,
+            self.switch_focus_first,
         )
-        lbl_paste_select.set_margin_start(18)
 
         self.switch_paste_select = Gtk.Switch()
         self.switch_paste_select.set_halign(Gtk.Align.END)
@@ -366,9 +358,20 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda s, state: self._set_temp("paste_on_select", state)
         )
+        paste_row = self._create_switch_row(
+            _("Paste automatically when selecting an item"),
+            None,
+            self.switch_paste_select,
+        )
 
-        grid.attach(lbl_paste_select, 0, row, 1, 1)
-        grid.attach(self.switch_paste_select, 1, row, 1, 1)
+        system_list = self._create_settings_list(
+            autostart_row,
+            shortcut_row,
+            focus_row,
+            paste_row,
+        )
+        system_list.connect("row-activated", self._on_system_row_activated)
+        grid.attach(system_list, 0, row, 1, 1)
         row += 1
 
         # --- SECTION 4: UPDATES ---
@@ -398,12 +401,6 @@ class PreferencesWindow(Gtk.Window):
         grid = grid_updates
         row = 0
 
-        lbl_check_updates = Gtk.Label(
-            label=_("Check for updates at startup:"),
-            xalign=0,
-        )
-        lbl_check_updates.set_margin_start(18)
-
         self.switch_check_updates = Gtk.Switch()
         self.switch_check_updates.set_halign(Gtk.Align.END)
         self.switch_check_updates.set_active(
@@ -413,10 +410,6 @@ class PreferencesWindow(Gtk.Window):
             "state-set",
             lambda switch, state: self._set_temp("check_updates", state),
         )
-
-        grid.attach(lbl_check_updates, 0, row, 1, 1)
-        grid.attach(self.switch_check_updates, 1, row, 1, 1)
-        row += 1
 
         self.btn_check_updates = Gtk.Button(
             label=_("Check for updates now")
@@ -429,9 +422,24 @@ class PreferencesWindow(Gtk.Window):
         self.lbl_update_status = Gtk.Label(xalign=0)
         self.lbl_update_status.set_line_wrap(True)
         self.lbl_update_status.set_margin_start(18)
-
+        self.lbl_update_status.set_margin_end(18)
+        self.lbl_update_status.set_halign(Gtk.Align.START)
+        self.lbl_update_status.get_style_context().add_class("dim-label")
+        updates_row = self._create_switch_row(
+            _("Check for updates at startup"),
+            _("Check for a new Cinnamon Clipboard release at startup."),
+            self.switch_check_updates,
+        )
+        check_row = self._create_settings_row(
+            _("Check for updates now"),
+            None,
+            self.btn_check_updates,
+        )
+        updates_list = self._create_settings_list(updates_row, check_row)
+        updates_list.connect("row-activated", self._on_updates_row_activated)
+        grid.attach(updates_list, 0, row, 1, 1)
+        row += 1
         grid.attach(self.lbl_update_status, 0, row, 1, 1)
-        grid.attach(self.btn_check_updates, 1, row, 1, 1)
         row += 1
 
         if PACKAGE_MANAGED:
@@ -460,6 +468,93 @@ class PreferencesWindow(Gtk.Window):
         main_box.pack_start(bottom_box, False, False, 0)
 
         self.connect("key-press-event", self._on_key_press_event)
+
+    def _create_settings_list(self, *rows):
+        list_box = Gtk.ListBox()
+        list_box.get_style_context().add_class("settings-list")
+        list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        list_box.set_activate_on_single_click(True)
+        list_box.set_hexpand(True)
+        for row in rows:
+            list_box.add(row)
+        return list_box
+
+    def _create_settings_row(self, title, subtitle=None, control=None, tooltip=None):
+        row = Gtk.ListBoxRow()
+        row.set_activatable(True)
+        row.get_style_context().add_class("settings-row")
+
+        outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        outer.set_margin_start(12)
+        outer.set_margin_end(12)
+        outer.set_margin_top(8)
+        outer.set_margin_bottom(8)
+
+        text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        text_box.set_hexpand(True)
+
+        title_label = Gtk.Label(label=title, xalign=0)
+        title_label.set_halign(Gtk.Align.START)
+        title_label.set_selectable(False)
+        text_box.pack_start(title_label, False, False, 0)
+
+        if subtitle:
+            subtitle_label = Gtk.Label(label=subtitle, xalign=0)
+            subtitle_label.set_halign(Gtk.Align.START)
+            subtitle_label.set_line_wrap(True)
+            subtitle_label.set_max_width_chars(55)
+            subtitle_label.get_style_context().add_class("dim-label")
+            text_box.pack_start(subtitle_label, False, False, 0)
+
+        outer.pack_start(text_box, True, True, 0)
+        if control is not None:
+            control.set_halign(Gtk.Align.END)
+            outer.pack_end(control, False, False, 0)
+
+        if tooltip:
+            row.set_tooltip_text(tooltip)
+
+        row.add(outer)
+        return row
+
+    def _create_switch_row(self, title, subtitle, switch, tooltip=None):
+        row = self._create_settings_row(title, subtitle, switch, tooltip)
+        return row
+
+    def _on_history_mode_row_activated(self, list_box, row):
+        if list_box.get_row_at_index(0) == row:
+            self.radio_persistent.set_active(True)
+        elif list_box.get_row_at_index(1) == row:
+            self.radio_temporary.set_active(True)
+
+    def _on_capture_row_activated(self, list_box, row):
+        if list_box.get_row_at_index(0) == row:
+            self.switch_images.set_active(not self.switch_images.get_active())
+        elif list_box.get_row_at_index(1) == row:
+            self.switch_files.set_active(not self.switch_files.get_active())
+
+    def _on_system_row_activated(self, list_box, row):
+        if list_box.get_row_at_index(0) == row:
+            self.switch_autostart.set_active(not self.switch_autostart.get_active())
+        elif list_box.get_row_at_index(1) == row:
+            self.btn_shortcut.clicked()
+        elif list_box.get_row_at_index(2) == row:
+            self.switch_focus_first.set_active(
+                not self.switch_focus_first.get_active()
+            )
+        elif list_box.get_row_at_index(3) == row:
+            self.switch_paste_select.set_active(
+                not self.switch_paste_select.get_active()
+            )
+
+    def _on_updates_row_activated(self, list_box, row):
+        if list_box.get_row_at_index(0) == row:
+            if self.switch_check_updates.get_sensitive():
+                self.switch_check_updates.set_active(
+                    not self.switch_check_updates.get_active()
+                )
+        elif list_box.get_row_at_index(1) == row:
+            self.btn_check_updates.clicked()
 
     def _set_temp(self, key, value):
         self.temp_settings[key] = value

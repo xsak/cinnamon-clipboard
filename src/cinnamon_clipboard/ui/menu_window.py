@@ -132,6 +132,9 @@ class QuickMenuWindow(Gtk.Window):
 
     def _filter_list_func(self, row):
         """Filter rows dynamically without rebuilding widgets."""
+        if getattr(row, "is_status_row", False):
+            return True
+
         query = self.search_entry.get_text().strip().lower()
         if not query:
             return True
@@ -148,6 +151,7 @@ class QuickMenuWindow(Gtk.Window):
         """Return all rows currently matching the search filter."""
         return [
             row for row in self.list_box.get_children()
+            if not getattr(row, "is_status_row", False)
             if self._filter_list_func(row)
         ]
 
@@ -183,6 +187,51 @@ class QuickMenuWindow(Gtk.Window):
         """Apply the native filter without touching GTK memory."""
         self.list_box.invalidate_filter()
         self._select_first_visible_row(grab_focus=False)
+        self._update_search_status()
+
+    def _update_search_status(self):
+        """Show a status row when a search has no matching clipboard items."""
+        for row in self.list_box.get_children():
+            if getattr(row, "is_status_row", False) and not getattr(row, "is_empty_history", False):
+                self.list_box.remove(row)
+
+        query = self.search_entry.get_text().strip()
+        if query and self.clipboard_manager.history and not self._get_visible_rows():
+            self.list_box.add(
+                self._create_status_row(
+                    "system-search-symbolic",
+                    _("No results found"),
+                )
+            )
+        self.list_box.invalidate_filter()
+        self.list_box.show_all()
+
+    def _create_status_row(self, icon_name, text, is_empty_history=False):
+        list_row = Gtk.ListBoxRow()
+        list_row.is_status_row = True
+        list_row.is_empty_history = is_empty_history
+        list_row.set_selectable(False)
+        list_row.set_activatable(False)
+
+        box = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing=8,
+        )
+        box.set_halign(Gtk.Align.CENTER)
+        box.set_valign(Gtk.Align.CENTER)
+        box.set_margin_top(16)
+        box.set_margin_bottom(16)
+
+        icon = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
+        icon.set_valign(Gtk.Align.CENTER)
+        box.pack_start(icon, False, False, 0)
+
+        label = Gtk.Label(label=text, xalign=0)
+        label.get_style_context().add_class("dim-label")
+        box.pack_start(label, False, False, 0)
+
+        list_row.add(box)
+        return list_row
 
     def _on_history_updated_external(self):
         """Refresh the window when it is visible and external changes occur."""
@@ -338,6 +387,13 @@ class QuickMenuWindow(Gtk.Window):
 
         if not history:
             self.btn_clear.set_sensitive(False)
+            self.list_box.add(
+                self._create_status_row(
+                    "edit-clear-symbolic",
+                    _("Clipboard history is empty"),
+                    is_empty_history=True,
+                )
+            )
         else:
             self.btn_clear.set_sensitive(True)
 
@@ -355,6 +411,8 @@ class QuickMenuWindow(Gtk.Window):
                 self.list_box.add(row_item)
 
         self.list_box.invalidate_filter()
+        if history:
+            self._update_search_status()
         self.show_all()
 
         # Always start the menu at the top of the history.
@@ -476,7 +534,7 @@ class QuickMenuWindow(Gtk.Window):
         list_row.set_activatable(True)
 
         grid = Gtk.Grid()
-        grid.set_column_spacing(8)
+        grid.set_column_spacing(2)
         grid.set_row_spacing(4)
         grid.set_margin_start(8)
         grid.set_margin_end(8)
@@ -493,7 +551,6 @@ class QuickMenuWindow(Gtk.Window):
                 label = Gtk.Label(label="[Imagen]", xalign=0)
                 grid.attach(label, 0, 0, 1, 1)
 
-            # Spacer in column 1 with hexpand=True
             spacer = Gtk.Box()
             spacer.set_hexpand(True)
             size_group_btn.add_widget(spacer)
@@ -517,7 +574,6 @@ class QuickMenuWindow(Gtk.Window):
             spacer = Gtk.Box()
             size_group_btn.add_widget(spacer)
             spacer.set_hexpand(True)
-            size_group_btn.add_widget(spacer)
             grid.attach(spacer, 1, 0, 1, 1)
 
         # 3. TEXT
@@ -547,7 +603,7 @@ class QuickMenuWindow(Gtk.Window):
 
             # Text indicator icon
             icon_text = Gtk.Image.new_from_icon_name("edit-paste-symbolic", Gtk.IconSize.BUTTON)
-            icon_text.set_valign(Gtk.Align.CENTER)
+            icon_text.set_valign(Gtk.Align.START)
 
             label = Gtk.Label(label=preview_text, xalign=0)
             label.set_line_wrap(True)
@@ -556,7 +612,7 @@ class QuickMenuWindow(Gtk.Window):
             label.set_size_request(190, -1)
             label.set_hexpand(True)
             label.set_halign(Gtk.Align.START)
-            label.set_valign(Gtk.Align.CENTER)
+            label.set_valign(Gtk.Align.START)
             label.set_selectable(False)
 
             box_text = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
@@ -568,9 +624,10 @@ class QuickMenuWindow(Gtk.Window):
             if needs_expand:
                 btn_expand = Gtk.Button.new_from_icon_name("pan-down-symbolic", Gtk.IconSize.BUTTON)
                 btn_expand.set_relief(Gtk.ReliefStyle.NONE)
-                btn_expand.set_valign(Gtk.Align.CENTER)
+                btn_expand.set_valign(Gtk.Align.START)
                 btn_expand.set_halign(Gtk.Align.CENTER)
                 btn_expand.set_can_focus(False)
+                btn_expand.set_tooltip_text(_("Show full content"))
 
                 btn_expand.expanded = False
                 btn_expand.connect(
@@ -588,11 +645,11 @@ class QuickMenuWindow(Gtk.Window):
                 size_group_btn.add_widget(spacer)
                 grid.attach(spacer, 1, 0, 1, 1)
 
-        # PIN BUTTON (COLUMN 2)
+        # PIN BUTTON
         is_pinned = item.get("pinned", False)
         btn_pin = Gtk.Button.new_from_icon_name("view-pin-symbolic", Gtk.IconSize.BUTTON)
         btn_pin.set_relief(Gtk.ReliefStyle.NONE)
-        btn_pin.set_valign(Gtk.Align.CENTER)
+        btn_pin.set_valign(Gtk.Align.START)
         btn_pin.set_halign(Gtk.Align.CENTER)
         btn_pin.set_can_focus(False)
 
@@ -606,12 +663,13 @@ class QuickMenuWindow(Gtk.Window):
 
         grid.attach(btn_pin, 2, 0, 1, 1)
 
-        # DELETE BUTTON (COLUMN 3)
-        btn_delete = Gtk.Button.new_from_icon_name("window-close-symbolic", Gtk.IconSize.BUTTON)
+        # DELETE BUTTON
+        btn_delete = Gtk.Button.new_from_icon_name("user-trash-symbolic", Gtk.IconSize.BUTTON)
         btn_delete.set_relief(Gtk.ReliefStyle.NONE)
-        btn_delete.set_valign(Gtk.Align.CENTER)
+        btn_delete.set_valign(Gtk.Align.START)
         btn_delete.set_halign(Gtk.Align.CENTER)
         btn_delete.set_can_focus(False)
+        btn_delete.set_tooltip_text(_("Delete"))
         btn_delete.connect("clicked", lambda b, i_id=item["id"]: self._on_delete_item(i_id))
 
         grid.attach(btn_delete, 3, 0, 1, 1)
@@ -625,10 +683,12 @@ class QuickMenuWindow(Gtk.Window):
             button.expanded = True
             label.set_text(full_text)
             button.set_image(Gtk.Image.new_from_icon_name("pan-up-symbolic", Gtk.IconSize.BUTTON))
+            button.set_tooltip_text(_("Collapse content"))
         else:
             button.expanded = False
             label.set_text(preview_text)
             button.set_image(Gtk.Image.new_from_icon_name("pan-down-symbolic", Gtk.IconSize.BUTTON))
+            button.set_tooltip_text(_("Show full content"))
 
         GLib.idle_add(self._update_position)
 

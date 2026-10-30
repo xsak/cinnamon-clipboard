@@ -4,7 +4,7 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 gi.require_version("GdkPixbuf", "2.0")
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from ..i18n import _
 
@@ -129,6 +129,17 @@ class MainWindow(Gtk.Window):
 
         query = self.search_entry.get_text().strip().lower()
         history = self.clipboard_manager.history
+        visible_count = 0
+
+        if not history:
+            self.list_box.add(
+                self._create_status_row(
+                    "edit-clear-symbolic",
+                    _("Clipboard history is empty"),
+                )
+            )
+            self.list_box.show_all()
+            return
 
         for item in history:
             item_type = item.get("type")
@@ -146,8 +157,42 @@ class MainWindow(Gtk.Window):
 
             row_widget = self._create_row_widget(item)
             self.list_box.add(row_widget)
+            visible_count += 1
+
+        if visible_count == 0:
+            self.list_box.add(
+                self._create_status_row(
+                    "system-search-symbolic",
+                    _("No results found"),
+                )
+            )
 
         self.list_box.show_all()
+
+    def _create_status_row(self, icon_name, text):
+        list_row = Gtk.ListBoxRow()
+        list_row.set_selectable(False)
+        list_row.set_activatable(False)
+
+        box = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing=10,
+        )
+        box.set_halign(Gtk.Align.CENTER)
+        box.set_valign(Gtk.Align.CENTER)
+        box.set_margin_top(24)
+        box.set_margin_bottom(24)
+
+        icon = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
+        icon.set_valign(Gtk.Align.CENTER)
+        box.pack_start(icon, False, False, 0)
+
+        label = Gtk.Label(label=text, xalign=0)
+        label.get_style_context().add_class("dim-label")
+        box.pack_start(label, False, False, 0)
+
+        list_row.add(box)
+        return list_row
 
     def _create_row_widget(self, item):
         """Build the row for a history item."""
@@ -189,19 +234,69 @@ class MainWindow(Gtk.Window):
 
         else:  # text
             icon = Gtk.Image.new_from_icon_name("edit-paste-symbolic", Gtk.IconSize.BUTTON)
-            icon.set_valign(Gtk.Align.CENTER)
-            box.pack_start(icon, False, False, 0)
+            icon.set_valign(Gtk.Align.START)
+            full_text = item.get("data", "").strip()
 
-            text_preview = item.get("data", "").strip()
-            info_label = Gtk.Label(label=text_preview, xalign=0)
-            info_label.set_valign(Gtk.Align.CENTER)
+            raw_lines = full_text.splitlines()
+            preview_lines = []
+            for line in raw_lines:
+                if len(line) > 70:
+                    chunks = [
+                        line[i:i + 70]
+                        for i in range(0, len(line), 70)
+                    ]
+                    preview_lines.extend(chunks)
+                else:
+                    preview_lines.append(line)
+
+                if len(preview_lines) >= 3:
+                    break
+
+            preview_lines = preview_lines[:3]
+            preview_text = "\n".join(preview_lines)
+            needs_expand = len(raw_lines) > 3 or len(full_text) > 210
+
+            if needs_expand:
+                preview_text = preview_text.rstrip() + "..."
+
+            info_label = Gtk.Label(label=preview_text, xalign=0)
+            info_label.set_valign(Gtk.Align.START)
             info_label.set_line_wrap(True)
+            info_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
             info_label.set_max_width_chars(50)
-            box.pack_start(info_label, True, True, 0)
+
+            text_box = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL,
+                spacing=6,
+            )
+            text_box.set_hexpand(True)
+            text_box.pack_start(icon, False, False, 0)
+            text_box.pack_start(info_label, True, True, 0)
+
+            if needs_expand:
+                expand_button = Gtk.Button.new_from_icon_name(
+                    "pan-down-symbolic",
+                    Gtk.IconSize.BUTTON,
+                )
+                expand_button.set_relief(Gtk.ReliefStyle.NONE)
+                expand_button.set_valign(Gtk.Align.START)
+                expand_button.set_can_focus(False)
+                expand_button.set_tooltip_text(_("Show full content"))
+                expand_button.expanded = False
+                expand_button.connect(
+                    "clicked",
+                    self._toggle_text_expand,
+                    info_label,
+                    full_text,
+                    preview_text,
+                )
+                text_box.pack_end(expand_button, False, False, 0)
+
+            box.pack_start(text_box, True, True, 0)
 
         # 2. Action buttons
         btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
-        btn_box.set_valign(Gtk.Align.CENTER)
+        btn_box.set_valign(Gtk.Align.START)
 
         # Pin button (view-pin-symbolic)
         is_pinned = item.get("pinned", False)
@@ -233,6 +328,29 @@ class MainWindow(Gtk.Window):
 
         list_row.add(box)
         return list_row
+
+    def _toggle_text_expand(self, button, label, full_text, preview_text):
+        """Expand or collapse a long text preview in the main window."""
+        if not getattr(button, "expanded", False):
+            button.expanded = True
+            label.set_text(full_text)
+            button.set_image(
+                Gtk.Image.new_from_icon_name(
+                    "pan-up-symbolic",
+                    Gtk.IconSize.BUTTON,
+                )
+            )
+            button.set_tooltip_text(_("Collapse content"))
+        else:
+            button.expanded = False
+            label.set_text(preview_text)
+            button.set_image(
+                Gtk.Image.new_from_icon_name(
+                    "pan-down-symbolic",
+                    Gtk.IconSize.BUTTON,
+                )
+            )
+            button.set_tooltip_text(_("Show full content"))
 
     def _on_search_changed(self, entry):
         self.refresh_list()
