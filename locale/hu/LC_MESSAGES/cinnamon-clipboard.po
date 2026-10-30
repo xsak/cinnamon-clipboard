@@ -7,102 +7,73 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cinnamon Clipboard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 10:35-0300\n"
+"POT-Creation-Date: 2026-10-23 22:39-0300\n"
 "PO-Revision-Date: 2026-10-23 18:17+0200\n"
 "Last-Translator: Pablo Quirco <quircopablo@gmail.com>\n"
-"Language: hu\n"
 "Language-Team: Magyar\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: src/cinnamon_clipboard/app.py:262
-msgid "Temporary history could not be started"
-msgstr "Az ideiglenes előzményeket nem sikerült elindítani."
-
-#: src/cinnamon_clipboard/app.py:266
-msgid ""
-"The saved clipboard history could not be deleted. Check file permissions and"
-" restart the application."
-msgstr ""
-"A mentett vágólapelőzményeket nem sikerült törölni. Ellenőrizze a "
-"fájlhozzáférési jogosultságokat, majd indítsa újra az alkalmazást."
-
-#: src/cinnamon_clipboard/app.py:286
-msgid "Configuration restored"
-msgstr "Beállítások visszaállítva"
-
-#: src/cinnamon_clipboard/app.py:289
-msgid ""
-"The configuration file contained invalid data and was reset to the default "
-"values."
-msgstr ""
-"A konfigurációs fájl érvényelen adatokat tartalmazott, ezért vissza lett "
-"állítva az alapértelmezettre."
-
-#: src/cinnamon_clipboard/app.py:368
-msgid "Automatic startup could not be configured"
-msgstr "Az automatikus indítás beállítása sikertelen"
-
-#: src/cinnamon_clipboard/app.py:372
-msgid ""
-"Your other settings were saved. Cinnamon Clipboard will continue without "
-"automatic startup."
-msgstr ""
-"A többi beállítás mentésre került. A Cinnamon Clipboard automatikus indítás "
-"nélkül fog működni."
-
-#: src/cinnamon_clipboard/core/clipboard.py:317
-#, python-format
-msgid "Image (%(width)d×%(height)d px)"
-msgstr "Kép (%(width)d×%(height)d px)"
-
-#: src/cinnamon_clipboard/core/clipboard.py:399
-msgid ""
-"Only some files were added to the clipboard because some are no longer "
-"available."
-msgstr "Csak néhány fájl lett hozzáadva a vágólaphoz, mert némelyik már nem elérhető."
-
-#: src/cinnamon_clipboard/core/clipboard.py:402
-msgid "The file is no longer available for copying."
-msgstr "A fájl már nem elérhető a másoláshoz."
-
-#: src/cinnamon_clipboard/core/clipboard.py:405
+#: src/cinnamon_clipboard/core/clipboard.py:288
 #, python-format
 msgid "%(count)d files are no longer available for copying."
 msgstr "%(count)d fájl már nem másolható."
 
-#: src/cinnamon_clipboard/core/clipboard.py:409
-#: src/cinnamon_clipboard/core/clipboard.py:656
-#: src/cinnamon_clipboard/core/clipboard.py:663
-#: src/cinnamon_clipboard/ui/main_window.py:15
-#: src/cinnamon_clipboard/ui/tray.py:34
-msgid "Cinnamon Clipboard"
-msgstr "Cinnamon Clipboard vágólap kezelő"
-
-#: src/cinnamon_clipboard/core/clipboard.py:470
-#, python-format
-msgid "File: %(name)s"
-msgstr "Fájl: %(name)s"
-
-#: src/cinnamon_clipboard/core/clipboard.py:473
+#: src/cinnamon_clipboard/core/clipboard.py:353
 #, python-format
 msgid "%(name)s and %(count)d more file(s)"
 msgstr "%(name)s és még %(count)d fájl"
 
-#: src/cinnamon_clipboard/core/clipboard.py:657
-msgid "The image is no longer available for copying."
-msgstr "A kép már nem elérhető a másoláshoz."
+#: src/cinnamon_clipboard/ui/preferences_window.py:276
+msgid "A new version is available."
+msgstr "Elérhető egy új verzió."
 
-#: src/cinnamon_clipboard/core/clipboard.py:664
-msgid "The image could not be copied."
-msgstr "A képet nem sikerült másolni."
+#: src/cinnamon_clipboard/ui/preferences_window.py:284
+msgid "A new version of Cinnamon Clipboard is available."
+msgstr "A Cinnamon Clipboard újabb verziója elérhető."
 
-#: src/cinnamon_clipboard/ui/about_window.py:31
-msgid "Clipboard manager for Linux desktops."
-msgstr "Vágólap kezelő Linux asztali környezetekhez."
+#: src/cinnamon_clipboard/ui/main_window.py:90
+msgid "About"
+msgstr "Névjegy"
+
+#: src/cinnamon_clipboard/ui/main_window.py:47
+msgid "All"
+msgstr "Mind"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:227
+msgid "Cancel"
+msgstr "Mégse"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:139
+msgid "Capture files and folders:"
+msgstr "Fájlok és mappák figyelése:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:130
+msgid "Capture images:"
+msgstr "Képek figyelése:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:190
+msgid "Check for updates at startup:"
+msgstr "Frissítések keresése induláskor:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:207
+msgid "Check for updates now"
+msgstr "Frisítések keresése most"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:252
+msgid "Checking for updates..."
+msgstr "Frissítések keresése..."
+
+#: src/cinnamon_clipboard/core/clipboard.py:292
+#: src/cinnamon_clipboard/core/clipboard.py:516
+#: src/cinnamon_clipboard/ui/tray.py:34
+#: src/cinnamon_clipboard/ui/main_window.py:15
+msgid "Cinnamon Clipboard"
+msgstr "Cinnamon Clipboard vágólap kezelő"
 
 #: src/cinnamon_clipboard/ui/about_window.py:56
 msgid ""
@@ -117,8 +88,8 @@ msgid ""
 "more details."
 msgstr ""
 "A Cinnamon Clipboard szabad szoftver: a Free Software Foundation által "
-"közzétett GNU Általános Nyilvános Licenc feltételei szerint terjesztheti "
-"és/vagy módosíthatja, akár a Licenc 3. verziója, akár (választása szerint) "
+"közzétett GNU Általános Nyilvános Licenc feltételei szerint terjesztheti és/"
+"vagy módosíthatja, akár a Licenc 3. verziója, akár (választása szerint) "
 "bármely későbbi verzió alapján.\n"
 "\n"
 "Ezt a programot abban a reményben terjesztjük, hogy hasznos lesz, de "
@@ -128,73 +99,39 @@ msgstr ""
 "\n"
 "Translated with DeepL.com (free version)"
 
-#: src/cinnamon_clipboard/ui/main_window.py:39
-msgid "Search history..."
-msgstr "Keresési előzmények..."
+#: src/cinnamon_clipboard/ui/preferences_window.py:265
+msgid "Cinnamon Clipboard is up to date."
+msgstr "Cinnamon Clipboard a legfrissebb verzió."
 
-#: src/cinnamon_clipboard/ui/main_window.py:47
-msgid "All"
-msgstr "Mind"
+#: src/cinnamon_clipboard/update_checker.py:63
+msgid "Cinnamon Clipboard update available"
+msgstr "Cinnamon Clipboard frissítése elérhető"
 
-#: src/cinnamon_clipboard/ui/main_window.py:51
-msgid "Text"
-msgstr "Szöveg"
-
-#: src/cinnamon_clipboard/ui/main_window.py:55
-msgid "Images"
-msgstr "Képek"
-
-#: src/cinnamon_clipboard/ui/main_window.py:59
-#: src/cinnamon_clipboard/ui/main_window.py:185
-msgid "Files"
-msgstr "Fájlok"
-
+#: src/cinnamon_clipboard/ui/menu_window.py:77
 #: src/cinnamon_clipboard/ui/main_window.py:84
-#: src/cinnamon_clipboard/ui/menu_window.py:85
 msgid "Clear history"
 msgstr "Előzmények törlése"
 
-#: src/cinnamon_clipboard/ui/main_window.py:85
-#: src/cinnamon_clipboard/ui/menu_window.py:86
-msgid "Delete all unpinned history items"
-msgstr "A nem kitűzött előzmények törlése"
+#: src/cinnamon_clipboard/ui/preferences_window.py:314
+msgid "Click to assign"
+msgstr "Kattints a hozzáadáshoz"
 
-#: src/cinnamon_clipboard/ui/main_window.py:90
-msgid "About"
-msgstr "Névjegy"
+#: src/cinnamon_clipboard/ui/about_window.py:31
+msgid "Clipboard manager for Linux desktops."
+msgstr "Vágólap kezelő Linux asztali környezetekhez."
 
-#: src/cinnamon_clipboard/ui/main_window.py:95
-#: src/cinnamon_clipboard/ui/menu_window.py:91
-#: src/cinnamon_clipboard/ui/preferences_window.py:26
-msgid "Preferences"
-msgstr "Beállítások"
-
-#: src/cinnamon_clipboard/ui/main_window.py:99
-msgid "Quit"
-msgstr "Kilépés"
-
+#: src/cinnamon_clipboard/ui/menu_window.py:89
 #: src/cinnamon_clipboard/ui/main_window.py:100
-#: src/cinnamon_clipboard/ui/menu_window.py:97
 msgid "Close Cinnamon Clipboard"
 msgstr "Cinnamon Clipboard bezárása"
 
-#: src/cinnamon_clipboard/ui/main_window.py:172
-msgid "[Image]"
-msgstr "[Kép]"
+#: src/cinnamon_clipboard/app.py:210
+msgid "Configuration restored"
+msgstr "Beállítások visszaállítva"
 
-#: src/cinnamon_clipboard/ui/main_window.py:176
-msgid "Image"
-msgstr "Kép"
-
-#: src/cinnamon_clipboard/ui/main_window.py:216
-#: src/cinnamon_clipboard/ui/menu_window.py:604
-msgid "Unpin"
-msgstr "Kitűzés törlése"
-
-#: src/cinnamon_clipboard/ui/main_window.py:216
-#: src/cinnamon_clipboard/ui/menu_window.py:604
-msgid "Pin to top"
-msgstr "Kitűzés"
+#: src/cinnamon_clipboard/ui/preferences_window.py:126
+msgid "Content Capture"
+msgstr "Tartalom figyelése"
 
 #: src/cinnamon_clipboard/ui/main_window.py:222
 msgid "Copy to clipboard"
@@ -204,20 +141,178 @@ msgstr "Vágólapra másolás"
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/cinnamon_clipboard/ui/menu_window.py:61
-msgid "Search.."
-msgstr "Keresés..."
+#: src/cinnamon_clipboard/ui/menu_window.py:78
+#: src/cinnamon_clipboard/ui/main_window.py:85
+msgid "Delete all unpinned history items"
+msgstr "A nem kitűzött előzmények törlése"
 
-#: src/cinnamon_clipboard/ui/menu_window.py:104
+#: src/cinnamon_clipboard/core/clipboard.py:350
+#, python-format
+msgid "File: %(name)s"
+msgstr "Fájl: %(name)s"
+
+#: src/cinnamon_clipboard/ui/main_window.py:59
+#: src/cinnamon_clipboard/ui/main_window.py:185
+msgid "Files"
+msgstr "Fájlok"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:67
+msgid "History and Privacy"
+msgstr "Előzmények és adatvédelem"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:80
+msgid "History limit:"
+msgstr "Előzmények korlátja:"
+
+#: src/cinnamon_clipboard/ui/main_window.py:176
+msgid "Image"
+msgstr "Kép"
+
+#: src/cinnamon_clipboard/core/clipboard.py:217
+#, python-format
+msgid "Image (%(width)d×%(height)d px)"
+msgstr "Kép (%(width)d×%(height)d px)"
+
+#: src/cinnamon_clipboard/ui/main_window.py:55
+msgid "Images"
+msgstr "Képek"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:302
+msgid "Later"
+msgstr "Később"
+
+#: src/cinnamon_clipboard/core/clipboard.py:282
+msgid ""
+"Only some files were added to the clipboard because some are no longer "
+"available."
+msgstr ""
+"Csak néhány fájl lett hozzáadva a vágólaphoz, mert némelyik már nem elérhető."
+
+#: src/cinnamon_clipboard/ui/menu_window.py:96
 msgid "Open application"
 msgstr "Alkalmazás megnyitása"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:91
-msgid "Record clipboard history:"
-msgstr "Vágólapelőzmények rögzítése:"
+#: src/cinnamon_clipboard/ui/preferences_window.py:160
+msgid "Focus first item when opening menu:"
+msgstr "Első elem kijelölése a menü megnyitásakor:"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:129
-#: src/cinnamon_clipboard/ui/welcome_window.py:180
+#: src/cinnamon_clipboard/ui/preferences_window.py:169
+msgid "Paste automatically when selecting an item:"
+msgstr "Automatikus beilleszés egy elem kiválasztásakor:"
+
+#: src/cinnamon_clipboard/ui/menu_window.py:508
+#: src/cinnamon_clipboard/ui/main_window.py:216
+msgid "Pin to top"
+msgstr "Kitűzés"
+
+#: src/cinnamon_clipboard/ui/menu_window.py:83
+#: src/cinnamon_clipboard/ui/main_window.py:95
+#: src/cinnamon_clipboard/ui/preferences_window.py:22
+msgid "Preferences"
+msgstr "Beállítások"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:319
+msgid "Press a key combination..."
+msgstr "Nyomja le a billentyűkombinációt..."
+
+#: src/cinnamon_clipboard/ui/main_window.py:99
+msgid "Quit"
+msgstr "Kilépés"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:231
+msgid "Save"
+msgstr "Mentés"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:71
+msgid "Save history (Private Mode):"
+msgstr "Előzmények mentése (Privát mód):"
+
+#: src/cinnamon_clipboard/ui/main_window.py:39
+msgid "Search history..."
+msgstr "Keresési előzmények..."
+
+#: src/cinnamon_clipboard/ui/menu_window.py:54
+msgid "Search.."
+msgstr "Keresés..."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:160
+msgid "Start with session:"
+msgstr "Belépéskor elindul:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:156
+msgid "System and Shortcut"
+msgstr "Rendszer és Gyorsbillentyűk"
+
+#: src/cinnamon_clipboard/ui/main_window.py:51
+msgid "Text"
+msgstr "Szöveg"
+
+#: src/cinnamon_clipboard/app.py:213
+msgid ""
+"The configuration file contained invalid data and was reset to the default "
+"values."
+msgstr ""
+"A konfigurációs fájl érvényelen adatokat tartalmazott, ezért vissza lett "
+"állítva az alapértelmezettre."
+
+#: src/cinnamon_clipboard/core/clipboard.py:285
+msgid "The file is no longer available for copying."
+msgstr "A fájl már nem elérhető a másoláshoz."
+
+#: src/cinnamon_clipboard/core/clipboard.py:517
+msgid "The image is no longer available for copying."
+msgstr "A kép már nem elérhető a másoláshoz."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:169
+msgid "Tray menu shortcut:"
+msgstr "Tálca menü gyorsbillentyű:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:247
+#: src/cinnamon_clipboard/ui/preferences_window.py:271
+msgid "Unable to check for updates."
+msgstr "Nem tudtam ellenőrizni a frissítéseket."
+
+#: src/cinnamon_clipboard/ui/menu_window.py:508
+#: src/cinnamon_clipboard/ui/main_window.py:216
+msgid "Unpin"
+msgstr "Kitűzés törlése"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:185
+msgid "Updates"
+msgstr "Frissítések"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:246
+msgid "Updates are managed by APT."
+msgstr "A frissítéseket az APT kezeli."
+
+#: src/cinnamon_clipboard/update_checker.py:65
+#: src/cinnamon_clipboard/ui/preferences_window.py:288
+#, python-format
+msgid "Version %(version)s is available."
+msgstr "Elérhető verzió:  %(version)s ."
+
+#: src/cinnamon_clipboard/update_checker.py:72
+#: src/cinnamon_clipboard/ui/preferences_window.py:303
+msgid "View release"
+msgstr "Kiadás megtekintése"
+
+#: src/cinnamon_clipboard/ui/main_window.py:172
+msgid "[Image]"
+msgstr "[Kép]"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:613
+msgid "Could not delete the saved history"
+msgstr "A mentett előzményeket nem sikerült törölni."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:633
+msgid "Could not save preferences"
+msgstr "A beállításokat nem sikerült menteni."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:576
+msgid "Delete history and switch"
+msgstr "Előzmények törlése és váltás"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:107
 msgid "Persistent history"
 msgstr "Állandó előzmények"
 
@@ -225,13 +320,37 @@ msgstr "Állandó előzmények"
 msgid "History mode"
 msgstr "Előzménymód"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:135
-#: src/cinnamon_clipboard/ui/welcome_window.py:199
+#: src/cinnamon_clipboard/ui/preferences_window.py:584
+msgid "Restart and switch"
+msgstr "Újraindítás és váltás"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:578
+msgid "Switch to persistent history?"
+msgstr "Átvált az állandó előzményekre?"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:569
+msgid "Switch to temporary history?"
+msgstr "Átvált az ideiglenes előzményekre?"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:113
 msgid "Temporary history"
 msgstr "Ideiglenes előzmények"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:159
-#: src/cinnamon_clipboard/ui/welcome_window.py:190
+#: src/cinnamon_clipboard/app.py:231
+msgid "Temporary history could not be started"
+msgstr "Az ideiglenes előzményeket nem sikerült elindítani."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:150
+msgid ""
+"The history is kept in RAM and is lost when closing the application or "
+"shutting down or restarting the PC. No persistent copy of the history is "
+"saved to disk."
+msgstr ""
+"Az előzmények a memóriában maradnak, és az alkalmazás bezárásakor, illetve a "
+"számítógép leállításakor vagy újraindításakor elvesznek. Az előzményekről "
+"nem készül tartós másolat a lemezre."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:137
 msgid ""
 "The history is stored in an SQLite database on disk, along with images. "
 "Items are preserved when closing the application or restarting the PC."
@@ -240,119 +359,34 @@ msgstr ""
 "kerülnek. A bejegyzések az alkalmazás bezárása vagy a számítógép "
 "újraindítása után is megmaradnak."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:172
-#: src/cinnamon_clipboard/ui/welcome_window.py:209
+#: src/cinnamon_clipboard/ui/preferences_window.py:617
 msgid ""
-"The history is kept in RAM and is lost when closing the application or "
-"shutting down or restarting the PC. No persistent copy of the history is "
-"saved to disk."
+"The history mode has not been changed. Check the file permissions and try "
+"again."
 msgstr ""
-"Az előzmények a memóriában maradnak, és az alkalmazás bezárásakor, illetve a"
-" számítógép leállításakor vagy újraindításakor elvesznek. Az előzményekről "
-"nem készül tartós másolat a lemezre."
+"Az előzmények módja nem változott. Ellenőrizze a fájlhozzáférési "
+"jogosultságokat, és próbálja újra."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:195
-msgid "History limit:"
-msgstr "Előzmények korlátja:"
+#: src/cinnamon_clipboard/core/clipboard.py:664
+msgid "The image could not be copied."
+msgstr "A képet nem sikerült másolni."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:261
-msgid "Applies only to unpinned items."
-msgstr "Csak a nem kitűzött elemekre vonatkozik."
+#: src/cinnamon_clipboard/ui/preferences_window.py:637
+msgid ""
+"The preferences could not be saved. Check the file permissions and try again."
+msgstr ""
+"A beállításokat nem sikerült menteni. Ellenőrizze a fájlhozzáférési "
+"jogosultságokat, és próbálja újra."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:281
-msgid "Capture images:"
-msgstr "Képek figyelése:"
+#: src/cinnamon_clipboard/app.py:235
+msgid ""
+"The saved clipboard history could not be deleted. Check file permissions and "
+"restart the application."
+msgstr ""
+"A mentett vágólapelőzményeket nem sikerült törölni. Ellenőrizze a "
+"fájlhozzáférési jogosultságokat, majd indítsa újra az alkalmazást."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:297
-msgid "Capture files and folders:"
-msgstr "Fájlok és mappák figyelése:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:327
-msgid "Start with session:"
-msgstr "Belépéskor elindul:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:342
-msgid "Tray menu shortcut:"
-msgstr "Tálca menü gyorsbillentyű:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:360
-msgid "Focus first item when opening menu:"
-msgstr "Első elem kijelölése a menü megnyitásakor:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:379
-msgid "Paste automatically when selecting an item:"
-msgstr "Automatikus beilleszés egy elem kiválasztásakor:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:413
-msgid "Check for updates at startup:"
-msgstr "Frissítések keresése induláskor:"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:433
-msgid "Check for updates now"
-msgstr "Frisítések keresése most"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:452
-msgid "Updates are managed by APT."
-msgstr "A frissítéseket az APT kezeli."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:462
-#: src/cinnamon_clipboard/ui/preferences_window.py:623
-msgid "Cancel"
-msgstr "Mégse"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:466
-msgid "Save"
-msgstr "Mentés"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:482
-#: src/cinnamon_clipboard/ui/preferences_window.py:506
-msgid "Unable to check for updates."
-msgstr "Nem tudtam ellenőrizni a frissítéseket."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:487
-msgid "Checking for updates..."
-msgstr "Frissítések keresése..."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:500
-msgid "Cinnamon Clipboard is up to date."
-msgstr "Cinnamon Clipboard a legfrissebb verzió."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:511
-msgid "A new version is available."
-msgstr "Elérhető egy új verzió."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:519
-msgid "A new version of Cinnamon Clipboard is available."
-msgstr "A Cinnamon Clipboard újabb verziója elérhető."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:523
-#: src/cinnamon_clipboard/update_checker.py:66
-#, python-format
-msgid "Version %(version)s is available."
-msgstr "Elérhető verzió:  %(version)s ."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:537
-msgid "Later"
-msgstr "Később"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:538
-#: src/cinnamon_clipboard/update_checker.py:73
-msgid "View release"
-msgstr "Kiadás megtekintése"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:549
-msgid "Click to assign"
-msgstr "Kattints a hozzáadáshoz"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:554
-msgid "Press a key combination..."
-msgstr "Nyomja le a billentyűkombinációt..."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:598
-msgid "Switch to temporary history?"
-msgstr "Átvált az ideiglenes előzményekre?"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:600
+#: src/cinnamon_clipboard/ui/preferences_window.py:571
 msgid ""
 "The saved clipboard history database and its images will be permanently "
 "deleted. The application will restart with an empty history stored only in "
@@ -362,47 +396,33 @@ msgstr ""
 "törlődnek. Az alkalmazás üres, kizárólag memóriában tárolt előzményekkel "
 "indul újra."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:605
-msgid "Delete history and switch"
-msgstr "Előzmények törlése és váltás"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:607
-msgid "Switch to persistent history?"
-msgstr "Átvált az állandó előzményekre?"
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:609
+#: src/cinnamon_clipboard/ui/preferences_window.py:580
 msgid ""
-"The temporary history will be lost when the application restarts. Persistent"
-" history will start empty."
+"The temporary history will be lost when the application restarts. Persistent "
+"history will start empty."
 msgstr ""
-"Az ideiglenes előzmények az alkalmazás újraindításakor elvesznek. Az állandó"
-" előzmények üresen indulnak."
+"Az ideiglenes előzmények az alkalmazás újraindításakor elvesznek. Az állandó "
+"előzmények üresen indulnak."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:613
-msgid "Restart and switch"
-msgstr "Újraindítás és váltás"
+#: src/cinnamon_clipboard/app.py:368
+msgid "Automatic startup could not be configured"
+msgstr "Az automatikus indítás beállítása sikertelen"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:642
-msgid "Could not delete the saved history"
-msgstr "A mentett előzményeket nem sikerült törölni."
-
-#: src/cinnamon_clipboard/ui/preferences_window.py:646
+#: src/cinnamon_clipboard/app.py:372
 msgid ""
-"The history mode has not been changed. Check the file permissions and try "
-"again."
+"Your other settings were saved. Cinnamon Clipboard will continue without "
+"automatic startup."
 msgstr ""
-"Az előzmények módja nem változott. Ellenőrizze a fájlhozzáférési "
-"jogosultságokat, és próbálja újra."
+"A többi beállítás mentésre került. A Cinnamon Clipboard automatikus indítás "
+"nélkül fog működni."
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:662
-msgid "Could not save preferences"
-msgstr "A beállításokat nem sikerült menteni."
+#: src/cinnamon_clipboard/ui/preferences_window.py:91
+msgid "Record clipboard history:"
+msgstr "Vágólapelőzmények rögzítése:"
 
-#: src/cinnamon_clipboard/ui/preferences_window.py:666
-msgid "The preferences could not be saved. Check the file permissions and try again."
-msgstr ""
-"A beállításokat nem sikerült menteni. Ellenőrizze a fájlhozzáférési "
-"jogosultságokat, és próbálja újra."
+#: src/cinnamon_clipboard/ui/preferences_window.py:261
+msgid "Applies only to unpinned items."
+msgstr "Csak a nem kitűzött elemekre vonatkozik."
 
 #: src/cinnamon_clipboard/ui/welcome_window.py:20
 #: src/cinnamon_clipboard/ui/welcome_window.py:138
@@ -425,8 +445,8 @@ msgstr "Tovább"
 #: src/cinnamon_clipboard/ui/welcome_window.py:147
 msgid ""
 "This quick setup will help you configure your clipboard history, choose how "
-"many items to keep, and decide whether the app starts automatically when you"
-" log in."
+"many items to keep, and decide whether the app starts automatically when you "
+"log in."
 msgstr ""
 "Ez a gyors beállítás segít a vágólapelőzmények konfigurálásában, a "
 "megtartandó elemek számának kiválasztásában, és abban, hogy az alkalmazás "
@@ -447,8 +467,8 @@ msgid ""
 "Choose whether your clipboard history should be preserved after closing the "
 "application."
 msgstr ""
-"Válassza ki, hogy a vágólapelőzmények megmaradjanak-e az alkalmazás bezárása"
-" után."
+"Válassza ki, hogy a vágólapelőzmények megmaradjanak-e az alkalmazás bezárása "
+"után."
 
 #: src/cinnamon_clipboard/ui/welcome_window.py:230
 msgid "History limit"
@@ -471,7 +491,8 @@ msgid "Start automatically"
 msgstr "Automatikus indítás"
 
 #: src/cinnamon_clipboard/ui/welcome_window.py:276
-msgid "Choose whether Cinnamon Clipboard should start automatically when you log in."
+msgid ""
+"Choose whether Cinnamon Clipboard should start automatically when you log in."
 msgstr ""
 "Válassza ki, hogy a Cinnamon Clipboard automatikusan induljon-e "
 "bejelentkezéskor."
@@ -492,30 +513,11 @@ msgstr "A beállítások mentése sikertelen"
 msgid "Your settings could not be saved. Please try again."
 msgstr "A beállítások mentése sikertelen. Próbálja újra."
 
-#: src/cinnamon_clipboard/update_checker.py:64
-msgid "Cinnamon Clipboard update available"
-msgstr "Cinnamon Clipboard frissítése elérhető"
+#~ msgid "When disabled, new clipboard items won't be recorded."
+#~ msgstr "Ha kikapcsolja, az új vágólapelemek nem kerülnek rögzítésre."
 
-msgid "When disabled, new clipboard items won't be recorded."
-msgstr "Ha kikapcsolja, az új vágólapelemek nem kerülnek rögzítésre."
-
-msgid "Start with session"
-msgstr "Indítás a munkamenettel"
-
-#~ msgid "Content Capture"
-#~ msgstr "Tartalom figyelése"
-
-#~ msgid "History and Privacy"
-#~ msgstr "Előzmények és adatvédelem"
-
-#~ msgid "Save history (Private Mode):"
-#~ msgstr "Előzmények mentése (Privát mód):"
-
-#~ msgid "System and Shortcut"
-#~ msgstr "Rendszer és Gyorsbillentyűk"
-
-#~ msgid "Updates"
-#~ msgstr "Frissítések"
+#~ msgid "Start with session"
+#~ msgstr "Indítás a munkamenettel"
 
 #~ msgid "Clear all"
 #~ msgstr "Clear all"

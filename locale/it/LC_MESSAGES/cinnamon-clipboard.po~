@@ -1,0 +1,512 @@
+# Traduzioni italiane per Appunti di Cinnamon.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Generato automaticamente, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Appunti di Cinnamon 1.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 10:35-0300\n"
+"PO-Revision-Date: 2026-10-11 15:13-0300\n"
+"Last-Translator: Traduzione italiana\n"
+"Language: it\n"
+"Language-Team: Italiano\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: src/cinnamon_clipboard/app.py:262
+msgid "Temporary history could not be started"
+msgstr "Impossibile avviare la cronologia temporanea."
+
+#: src/cinnamon_clipboard/app.py:266
+msgid ""
+"The saved clipboard history could not be deleted. Check file permissions and"
+" restart the application."
+msgstr ""
+"Impossibile eliminare la cronologia salvata degli appunti. Controlla i "
+"permessi dei file e riavvia l'applicazione."
+
+#: src/cinnamon_clipboard/app.py:286
+msgid "Configuration restored"
+msgstr "Configurazione ripristinata"
+
+#: src/cinnamon_clipboard/app.py:289
+msgid ""
+"The configuration file contained invalid data and was reset to the default "
+"values."
+msgstr ""
+"Il file di configurazione conteneva dati non validi ed è stato ripristinato "
+"ai valori predefiniti."
+
+#: src/cinnamon_clipboard/app.py:368
+msgid "Automatic startup could not be configured"
+msgstr "Impossibile configurare l’avvio automatico"
+
+#: src/cinnamon_clipboard/app.py:372
+msgid ""
+"Your other settings were saved. Cinnamon Clipboard will continue without "
+"automatic startup."
+msgstr ""
+"Le altre impostazioni sono state salvate. Cinnamon Clipboard continuerà "
+"senza avvio automatico."
+
+#: src/cinnamon_clipboard/core/clipboard.py:317
+#, python-format
+msgid "Image (%(width)d×%(height)d px)"
+msgstr "Immagine (%(width)d × %(height)d px)"
+
+#: src/cinnamon_clipboard/core/clipboard.py:399
+msgid ""
+"Only some files were added to the clipboard because some are no longer "
+"available."
+msgstr ""
+"Solo alcuni file sono stati aggiunti agli appunti perché gli altri non sono "
+"più disponibili."
+
+#: src/cinnamon_clipboard/core/clipboard.py:402
+msgid "The file is no longer available for copying."
+msgstr "Il file non è più disponibile per essere copiato."
+
+#: src/cinnamon_clipboard/core/clipboard.py:405
+#, python-format
+msgid "%(count)d files are no longer available for copying."
+msgstr "%(count)d file non sono più disponibili per essere copiati."
+
+#: src/cinnamon_clipboard/core/clipboard.py:409
+#: src/cinnamon_clipboard/core/clipboard.py:656
+#: src/cinnamon_clipboard/core/clipboard.py:663
+#: src/cinnamon_clipboard/ui/main_window.py:15
+#: src/cinnamon_clipboard/ui/tray.py:34
+msgid "Cinnamon Clipboard"
+msgstr "Appunti di Cinnamon"
+
+#: src/cinnamon_clipboard/core/clipboard.py:470
+#, python-format
+msgid "File: %(name)s"
+msgstr "File: %(name)s"
+
+#: src/cinnamon_clipboard/core/clipboard.py:473
+#, python-format
+msgid "%(name)s and %(count)d more file(s)"
+msgstr "%(name)s e altri %(count)d file"
+
+#: src/cinnamon_clipboard/core/clipboard.py:657
+msgid "The image is no longer available for copying."
+msgstr "L’immagine non è più disponibile per essere copiata."
+
+#: src/cinnamon_clipboard/core/clipboard.py:664
+msgid "The image could not be copied."
+msgstr "Impossibile copiare l'immagine."
+
+#: src/cinnamon_clipboard/ui/about_window.py:31
+msgid "Clipboard manager for Linux desktops."
+msgstr "Gestore degli appunti per desktop Linux."
+
+#: src/cinnamon_clipboard/ui/about_window.py:56
+msgid ""
+"Cinnamon Clipboard is free software: you can redistribute it and/or modify "
+"it under the terms of the GNU General Public License as published by the "
+"Free Software Foundation, either version 3 of the License, or (at your "
+"option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details."
+msgstr ""
+"Appunti di Cinnamon è software libero: è possibile ridistribuirlo e/o "
+"modificarlo secondo i termini della GNU General Public License, pubblicata "
+"dalla Free Software Foundation, versione 3 o, a scelta, una versione "
+"successiva.\n"
+"\n"
+"Questo programma è distribuito nella speranza che sia utile, ma SENZA ALCUNA"
+" GARANZIA, senza neppure la garanzia implicita di COMMERCIABILITÀ o IDONEITÀ"
+" PER UNO SCOPO PARTICOLARE. Per ulteriori dettagli, consultare la GNU "
+"General Public License."
+
+#: src/cinnamon_clipboard/ui/main_window.py:39
+msgid "Search history..."
+msgstr "Cerca nella cronologia…"
+
+#: src/cinnamon_clipboard/ui/main_window.py:47
+msgid "All"
+msgstr "Tutti"
+
+#: src/cinnamon_clipboard/ui/main_window.py:51
+msgid "Text"
+msgstr "Testo"
+
+#: src/cinnamon_clipboard/ui/main_window.py:55
+msgid "Images"
+msgstr "Immagini"
+
+#: src/cinnamon_clipboard/ui/main_window.py:59
+#: src/cinnamon_clipboard/ui/main_window.py:185
+msgid "Files"
+msgstr "File"
+
+#: src/cinnamon_clipboard/ui/main_window.py:84
+#: src/cinnamon_clipboard/ui/menu_window.py:85
+msgid "Clear history"
+msgstr "Cancella la cronologia"
+
+#: src/cinnamon_clipboard/ui/main_window.py:85
+#: src/cinnamon_clipboard/ui/menu_window.py:86
+msgid "Delete all unpinned history items"
+msgstr "Elimina tutti gli elementi non fissati della cronologia"
+
+#: src/cinnamon_clipboard/ui/main_window.py:90
+msgid "About"
+msgstr "Informazioni"
+
+#: src/cinnamon_clipboard/ui/main_window.py:95
+#: src/cinnamon_clipboard/ui/menu_window.py:91
+#: src/cinnamon_clipboard/ui/preferences_window.py:26
+msgid "Preferences"
+msgstr "Preferenze"
+
+#: src/cinnamon_clipboard/ui/main_window.py:99
+msgid "Quit"
+msgstr "Esci"
+
+#: src/cinnamon_clipboard/ui/main_window.py:100
+#: src/cinnamon_clipboard/ui/menu_window.py:97
+msgid "Close Cinnamon Clipboard"
+msgstr "Chiudi Appunti di Cinnamon"
+
+#: src/cinnamon_clipboard/ui/main_window.py:172
+msgid "[Image]"
+msgstr "[Immagine]"
+
+#: src/cinnamon_clipboard/ui/main_window.py:176
+msgid "Image"
+msgstr "Immagine"
+
+#: src/cinnamon_clipboard/ui/main_window.py:216
+#: src/cinnamon_clipboard/ui/menu_window.py:604
+msgid "Unpin"
+msgstr "Rimuovi dai fissati"
+
+#: src/cinnamon_clipboard/ui/main_window.py:216
+#: src/cinnamon_clipboard/ui/menu_window.py:604
+msgid "Pin to top"
+msgstr "Fissa in cima"
+
+#: src/cinnamon_clipboard/ui/main_window.py:222
+msgid "Copy to clipboard"
+msgstr "Copia negli appunti"
+
+#: src/cinnamon_clipboard/ui/main_window.py:228
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/cinnamon_clipboard/ui/menu_window.py:61
+msgid "Search.."
+msgstr "Cerca…"
+
+#: src/cinnamon_clipboard/ui/menu_window.py:104
+msgid "Open application"
+msgstr "Apri l’applicazione"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:91
+msgid "Record clipboard history:"
+msgstr "Registra la cronologia degli appunti:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:129
+#: src/cinnamon_clipboard/ui/welcome_window.py:180
+msgid "Persistent history"
+msgstr "Cronologia persistente"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:183
+msgid "History mode"
+msgstr "Modalità cronologia"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:135
+#: src/cinnamon_clipboard/ui/welcome_window.py:199
+msgid "Temporary history"
+msgstr "Cronologia temporanea"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:159
+#: src/cinnamon_clipboard/ui/welcome_window.py:190
+msgid ""
+"The history is stored in an SQLite database on disk, along with images. "
+"Items are preserved when closing the application or restarting the PC."
+msgstr ""
+"La cronologia e le immagini sono archiviate sul disco in un database SQLite."
+" Gli elementi vengono conservati quando si chiude l'applicazione o si "
+"riavvia il PC."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:172
+#: src/cinnamon_clipboard/ui/welcome_window.py:209
+msgid ""
+"The history is kept in RAM and is lost when closing the application or "
+"shutting down or restarting the PC. No persistent copy of the history is "
+"saved to disk."
+msgstr ""
+"La cronologia è conservata nella RAM e viene persa quando si chiude "
+"l'applicazione o si spegne o riavvia il PC. Non viene salvata sul disco "
+"alcuna copia permanente della cronologia."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:195
+msgid "History limit:"
+msgstr "Limite della cronologia:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:261
+msgid "Applies only to unpinned items."
+msgstr "Si applica solo agli elementi non fissati."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:281
+msgid "Capture images:"
+msgstr "Salva le immagini:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:297
+msgid "Capture files and folders:"
+msgstr "Salva file e cartelle:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:327
+msgid "Start with session:"
+msgstr "Avvia all’accesso:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:342
+msgid "Tray menu shortcut:"
+msgstr "Scorciatoia del menu dell’area di notifica:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:360
+msgid "Focus first item when opening menu:"
+msgstr "Seleziona il primo elemento all’apertura del menu:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:379
+msgid "Paste automatically when selecting an item:"
+msgstr "Incolla automaticamente alla selezione di un elemento:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:413
+msgid "Check for updates at startup:"
+msgstr "Controlla gli aggiornamenti all'avvio:"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:433
+msgid "Check for updates now"
+msgstr "Controlla aggiornamenti"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:452
+msgid "Updates are managed by APT."
+msgstr "Gli aggiornamenti sono gestiti da APT."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:462
+#: src/cinnamon_clipboard/ui/preferences_window.py:623
+msgid "Cancel"
+msgstr "Annulla"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:466
+msgid "Save"
+msgstr "Salva"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:482
+#: src/cinnamon_clipboard/ui/preferences_window.py:506
+msgid "Unable to check for updates."
+msgstr "Impossibile verificare la presenza di aggiornamenti."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:487
+msgid "Checking for updates..."
+msgstr "Ricerca aggiornamenti in corso..."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:500
+msgid "Cinnamon Clipboard is up to date."
+msgstr "Cinnamon Clipboard è aggiornato."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:511
+msgid "A new version is available."
+msgstr "È disponibile una nuova versione."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:519
+msgid "A new version of Cinnamon Clipboard is available."
+msgstr "È disponibile una nuova versione di Cinnamon Clipboard."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:523
+#: src/cinnamon_clipboard/update_checker.py:66
+#, python-format
+msgid "Version %(version)s is available."
+msgstr "È disponibile la versione %(version)s."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:537
+msgid "Later"
+msgstr "Più tardi"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:538
+#: src/cinnamon_clipboard/update_checker.py:73
+msgid "View release"
+msgstr "Visualizza la release"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:549
+msgid "Click to assign"
+msgstr "Fai clic per assegnare"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:554
+msgid "Press a key combination..."
+msgstr "Premi una combinazione di tasti…"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:598
+msgid "Switch to temporary history?"
+msgstr "Passare alla cronologia temporanea?"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:600
+msgid ""
+"The saved clipboard history database and its images will be permanently "
+"deleted. The application will restart with an empty history stored only in "
+"memory."
+msgstr ""
+"Il database della cronologia salvata degli appunti e le relative immagini "
+"verranno eliminati definitivamente. L'applicazione verrà riavviata con una "
+"cronologia vuota archiviata solo in memoria."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:605
+msgid "Delete history and switch"
+msgstr "Elimina la cronologia e passa"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:607
+msgid "Switch to persistent history?"
+msgstr "Passare alla cronologia persistente?"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:609
+msgid ""
+"The temporary history will be lost when the application restarts. Persistent"
+" history will start empty."
+msgstr ""
+"La cronologia temporanea verrà persa al riavvio dell'applicazione. La "
+"cronologia persistente sarà vuota."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:613
+msgid "Restart and switch"
+msgstr "Riavvia e passa"
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:642
+msgid "Could not delete the saved history"
+msgstr "Impossibile eliminare la cronologia salvata."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:646
+msgid ""
+"The history mode has not been changed. Check the file permissions and try "
+"again."
+msgstr ""
+"La modalità della cronologia non è stata modificata. Controlla i permessi "
+"dei file e riprova."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:662
+msgid "Could not save preferences"
+msgstr "Impossibile salvare le preferenze."
+
+#: src/cinnamon_clipboard/ui/preferences_window.py:666
+msgid "The preferences could not be saved. Check the file permissions and try again."
+msgstr "Impossibile salvare le preferenze. Controlla i permessi dei file e riprova."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:20
+#: src/cinnamon_clipboard/ui/welcome_window.py:138
+msgid "Welcome to Cinnamon Clipboard"
+msgstr "Benvenuto in Cinnamon Clipboard"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:48
+msgid "Back"
+msgstr "Indietro"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:51
+msgid "Skip"
+msgstr "Salta"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:54
+#: src/cinnamon_clipboard/ui/welcome_window.py:306
+msgid "Next"
+msgstr "Avanti"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:147
+msgid ""
+"This quick setup will help you configure your clipboard history, choose how "
+"many items to keep, and decide whether the app starts automatically when you"
+" log in."
+msgstr ""
+"Questa configurazione rapida ti aiuterà a impostare la cronologia degli "
+"appunti, scegliere quanti elementi conservare e decidere se l’app deve "
+"avviarsi automaticamente all’accesso."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:159
+msgid "You can skip this setup and use the default settings."
+msgstr "Puoi saltare questa configurazione e usare le impostazioni predefinite."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:171
+msgid "Choose your history mode"
+msgstr "Scegli la modalità della cronologia"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:173
+msgid ""
+"Choose whether your clipboard history should be preserved after closing the "
+"application."
+msgstr ""
+"Scegli se la cronologia degli appunti deve essere conservata dopo la "
+"chiusura dell’applicazione."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:230
+msgid "History limit"
+msgstr "Limite della cronologia"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:231
+msgid "Choose the maximum number of unpinned history items."
+msgstr "Scegli il numero massimo di elementi non fissati della cronologia."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:253
+msgid "Maximum history items:"
+msgstr "Numero massimo di elementi:"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:263
+msgid "This limit applies only to unpinned items."
+msgstr "Questo limite si applica solo agli elementi non fissati."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:274
+msgid "Start automatically"
+msgstr "Avvia automaticamente"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:276
+msgid "Choose whether Cinnamon Clipboard should start automatically when you log in."
+msgstr "Scegli se Cinnamon Clipboard deve avviarsi automaticamente all’accesso."
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:282
+msgid "Start Cinnamon Clipboard automatically on login"
+msgstr "Avvia automaticamente Cinnamon Clipboard all’accesso"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:303
+msgid "Finish"
+msgstr "Fine"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:365
+msgid "Unable to save settings"
+msgstr "Impossibile salvare le impostazioni"
+
+#: src/cinnamon_clipboard/ui/welcome_window.py:369
+msgid "Your settings could not be saved. Please try again."
+msgstr "Impossibile salvare le impostazioni. Riprova."
+
+#: src/cinnamon_clipboard/update_checker.py:64
+msgid "Cinnamon Clipboard update available"
+msgstr "Aggiornamento di Cinnamon Clipboard disponibile"
+
+msgid "When disabled, new clipboard items won't be recorded."
+msgstr "Quando disattivata, i nuovi elementi degli appunti non verranno registrati."
+
+msgid "Start with session"
+msgstr "Avvia con la sessione"
+
+#~ msgid "Content Capture"
+#~ msgstr "Acquisizione dei contenuti"
+
+#~ msgid "History and Privacy"
+#~ msgstr "Cronologia e privacy"
+
+#~ msgid "Save history (Private Mode):"
+#~ msgstr "Salva la cronologia (modalità privata):"
+
+#~ msgid "System and Shortcut"
+#~ msgstr "Sistema e scorciatoia"
+
+#~ msgid "Updates"
+#~ msgstr "Aggiornamenti"

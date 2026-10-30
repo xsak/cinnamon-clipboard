@@ -1,78 +1,16 @@
 import gi
 import logging
-import locale
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GLib
 
 logger = logging.getLogger(__name__)
 
 from ..i18n import _
 from ..update_checker import check_for_updates
 from ..installation import PACKAGE_MANAGED
-
-
-TAB_TITLE_FALLBACKS = {
-    "de": {
-        "History and Privacy": "Verlauf und Datenschutz",
-        "Content Capture": "Inhalte erfassen",
-        "System and Shortcut": "System und Tastenkürzel",
-        "Updates": "Aktualisierungen",
-    },
-    "es": {
-        "History and Privacy": "Historial y privacidad",
-        "Content Capture": "Captura de contenido",
-        "System and Shortcut": "Sistema y atajo",
-        "Updates": "Actualizaciones",
-    },
-    "fr": {
-        "History and Privacy": "Historique et confidentialité",
-        "Content Capture": "Capture du contenu",
-        "System and Shortcut": "Système et raccourcis",
-        "Updates": "Mises à jour",
-    },
-    "hu": {
-        "History and Privacy": "Előzmények és adatvédelem",
-        "Content Capture": "Tartalom rögzítése",
-        "System and Shortcut": "Rendszer és gyorsbillentyű",
-        "Updates": "Frissítések",
-    },
-    "it": {
-        "History and Privacy": "Cronologia e privacy",
-        "Content Capture": "Acquisizione dei contenuti",
-        "System and Shortcut": "Sistema e scorciatoia",
-        "Updates": "Aggiornamenti",
-    },
-    "ja": {
-        "History and Privacy": "履歴とプライバシー",
-        "Content Capture": "コンテンツの記録",
-        "System and Shortcut": "システムとショートカット",
-        "Updates": "更新",
-    },
-    "pt": {
-        "History and Privacy": "Histórico e privacidade",
-        "Content Capture": "Captura de conteúdo",
-        "System and Shortcut": "Sistema e atalho",
-        "Updates": "Atualizações",
-    },
-    "ru": {
-        "History and Privacy": "История и конфиденциальность",
-        "Content Capture": "Сохранение содержимого",
-        "System and Shortcut": "Система и горячие клавиши",
-        "Updates": "Обновления",
-    },
-}
-
-
-def _tab_title(text):
-    translated = _(text)
-    if translated != text:
-        return translated
-
-    language = (locale.getlocale()[0] or "").split("_")[0].lower()
-    return TAB_TITLE_FALLBACKS.get(language, {}).get(text, text)
 
 
 class PreferencesWindow(Gtk.Window):
@@ -144,7 +82,7 @@ class PreferencesWindow(Gtk.Window):
         scrolled_history.set_hexpand(True)
         scrolled_history.set_vexpand(True)
         scrolled_history.add(grid_history)
-        notebook.append_page(scrolled_history, Gtk.Label(label=_tab_title("History and Privacy")))
+        notebook.append_page(scrolled_history, Gtk.Label(label=_("History and Privacy")))
 
         grid = grid_history
         row = 0
@@ -157,7 +95,9 @@ class PreferencesWindow(Gtk.Window):
 
         lbl_enable_note = Gtk.Label(xalign=0)
         lbl_enable_note.set_markup(
-            f'<span size="small">{_("When disabled, new clipboard items won\'t be recorded.")}</span>'
+            '<span size="small">'
+            f'{GLib.markup_escape_text(_("When disabled, new clipboard items won\'t be recorded."))}'
+            "</span>"
         )
         lbl_enable_note.set_line_wrap(True)
         lbl_enable_note.set_max_width_chars(65)
@@ -180,7 +120,9 @@ class PreferencesWindow(Gtk.Window):
 
         # History storage mode
         lbl_mode = Gtk.Label(xalign=0)
-        lbl_mode.set_markup(f'<b>{_("History mode")}</b>')
+        lbl_mode.set_markup(
+            f'<b>{GLib.markup_escape_text(_("History mode"))}</b>'
+        )
         lbl_mode.set_margin_start(18)
         lbl_mode.set_halign(Gtk.Align.START)
         grid.attach(lbl_mode, 0, row, 2, 1)
@@ -298,7 +240,7 @@ class PreferencesWindow(Gtk.Window):
         scrolled_capture.set_hexpand(True)
         scrolled_capture.set_vexpand(True)
         scrolled_capture.add(grid_capture)
-        notebook.append_page(scrolled_capture, Gtk.Label(label=_tab_title("Content Capture")))
+        notebook.append_page(scrolled_capture, Gtk.Label(label=_("Content Capture")))
 
         grid = grid_capture
         row = 0
@@ -353,7 +295,7 @@ class PreferencesWindow(Gtk.Window):
         scrolled_system.set_hexpand(True)
         scrolled_system.set_vexpand(True)
         scrolled_system.add(grid_system)
-        notebook.append_page(scrolled_system, Gtk.Label(label=_tab_title("System and Shortcut")))
+        notebook.append_page(scrolled_system, Gtk.Label(label=_("System and Shortcut")))
 
         grid = grid_system
         row = 0
@@ -450,7 +392,7 @@ class PreferencesWindow(Gtk.Window):
         if not PACKAGE_MANAGED:
             notebook.append_page(
                 scrolled_updates,
-                Gtk.Label(label=_tab_title("Updates")),
+                Gtk.Label(label=_("Updates")),
             )
 
         grid = grid_updates
