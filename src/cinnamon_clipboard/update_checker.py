@@ -23,10 +23,16 @@ def _version_tuple(version):
     """Convert a version string into a comparable tuple."""
     version = version.strip().lstrip("v")
 
-    if not re.fullmatch(r"\d+(?:\.\d+)*", version):
+    match = re.fullmatch(r"(\d+(?:\.\d+)*)(?:-rc(\d+))?", version)
+    if not match:
         return None
 
-    return tuple(int(part) for part in version.split("."))
+    release = tuple(int(part) for part in match.group(1).split("."))
+    rc_number = match.group(2)
+    if rc_number is not None:
+        return release + (-1, int(rc_number))
+
+    return release + (0, 0)
 
 
 def _fetch_latest_release():

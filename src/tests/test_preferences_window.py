@@ -165,6 +165,45 @@ class TestPreferencesWindow(unittest.TestCase):
         self.assertFalse(self.window.radio_persistent.get_active())
         self.assertTrue(self.window.radio_temporary.get_active())
 
+    def test_history_mode_descriptions_are_available_from_info_buttons(self):
+        descriptions = (
+            (
+                self.window.persistent_info_button,
+                _(
+                    "The history is stored in an SQLite database on disk, "
+                    "along with images. Items are preserved when closing "
+                    "the application or restarting the PC."
+                ),
+            ),
+            (
+                self.window.temporary_info_button,
+                _(
+                    "The history is kept in RAM and is lost when closing "
+                    "the application or shutting down or restarting the PC. "
+                    "No persistent copy of the history is saved to disk."
+                ),
+            ),
+        )
+
+        self.window.show_all()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+
+        for button, description in descriptions:
+            popover = button.get_popover()
+            self.assertIsInstance(button, Gtk.MenuButton)
+            self.assertEqual(popover.get_child().get_text(), description)
+            self.assertFalse(popover.get_visible())
+            self.assertTrue(popover.get_child().get_visible())
+            self.assertGreater(popover.get_child().get_preferred_width()[0], 100)
+            self.assertGreater(
+                popover.get_child().get_preferred_height_for_width(280)[0],
+                20,
+            )
+            button.clicked()
+            self.assertTrue(popover.get_visible())
+            popover.popdown()
+
     # 3. Guardar
 
     def test_save_persists_temporary_changes(self):

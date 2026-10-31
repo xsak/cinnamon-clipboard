@@ -180,18 +180,26 @@ class PreferencesWindow(Gtk.Window):
                 "the application or shutting down or restarting the PC. "
                 "No persistent copy of the history is saved to disk."
         )
+        self.persistent_info_button = self._create_info_button(
+            _("Persistent history"),
+            lbl_persistent_desc,
+        )
+        self.temporary_info_button = self._create_info_button(
+            _("Temporary history"),
+            lbl_temporary_desc,
+        )
         self.radio_persistent.set_label("")
         self.radio_temporary.set_label("")
 
         persistent_row = self._create_settings_row(
             _("Persistent history"),
-            lbl_persistent_desc,
-            self.radio_persistent,
+            control=self.radio_persistent,
+            info_button=self.persistent_info_button,
         )
         temporary_row = self._create_settings_row(
             _("Temporary history"),
-            lbl_temporary_desc,
-            self.radio_temporary,
+            control=self.radio_temporary,
+            info_button=self.temporary_info_button,
         )
         mode_list = self._create_settings_list(
             persistent_row,
@@ -478,7 +486,9 @@ class PreferencesWindow(Gtk.Window):
             list_box.add(row)
         return list_box
 
-    def _create_settings_row(self, title, subtitle=None, control=None, tooltip=None):
+    def _create_settings_row(
+        self, title, subtitle=None, control=None, tooltip=None, info_button=None
+    ):
         row = Gtk.ListBoxRow()
         row.set_activatable(True)
         row.get_style_context().add_class("settings-row")
@@ -510,11 +520,41 @@ class PreferencesWindow(Gtk.Window):
             control.set_halign(Gtk.Align.END)
             outer.pack_end(control, False, False, 0)
 
+        if info_button is not None:
+            outer.pack_end(info_button, False, False, 0)
+
         if tooltip:
             row.set_tooltip_text(tooltip)
 
         row.add(outer)
         return row
+
+    def _create_info_button(self, title, text):
+        button = Gtk.MenuButton()
+        button.set_image(
+            Gtk.Image.new_from_icon_name(
+                "dialog-information-symbolic",
+                Gtk.IconSize.BUTTON,
+            )
+        )
+        button.set_relief(Gtk.ReliefStyle.NONE)
+        button.set_tooltip_text(title)
+        button.get_accessible().set_name(title)
+
+        popover = Gtk.Popover.new(button)
+        popover.set_position(Gtk.PositionType.BOTTOM)
+        label = Gtk.Label(label=text, xalign=0)
+        label.set_line_wrap(True)
+        label.set_size_request(280, -1)
+        label.set_max_width_chars(55)
+        label.set_margin_start(12)
+        label.set_margin_end(12)
+        label.set_margin_top(8)
+        label.set_margin_bottom(8)
+        label.show()
+        popover.add(label)
+        button.set_popover(popover)
+        return button
 
     def _create_switch_row(self, title, subtitle, switch, tooltip=None):
         row = self._create_settings_row(title, subtitle, switch, tooltip)
