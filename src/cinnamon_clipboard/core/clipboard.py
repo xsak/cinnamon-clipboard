@@ -18,7 +18,7 @@ gi.require_version("GLib", "2.0")
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gtk
 
 from ..i18n import _
-from .database import HistoryDatabase
+from .database import PRIVATE_FILE_MODE, HistoryDatabase, ensure_private_dir
 from .settings import SettingsManager
 from .x11_file_clipboard import X11FileClipboard
 
@@ -139,7 +139,8 @@ class ClipboardManager:
                 / "cinnamon-clipboard"
                 / "media"
             )
-            self.data_media_dir.mkdir(parents=True, exist_ok=True)
+            ensure_private_dir(self.data_media_dir.parent)
+            ensure_private_dir(self.data_media_dir)
             self.db = HistoryDatabase()
             self.history = self._load_history_from_db()
         else:
@@ -328,6 +329,7 @@ class ClipboardManager:
                         )
                         if not saved_file_path.exists():
                             pixbuf.savev(str(saved_file_path), "png", [], [])
+                            os.chmod(saved_file_path, PRIVATE_FILE_MODE)
 
                         item["data"] = str(saved_file_path)
                         item["data_path"] = str(saved_file_path)

@@ -3,6 +3,16 @@ import os
 import sqlite3
 from pathlib import Path
 
+PRIVATE_DIR_MODE = 0o700
+PRIVATE_FILE_MODE = 0o600
+
+
+def ensure_private_dir(path):
+    """Create a directory readable only by the current user and fix existing permissions."""
+    path = Path(path)
+    path.mkdir(mode=PRIVATE_DIR_MODE, parents=True, exist_ok=True)
+    os.chmod(path, PRIVATE_DIR_MODE)
+
 
 class HistoryDatabase:
     """Handles history persistence in SQLite with support for pinned items."""
@@ -10,12 +20,25 @@ class HistoryDatabase:
     def __init__(self, db_path=None):
         if db_path is None:
             data_dir = Path.home() / ".local" / "share" / "cinnamon-clipboard"
-            data_dir.mkdir(parents=True, exist_ok=True)
+            ensure_private_dir(data_dir)
             self.db_path = data_dir / "history.db"
         else:
             self.db_path = Path(db_path)
 
+        self._secure_db_file()
         self._init_db()
+
+    def _secure_db_file(self):
+        """Create the database file as 0600 so clipboard contents stay private.
+
+        SQLite creates its journal and WAL files with the same permissions
+        as the main database file.
+        """
+        fd = os.open(self.db_path, os.O_RDWR | os.O_CREAT, PRIVATE_FILE_MODE)
+        try:
+            os.fchmod(fd, PRIVATE_FILE_MODE)
+        finally:
+            os.close(fd)
 
     def _get_connection(self):
         return sqlite3.connect(self.db_path)

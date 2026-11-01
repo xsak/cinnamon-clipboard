@@ -102,33 +102,11 @@ while IFS= read -r -d '' mo_file; do
     echo "    Copied: $lang"
 done < <(find "$LOCALE_DIR" -type f -name "$MO_FILENAME" -print0)
 
-# 9. Create the .desktop launcher
-echo "[+] Creating .desktop launcher..."
+# 9. Install the .desktop launcher
+echo "[+] Installing .desktop launcher..."
 
-cat <<EOF > "$BUILD_DIR/usr/share/applications/cinnamon-clipboard.desktop"
-[Desktop Entry]
-Type=Application
-Name=Cinnamon Clipboard
-Name[es]=Portapapeles de Cinnamon
-Name[it]=Appunti di Cinnamon
-Name[fr]=Presse-papiers de Cinnamon
-Name[de]=Cinnamon-Zwischenablage
-Name[ru]=Буфер обмена Cinnamon
-Name[ja]=Cinnamon クリップボード
-Comment=Clipboard manager for Cinnamon
-Comment[es]=Gestor de portapapeles para Cinnamon
-Comment[it]=Gestore degli appunti per Cinnamon
-Comment[pt_BR]=Gerenciador da área de transferência para Cinnamon
-Comment[fr]=Gestionnaire de presse-papiers pour Cinnamon
-Comment[de]=Zwischenablageverwaltung für Cinnamon
-Comment[ru]=Менеджер буфера обмена для Cinnamon
-Comment[ja]=Cinnamon 用クリップボードマネージャー
-Exec=cinnamon-clipboard
-Icon=cinnamon-clipboard
-StartupWMClass=CinnamonClipboard
-Terminal=false
-Categories=Utility;GTK;
-EOF
+install -m 644 src/cinnamon_clipboard/data/cinnamon-clipboard.desktop \
+    "$BUILD_DIR/usr/share/applications/cinnamon-clipboard.desktop"
 
 # 10. Build the package
 echo "[+] Building package with dpkg-deb..."

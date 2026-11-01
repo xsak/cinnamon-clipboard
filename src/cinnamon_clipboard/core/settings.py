@@ -4,9 +4,13 @@ import tempfile
 import logging
 import stat
 from pathlib import Path
-from ..i18n import _
 
 logger = logging.getLogger(__name__)
+
+# Shared launcher entry; also installed to /usr/share/applications by the packaging.
+DESKTOP_FILE = (
+    Path(__file__).resolve().parent.parent / "data" / "cinnamon-clipboard.desktop"
+)
 
 
 class SettingsManager:
@@ -227,19 +231,9 @@ class SettingsManager:
                     exist_ok=True,
                 )
 
-                content = "\n".join(
-                    [
-                        "[Desktop Entry]",
-                        "Type=Application",
-                        "Name=Cinnamon Clipboard",
-                        f"Comment={_('Clipboard manager for Cinnamon')}",
-                        "Exec=cinnamon-clipboard",
-                        "Icon=cinnamon-clipboard",
-                        "Terminal=false",
-                        "Categories=Utility;",
-                        "X-GNOME-Autostart-enabled=true",
-                        "",
-                    ]
+                content = (
+                    DESKTOP_FILE.read_text(encoding="utf-8").rstrip("\n")
+                    + "\nX-GNOME-Autostart-enabled=true\n"
                 )
 
                 with tempfile.NamedTemporaryFile(
