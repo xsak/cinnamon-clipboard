@@ -67,29 +67,6 @@ sudo apt install ./cinnamon-clipboard_1.3.3_all.deb
 
 The package installs the application, desktop entry, icon, and available translation catalogs.
 
-### Ubuntu PPA
-
-Cinnamon Clipboard is distributed through the Launchpad PPA:
-
-**PPA:** [ppa:vaider17/cinnamon-clipboard](https://launchpad.net/~vaider17/+archive/ubuntu/cinnamon-clipboard)
-
-The PPA targets the following Ubuntu releases:
-
-- Ubuntu 24.04 LTS (Noble Numbat).
-- Ubuntu 26.04 (Resolute Raccoon).
-
-Add the PPA and install the application:
-
-```bash
-sudo add-apt-repository ppa:vaider17/cinnamon-clipboard
-sudo apt update
-sudo apt install cinnamon-clipboard
-```
-
-PPA packages must finish building and be published for your Ubuntu release before they can be installed. If a package is not yet available for your release, use the `.deb` package from GitHub Releases instead.
-
-When installed through APT, application updates are managed by the system package manager rather than the in-app updater.
-
 ### From source
 
 Clone the repository:
@@ -185,16 +162,6 @@ The application includes a privacy filter that checks for the `x-kde-passwordMan
 
 Users should not treat the privacy filter as a substitute for the security features of their password manager or operating system.
 
-## Project status
-
-Cinnamon Clipboard 1.3.3 is a stable release.
-
-This release updates the Hungarian translation and automates building and attaching the Debian package to GitHub Releases.
-
-Thanks to **[@xsak](https://github.com/xsak)** for contributing keyboard navigation improvements.
-
-This is an independently developed open-source project. Feedback, bug reports, and contributions are welcome.
-
 ## Development and AI assistance
 
 A substantial part of Cinnamon Clipboard was developed with assistance from artificial intelligence tools.
@@ -209,12 +176,10 @@ Cinnamon Clipboard is free software licensed under the **GNU General Public Lice
 
 See the [`LICENSE`](LICENSE) file for the complete license text.
 
-## Author
+## Original Author
 
 **Pablo / Vaider13**
 
-GitHub: [Vaider13](https://github.com/Vaider13)
-
-Repository: [Vaider13/cinnamon-clipboard](https://github.com/Vaider13/cinnamon-clipboard)
-
-Releases: [Download Cinnamon Clipboard](https://github.com/Vaider13/cinnamon-clipboard/releases)
+* GitHub: [Vaider13](https://github.com/Vaider13)
+* Repository: [Vaider13/cinnamon-clipboard](https://github.com/Vaider13/cinnamon-clipboard)
+* Releases: [Download Cinnamon Clipboard](https://github.com/Vaider13/cinnamon-clipboard/releases)
