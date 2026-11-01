@@ -1,7 +1,9 @@
 """X11 clipboard owner for file and directory selections."""
 
 import os
+import select
 import sys
+import time
 from pathlib import Path
 from urllib.parse import quote
 
@@ -95,30 +97,40 @@ class X11FileClipboard:
             self.uri_list,
         ]
 
-    def _get_server_timestamp(self):
-        """Obtain a real X11 server timestamp."""
-        self.display.flush()
-
-        self.window.delete_property(self._timestamp_property)
-        self.display.flush()
-
+    def _get_server_timestamp(self, timeout=0.5):
+        """Obtain a real X11 server timestamp, or None if the server does not answer in time."""
+        # ICCCM trick: a zero-length append still generates a PropertyNotify
+        # carrying the server time, without changing the property.
         self.window.change_property(
             self._timestamp_property,
             Xatom.STRING,
             8,
-            b"timestamp",
-            X.PropModeReplace,
+            b"",
+            X.PropModeAppend,
         )
         self.display.flush()
 
-        while True:
-            received_event = self.display.next_event()
+        deadline = time.monotonic() + timeout
 
-            if (
-                received_event.type == X.PropertyNotify
-                and received_event.atom == self._timestamp_property
-            ):
-                return received_event.time
+        while True:
+            # python-xlib may already have buffered events, so drain those first.
+            while self.display.pending_events():
+                received_event = self.display.next_event()
+
+                if (
+                    received_event.type == X.PropertyNotify
+                    and received_event.atom == self._timestamp_property
+                ):
+                    return received_event.time
+
+                # Answer requests for the files we currently own instead of dropping them.
+                self._dispatch_event(received_event)
+
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return None
+
+            select.select([self.display], [], [], remaining)
 
     def _set_property(self, requestor, property_atom, target, data):
         """Write clipboard data to the requestor's property."""
@@ -316,19 +328,22 @@ class X11FileClipboard:
                 X.NONE,
             )
 
+    def _dispatch_event(self, received_event):
+        """Handle one X11 event. Return False when clipboard ownership is lost."""
+        if received_event.type == X.SelectionRequest:
+            self._handle_selection_request(received_event)
+
+        elif received_event.type == X.SelectionClear:
+            self._stop_event_processing()
+            return False
+
+        return True
+
     def _process_x11_events(self):
         """Process pending X11 events from the GLib main loop."""
         try:
             while self.display.pending_events():
-                received_event = self.display.next_event()
-
-                if received_event.type == X.SelectionRequest:
-                    self._handle_selection_request(
-                        received_event
-                    )
-
-                elif received_event.type == X.SelectionClear:
-                    self._stop_event_processing()
+                if not self._dispatch_event(self.display.next_event()):
                     return False
 
         except Exception:
@@ -377,10 +392,14 @@ class X11FileClipboard:
         if not valid_paths:
             return False
 
-        self._paths = valid_paths
-
         # Obtain a real X11 server timestamp before acquiring ownership.
-        self._timestamp = self._get_server_timestamp()
+        # Requests that arrive meanwhile are still answered with the old files.
+        timestamp = self._get_server_timestamp()
+        if timestamp is None:
+            return False
+
+        self._paths = valid_paths
+        self._timestamp = timestamp
 
         self.window.set_selection_owner(
             self.clipboard,
