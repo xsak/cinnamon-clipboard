@@ -13,24 +13,29 @@ from .installation import PACKAGE_MANAGED
 
 logger = logging.getLogger(__name__)
 
-RELEASES_URL = (
-    "https://api.github.com/repos/"
-    "Vaider13/cinnamon-clipboard/releases/latest"
-)
+REPOSITORY = "xsak/cinnamon-clipboard"
+REPOSITORY_URL = f"https://github.com/{REPOSITORY}/"
+RELEASES_URL = f"https://api.github.com/repos/{REPOSITORY}/releases/latest"
+
+# Pre-releases sort before the final release: beta < rc < final.
+_PRERELEASE_RANK = {"beta": -2, "rc": -1}
 
 
 def _version_tuple(version):
-    """Convert a version string into a comparable tuple."""
+    """Convert a version string into a comparable tuple.
+
+    Accepts Git tag style (v1.3.4-rc1) and Debian style (1.3.4~rc1) pre-releases.
+    """
     version = version.strip().lstrip("v")
 
-    match = re.fullmatch(r"(\d+(?:\.\d+)*)(?:-rc(\d+))?", version)
+    match = re.fullmatch(r"(\d+(?:\.\d+)*)(?:[-~](beta|rc)(\d+))?", version)
     if not match:
         return None
 
     release = tuple(int(part) for part in match.group(1).split("."))
-    rc_number = match.group(2)
-    if rc_number is not None:
-        return release + (-1, int(rc_number))
+    prerelease = match.group(2)
+    if prerelease is not None:
+        return release + (_PRERELEASE_RANK[prerelease], int(match.group(3)))
 
     return release + (0, 0)
 
@@ -53,7 +58,7 @@ def _fetch_latest_release():
 
     if (
         _version_tuple(version) is None
-        or not url.startswith("https://github.com/Vaider13/cinnamon-clipboard/")
+        or not url.startswith(REPOSITORY_URL)
     ):
         raise ValueError("Invalid GitHub release information")
 

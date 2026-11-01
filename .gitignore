@@ -5,3 +5,15 @@ __pycache__/
 .vscode/
 build_deb/
 *.deb
+*.egg-info/
+*.mo
+
+# dpkg-buildpackage output
+debian/cinnamon-clipboard/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/*.substvars
+debian/*.debhelper.log
+*.buildinfo
+*.changes

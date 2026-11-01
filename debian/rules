@@ -1,35 +1,35 @@
 #!/usr/bin/make -f
 
+PKG_DIR = debian/cinnamon-clipboard
+PY_DIR = $(PKG_DIR)/usr/lib/python3/dist-packages/cinnamon_clipboard
+
 %:
 	dh $@
 
 override_dh_auto_build:
 	@:
 
+override_dh_auto_test:
+	@:
+
 override_dh_auto_install:
-	install -d debian/cinnamon-clipboard/usr/bin
-	install -d debian/cinnamon-clipboard/usr/lib/python3/dist-packages/cinnamon_clipboard
-	install -d debian/cinnamon-clipboard/usr/share/applications
-	install -d debian/cinnamon-clipboard/usr/share/icons/hicolor/512x512/apps
+	install -d $(PKG_DIR)/usr/bin
+	install -d $(PY_DIR)
 
+	cp -a src/cinnamon_clipboard/. $(PY_DIR)/
+	find $(PY_DIR) -type d -name __pycache__ -prune -exec rm -rf {} +
+	find $(PY_DIR) -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
 
-	cp -a src/cinnamon_clipboard/. debian/cinnamon-clipboard/usr/lib/python3/dist-packages/cinnamon_clipboard/
+	printf '%s\n' '#!/bin/sh' 'exec python3 -m cinnamon_clipboard.app "$$@"' > $(PKG_DIR)/usr/bin/cinnamon-clipboard
+	chmod 755 $(PKG_DIR)/usr/bin/cinnamon-clipboard
 
-	printf '%s\n' '"""Installation type configuration."""' '' 'PACKAGE_MANAGED = True' > debian/cinnamon-clipboard/usr/lib/python3/dist-packages/cinnamon_clipboard/installation.py
-
-	find debian/cinnamon-clipboard/usr/lib/python3/dist-packages/cinnamon_clipboard/ -type d -name __pycache__ -prune -exec rm -rf {} +
-
-	printf '%s\n' '#!/bin/sh' 'exec python3 -m cinnamon_clipboard.app "$$@"' > debian/cinnamon-clipboard/usr/bin/cinnamon-clipboard
-	chmod 755 debian/cinnamon-clipboard/usr/bin/cinnamon-clipboard
-
-	install -m 644 data/icons/cinnamon-clipboard.png debian/cinnamon-clipboard/usr/share/icons/hicolor/512x512/apps/cinnamon-clipboard.png
-
-	install -m 644 src/cinnamon_clipboard/data/cinnamon-clipboard.desktop debian/cinnamon-clipboard/usr/share/applications/cinnamon-clipboard.desktop
+	install -D -m 644 data/icons/cinnamon-clipboard.png $(PKG_DIR)/usr/share/icons/hicolor/512x512/apps/cinnamon-clipboard.png
+	install -D -m 644 src/cinnamon_clipboard/data/cinnamon-clipboard.desktop $(PKG_DIR)/usr/share/applications/cinnamon-clipboard.desktop
 
 	find locale -type f -name 'cinnamon-clipboard.po' | \
 	while IFS= read -r po_file; do \
 		lang="$$(echo "$$po_file" | cut -d/ -f2)"; \
-		dest="debian/cinnamon-clipboard/usr/share/locale/$$lang/LC_MESSAGES"; \
+		dest="$(PKG_DIR)/usr/share/locale/$$lang/LC_MESSAGES"; \
 		install -d "$$dest"; \
-		msgfmt "$$po_file" -o "$$dest/cinnamon-clipboard.mo"; \
+		msgfmt --check "$$po_file" -o "$$dest/cinnamon-clipboard.mo"; \
 	done

@@ -13,6 +13,7 @@ from gi.repository import Gtk, GdkPixbuf
 
 from ..i18n import _
 from .._version import __version__
+from ..update_checker import REPOSITORY_URL
 
 
 class AboutWindow(Gtk.AboutDialog):
@@ -29,10 +30,10 @@ class AboutWindow(Gtk.AboutDialog):
         self.set_program_name("Cinnamon Clipboard")
         self.set_version(__version__)
         self.set_comments(_("Clipboard manager for Linux desktops."))
-        self.set_copyright("© 2026 Vaider13")
-        self.set_website("https://github.com/Vaider13/cinnamon-clipboard")
+        self.set_copyright("© 2026 Pablo / Vaider13, Akos Keresztes")
+        self.set_website(REPOSITORY_URL)
         self.set_website_label("GitHub")
-        self.set_authors(["Pablo / Vaider13"])
+        self.set_authors(["Pablo / Vaider13", "Akos Keresztes"])
 
         # 1. Load the app's native icon using Pixbuf
         icon_path = Path("/usr/share/icons/hicolor/512x512/apps/cinnamon-clipboard.png")

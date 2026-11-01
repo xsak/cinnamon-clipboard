@@ -1,13 +1,15 @@
-
 Source: cinnamon-clipboard
 Section: utils
 Priority: optional
-Maintainer: Pablo / Vaider13 <quircopablo@gmail.com>
+Maintainer: Akos Keresztes <akos.keresztes@gmail.com>
 Build-Depends:
  debhelper-compat (= 13),
  gettext
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
+Homepage: https://github.com/xsak/cinnamon-clipboard
+Vcs-Browser: https://github.com/xsak/cinnamon-clipboard
+Vcs-Git: https://github.com/xsak/cinnamon-clipboard.git
 
 Package: cinnamon-clipboard
 Architecture: all

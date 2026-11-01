@@ -57,7 +57,7 @@ Cinnamon Clipboard is designed primarily for Cinnamon, with support for other GT
 
 ### Debian / Ubuntu / Linux Mint — `.deb` package
 
-Download the latest `.deb` package from the project's [GitHub Releases page](https://github.com/Vaider13/cinnamon-clipboard/releases).
+Download the latest `.deb` package from the project's [GitHub Releases page](https://github.com/xsak/cinnamon-clipboard/releases).
 
 Install it with:
 
@@ -72,7 +72,7 @@ The package installs the application, desktop entry, icon, and available transla
 Clone the repository:
 
 ```bash
-git clone https://github.com/Vaider13/cinnamon-clipboard.git
+git clone https://github.com/xsak/cinnamon-clipboard.git
 cd cinnamon-clipboard
 ```
 
@@ -90,6 +90,12 @@ pip install PyGObject python-xlib
 ```
 
 Depending on your distribution, PyGObject may also require GTK and GObject Introspection development packages provided by the system package manager.
+
+Compile the translations (the compiled `.mo` files are not kept in Git):
+
+```bash
+for po in locale/*/LC_MESSAGES/cinnamon-clipboard.po; do msgfmt "$po" -o "${po%.po}.mo"; done
+```
 
 Run the application from the repository root:
 
@@ -124,7 +130,13 @@ Some translations were generated with the assistance of AI and may contain inacc
 
 ## Building the Debian package
 
-The repository includes a build script for creating a Debian package:
+The package is built from the standard `debian/` directory with `dpkg-buildpackage`. Install the build tools once:
+
+```bash
+sudo apt install debhelper gettext
+```
+
+Then build with the wrapper script:
 
 ```bash
 bash build_deb.sh
@@ -133,6 +145,15 @@ bash build_deb.sh
 The resulting `.deb` package is created in the project root.
 
 Generated build files and Debian packages are intentionally excluded from version control.
+
+### Releasing a new version
+
+The version is kept in two places, and the build stops if they differ:
+
+1. `src/cinnamon_clipboard/_version.py`
+2. `debian/changelog` (add an entry, for example with `dch -v 1.3.4`)
+
+Pre-releases use `~`, so they sort before the final release: `1.3.4~beta1` < `1.3.4~rc1` < `1.3.4`. Tag them on GitHub with `-` instead, because Git tags cannot contain `~` (for example `v1.3.4-beta1`). Publishing a GitHub release builds the `.deb` and attaches it automatically; the workflow checks that the tag matches `debian/changelog`.
 
 ## Clipboard and file handling
 
@@ -154,7 +175,7 @@ Shortcut availability and behavior depend on the desktop environment and its exi
 
 Cinnamon Clipboard stores its clipboard history locally. No cloud service or external account is required.
 
-Clipboard contents are stored on the local machine unless the user explicitly copies or moves them elsewhere. As with any local clipboard history, stored content may be accessible to other processes or users who have sufficient access to the same account.
+Clipboard contents are stored on the local machine unless the user explicitly copies or moves them elsewhere. The history database and saved images are readable only by your own user account. As with any local clipboard history, stored content may be accessible to other processes or users who have sufficient access to the same account.
 
 The application includes a privacy filter that checks for the `x-kde-passwordManagerHint` clipboard metadata used by supported password managers to identify sensitive content.
 
@@ -175,6 +196,13 @@ This disclosure is included to be transparent about how the project was develope
 Cinnamon Clipboard is free software licensed under the **GNU General Public License, version 3 or later (GPL-3.0-or-later)**.
 
 See the [`LICENSE`](LICENSE) file for the complete license text.
+
+## Maintainer
+
+**Akos Keresztes** ([xsak](https://github.com/xsak))
+
+* Repository: [xsak/cinnamon-clipboard](https://github.com/xsak/cinnamon-clipboard)
+* Releases: [Download Cinnamon Clipboard](https://github.com/xsak/cinnamon-clipboard/releases)
 
 ## Original Author
 

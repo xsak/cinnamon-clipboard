@@ -23,7 +23,7 @@ from gi.repository import GLib, Gtk, Gio
 
 from .i18n import _
 from ._version import __version__
-from .update_checker import check_for_updates
+from .update_checker import REPOSITORY_URL, check_for_updates
 from .installation import PACKAGE_MANAGED
 from pathlib import Path
 
@@ -219,9 +219,7 @@ class ClipboardApp(Gtk.Application):
         import webbrowser
 
         url = parameter.get_string()
-        if url.startswith(
-            "https://github.com/Vaider13/cinnamon-clipboard/"
-        ):
+        if url.startswith(REPOSITORY_URL):
             webbrowser.open(url)
 
     def do_activate(self):
