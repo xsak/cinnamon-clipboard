@@ -1,5 +1,8 @@
 # Cinnamon Clipboard
 
+> [!NOTE]
+> This projectis is "inherited" from [Vaider13](https://github.com/Vaider13) and it is an AI developed codebase! All due credits goes to him.
+
 A lightweight clipboard manager for Linux desktop environments, designed to integrate naturally with Cinnamon and other GTK-based desktops.
 
 Cinnamon Clipboard maintains a persistent history of copied content and provides quick access to previously copied items through a system tray menu.
