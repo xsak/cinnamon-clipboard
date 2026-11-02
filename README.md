@@ -209,5 +209,3 @@ See the [`LICENSE`](LICENSE) file for the complete license text.
 **Pablo / Vaider13**
 
 * GitHub: [Vaider13](https://github.com/Vaider13)
-* Repository: [Vaider13/cinnamon-clipboard](https://github.com/Vaider13/cinnamon-clipboard)
-* Releases: [Download Cinnamon Clipboard](https://github.com/Vaider13/cinnamon-clipboard/releases)
