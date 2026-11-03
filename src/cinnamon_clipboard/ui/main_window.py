@@ -65,6 +65,18 @@ class MainWindow(Gtk.Window):
 
         main_box.pack_start(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL), False, False, 0)
 
+        # Status bar shown only while history recording is paused
+        self.paused_bar = Gtk.InfoBar()
+        self.paused_bar.set_message_type(Gtk.MessageType.WARNING)
+        self.paused_bar.add_button(_("Resume"), Gtk.ResponseType.ACCEPT)
+        self.paused_bar.connect("response", lambda _bar, _response: self._set_paused(False))
+        paused_label = Gtk.Label(label=_("History recording is paused."), xalign=0)
+        self.paused_bar.get_content_area().pack_start(paused_label, True, True, 0)
+        paused_label.show()
+        # Kept out of show_all(); _sync_pause_state() decides whether it is visible.
+        self.paused_bar.set_no_show_all(True)
+        main_box.pack_start(self.paused_bar, False, False, 0)
+
         # 2. Scrollable list area
         self.scrolled = Gtk.ScrolledWindow()
         self.scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -81,10 +93,6 @@ class MainWindow(Gtk.Window):
 
         bottom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
-        btn_clear_all = Gtk.Button(label=_("Clear history"))
-        btn_clear_all.set_tooltip_text(_("Delete all unpinned history items"))
-        btn_clear_all.connect("clicked", self._on_clear_all)
-        bottom_box.pack_start(btn_clear_all, False, False, 0)
 
         btn_about = Gtk.Button.new_from_icon_name("help-about-symbolic", Gtk.IconSize.BUTTON)
         btn_about.set_tooltip_text(_("About"))
@@ -95,6 +103,15 @@ class MainWindow(Gtk.Window):
         btn_pref.set_tooltip_text(_("Preferences"))
         btn_pref.connect("clicked", self._open_preferences)
         bottom_box.pack_end(btn_pref, False, False, 0)
+
+        self.btn_pause = Gtk.ToggleButton()
+        self.btn_pause.set_image(
+            Gtk.Image.new_from_icon_name("media-playback-pause-symbolic", Gtk.IconSize.BUTTON)
+        )
+        self._pause_handler_id = self.btn_pause.connect(
+            "toggled", lambda button: self._set_paused(button.get_active())
+        )
+        bottom_box.pack_end(self.btn_pause, False, False, 0)
 
         btn_quit = Gtk.Button(label=_("Quit"))
         btn_quit.set_tooltip_text(_("Close Cinnamon Clipboard"))
@@ -118,12 +135,29 @@ class MainWindow(Gtk.Window):
         if app:
             app.open_preferences(parent=self)
 
+    def _set_paused(self, paused):
+        self.clipboard_manager.set_history_paused(paused)
+        self._sync_pause_state()
+
+    def _sync_pause_state(self):
+        """Show whether history recording is paused (the "Record clipboard history" setting)."""
+        paused = not self.clipboard_manager.settings.get("enable_history")
+        self.btn_pause.handler_block(self._pause_handler_id)
+        self.btn_pause.set_active(paused)
+        self.btn_pause.handler_unblock(self._pause_handler_id)
+        if paused:
+            self.btn_pause.set_tooltip_text(_("History recording is paused. Click to resume."))
+        else:
+            self.btn_pause.set_tooltip_text(_("Pause history recording"))
+        self.paused_bar.set_visible(paused)
+
     def _on_destroy(self, widget):
         """Remove the subscription when the window is closed."""
         self.clipboard_manager.remove_history_listener(self.refresh_list)
 
     def refresh_list(self):
         """Redraw the list applying the category filter and search text."""
+        self._sync_pause_state()
         for child in self.list_box.get_children():
             self.list_box.remove(child)
 
@@ -372,9 +406,6 @@ class MainWindow(Gtk.Window):
 
     def _on_delete_item(self, item_id):
         self.clipboard_manager.remove_item(item_id)
-
-    def _on_clear_all(self, btn):
-        self.clipboard_manager.clear_history()
 
     def _on_quit_clicked(self, btn):
         app = self.get_application()

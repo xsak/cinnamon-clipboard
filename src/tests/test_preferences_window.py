@@ -1,6 +1,6 @@
 
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from types import SimpleNamespace
 
 import gi
@@ -57,6 +57,7 @@ class FakeClipboardManager:
     def __init__(self):
         self.apply_max_history = Mock()
         self._clean_persistent_storage = Mock()
+        self.notify_settings_changed = Mock()
 
 
 class TestPreferencesWindow(unittest.TestCase):
@@ -165,44 +166,29 @@ class TestPreferencesWindow(unittest.TestCase):
         self.assertFalse(self.window.radio_persistent.get_active())
         self.assertTrue(self.window.radio_temporary.get_active())
 
-    def test_history_mode_descriptions_are_available_from_info_buttons(self):
-        descriptions = (
-            (
-                self.window.persistent_info_button,
-                _(
-                    "The history is stored in an SQLite database on disk, "
-                    "along with images. Items are preserved when closing "
-                    "the application or restarting the PC."
-                ),
-            ),
-            (
-                self.window.temporary_info_button,
-                _(
-                    "The history is kept in RAM and is lost when closing "
-                    "the application or shutting down or restarting the PC. "
-                    "No persistent copy of the history is saved to disk."
-                ),
-            ),
+    def test_history_mode_subtitle_describes_selected_mode(self):
+        persistent_description = _(
+            "The history is stored in an SQLite database on disk, "
+            "along with images. Items are preserved when closing "
+            "the application or restarting the PC."
         )
+        temporary_description = _(
+            "The history is kept in RAM and is lost when closing "
+            "the application or shutting down or restarting the PC. "
+            "No persistent copy of the history is saved to disk."
+        )
+        subtitle = self.window.history_mode_row.subtitle_label
 
-        self.window.show_all()
-        while Gtk.events_pending():
-            Gtk.main_iteration()
+        self.assertEqual(subtitle.get_text(), persistent_description)
+        self.assertFalse(self.window.radio_persistent.get_mode())
 
-        for button, description in descriptions:
-            popover = button.get_popover()
-            self.assertIsInstance(button, Gtk.MenuButton)
-            self.assertEqual(popover.get_child().get_text(), description)
-            self.assertFalse(popover.get_visible())
-            self.assertTrue(popover.get_child().get_visible())
-            self.assertGreater(popover.get_child().get_preferred_width()[0], 100)
-            self.assertGreater(
-                popover.get_child().get_preferred_height_for_width(280)[0],
-                20,
-            )
-            button.clicked()
-            self.assertTrue(popover.get_visible())
-            popover.popdown()
+        self.window.radio_temporary.set_active(True)
+        self.assertEqual(subtitle.get_text(), temporary_description)
+        self.assertEqual(self.window.temp_settings["history_mode"], "temporary")
+
+        self.window.radio_persistent.set_active(True)
+        self.assertEqual(subtitle.get_text(), persistent_description)
+        self.assertEqual(self.window.temp_settings["history_mode"], "persistent")
 
     # 3. Guardar
 
@@ -222,6 +208,56 @@ class TestPreferencesWindow(unittest.TestCase):
         self.assertEqual(self.settings.save_calls, 1)
 
         self.clipboard.apply_max_history.assert_called_once_with(100)
+
+    def test_clear_history_does_nothing_when_cancelled(self):
+        self.clipboard.clear_history = Mock()
+        with patch.object(self.window, "_confirm_clear_history", return_value=False):
+            self.window.btn_clear_history.clicked()
+        self.clipboard.clear_history.assert_not_called()
+
+    def test_clear_history_clears_after_confirmation(self):
+        self.clipboard.clear_history = Mock()
+        with patch.object(self.window, "_confirm_clear_history", return_value=True):
+            self.window._on_clear_history_clicked(None)
+        self.clipboard.clear_history.assert_called_once_with()
+
+    def test_clear_history_dialog_defaults_to_cancel(self):
+        seen = []
+
+        def fake_run(dialog):
+            cancel = dialog.get_widget_for_response(Gtk.ResponseType.CANCEL)
+            seen.append((cancel.has_default(), dialog.get_focus() is cancel))
+            return Gtk.ResponseType.DELETE_EVENT
+
+        with patch.object(Gtk.Dialog, "run", autospec=True, side_effect=fake_run):
+            self.assertFalse(self.window._confirm_clear_history())
+
+        self.assertEqual(seen, [(True, True)])
+
+    def test_clear_button_disabled_without_unpinned_items(self):
+        self.clipboard.history = [{"id": 1, "pinned": True}]
+        self.window._update_clear_history_button()
+        self.assertFalse(self.window.btn_clear_history.get_sensitive())
+
+        self.clipboard.history.append({"id": 2, "pinned": False})
+        self.window._update_clear_history_button()
+        self.assertTrue(self.window.btn_clear_history.get_sensitive())
+
+    def test_save_keeps_pause_made_in_another_window(self):
+        # The quick menu pauses recording while Preferences is open.
+        self.settings.settings["enable_history"] = False
+
+        self.window._on_save_clicked(None)
+
+        self.assertFalse(self.settings.get("enable_history"))
+        self.clipboard.notify_settings_changed.assert_called_once_with()
+
+    def test_save_applies_record_switch_changed_here(self):
+        self.window.switch_enable.set_active(False)
+
+        self.window._on_save_clicked(None)
+
+        self.assertFalse(self.settings.get("enable_history"))
 
     def test_save_notifies_shortcut_change(self):
         self.window._set_temp("shortcut", "<Ctrl><Shift>x")

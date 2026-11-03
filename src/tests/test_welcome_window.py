@@ -51,6 +51,7 @@ class FakeSettings:
         "history_mode": "persistent",
         "max_history": 50,
         "autostart": False,
+        "check_updates": True,
     }
 
 
@@ -68,6 +69,7 @@ class WelcomeWindowBehaviorTests(unittest.TestCase):
         window.history_mode = "persistent"
         window.max_history = 50
         window.autostart = False
+        window.check_updates = True
 
         window.back_button = FakeButton()
         window.skip_button = FakeButton()
@@ -88,6 +90,9 @@ class WelcomeWindowBehaviorTests(unittest.TestCase):
         window.autostart_check = Mock()
         window.autostart_check.get_active.return_value = True
 
+        window.check_updates_check = Mock()
+        window.check_updates_check.get_active.return_value = False
+
         window.history_mode = "temporary"
 
         window._on_next(None)
@@ -96,6 +101,7 @@ class WelcomeWindowBehaviorTests(unittest.TestCase):
             "history_mode": "temporary",
             "max_history": 75,
             "autostart": True,
+            "check_updates": False,
         })
         self.assertTrue(window._completed)
         window.destroy.assert_called_once_with()
@@ -173,7 +179,7 @@ class WelcomeWindowBehaviorTests(unittest.TestCase):
         last_page = len(window.PAGE_NAMES) - 1
         window._show_page(last_page)
 
-        self.assertEqual(window.stack.visible_child_name, "autostart")
+        self.assertEqual(window.stack.visible_child_name, "updates")
         self.assertEqual(window.next_button.label, "Finish")
         self.assertIn(
             "suggested-action",

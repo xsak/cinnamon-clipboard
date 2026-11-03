@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class WelcomeWindow(Gtk.Window):
     """First-run setup wizard for Cinnamon Clipboard."""
 
-    PAGE_NAMES = ("welcome", "history", "limit", "autostart")
+    PAGE_NAMES = ("welcome", "history", "limit", "autostart", "updates")
     HISTORY_LIMITS = (10, 25, 50, 75, 100)
 
     def __init__(self, settings, on_complete, app=None):
@@ -30,6 +30,7 @@ class WelcomeWindow(Gtk.Window):
         self.history_mode = defaults.get("history_mode", "persistent")
         self.max_history = defaults.get("max_history", 50)
         self.autostart = bool(defaults.get("autostart", False))
+        self.check_updates = bool(defaults.get("check_updates", True))
 
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_default_size(560, 460)
@@ -60,6 +61,7 @@ class WelcomeWindow(Gtk.Window):
         self._build_history_page()
         self._build_limit_page()
         self._build_autostart_page()
+        self._build_updates_page()
 
         self.back_button = Gtk.Button(label=_("Back"))
         self.back_button.connect("clicked", self._on_back)
@@ -303,6 +305,26 @@ class WelcomeWindow(Gtk.Window):
 
         self.stack.add_named(page, "autostart")
 
+    def _build_updates_page(self):
+        page = self._make_page(
+            _("Updates"),
+            _(
+                "Cinnamon Clipboard can ask GitHub at startup whether a newer "
+                "version has been released. GitHub sees your IP address, but "
+                "no clipboard content is ever sent. You can change this later "
+                "in Preferences."
+            ),
+        )
+
+        self.check_updates_check = Gtk.CheckButton(
+            label=_("Check for updates at startup")
+        )
+        self.check_updates_check.set_active(self.check_updates)
+
+        page.pack_start(self.check_updates_check, False, False, 0)
+
+        self.stack.add_named(page, "updates")
+
     def _on_history_mode_changed(self, button, mode):
         if button.get_active():
             self.history_mode = mode
@@ -355,6 +377,7 @@ class WelcomeWindow(Gtk.Window):
                 self.limit_combo.get_active_text()
             )
             values["autostart"] = self.autostart_check.get_active()
+            values["check_updates"] = self.check_updates_check.get_active()
 
         try:
             result = self.on_complete(values)

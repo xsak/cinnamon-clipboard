@@ -4,7 +4,7 @@ import logging
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, Gdk
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,9 @@ class PreferencesWindow(Gtk.Window):
             "paste_on_select": self.settings.get("paste_on_select"),
             "shortcut": self.settings.get("shortcut"),
             "check_updates": self.settings.get("check_updates"),
+            "ignored_apps": list(self.settings.get("ignored_apps") or []),
         }
+        self._initial_enable_history = self.temp_settings["enable_history"]
 
         self.is_capturing_shortcut = False
 
@@ -131,84 +133,83 @@ class PreferencesWindow(Gtk.Window):
         grid.attach(enable_list, 0, row, 2, 1)
         row += 1
 
-        # History storage mode
-        lbl_mode = Gtk.Label(xalign=0)
-        history_mode_label = _("History mode")
-        lbl_mode.set_markup(
-            f"<b>{GLib.markup_escape_text(history_mode_label)}</b>"
+        # Applications whose copies are never recorded
+        self.entry_ignored_apps = Gtk.Entry()
+        self.entry_ignored_apps.set_hexpand(True)
+        self.entry_ignored_apps.set_text(", ".join(self.temp_settings["ignored_apps"]))
+        self.entry_ignored_apps.set_placeholder_text("keepassxc, bitwarden")
+        self.entry_ignored_apps.connect(
+            "changed",
+            lambda entry: self._set_temp(
+                "ignored_apps", self.settings.parse_app_list(entry.get_text())
+            ),
         )
-        lbl_mode.set_margin_start(18)
-        lbl_mode.set_halign(Gtk.Align.START)
-        grid.attach(lbl_mode, 0, row, 2, 1)
+        ignored_row = self._create_settings_row(
+            _("Ignored applications"),
+            _(
+                "Copies made in these applications are never recorded. "
+                "Enter window class names, separated by commas."
+            ),
+            tooltip=_(
+                "To find an application's window class name, run "
+                "\"xprop WM_CLASS\" in a terminal and click its window."
+            ),
+        )
+        ignored_row.set_activatable(False)
+        # Put the entry under the subtitle, inside the same box.
+        self.entry_ignored_apps.set_margin_top(6)
+        ignored_row.subtitle_label.get_parent().pack_start(
+            self.entry_ignored_apps, False, False, 0
+        )
+        ignored_list = self._create_settings_list(ignored_row)
+        grid.attach(ignored_list, 0, row, 2, 1)
         row += 1
 
-        self.radio_persistent = Gtk.RadioButton.new_with_label(
-            None, _("Persistent history")
-        )
-        self.radio_persistent.set_halign(Gtk.Align.START)
-        self.radio_persistent.set_margin_start(36)
+        # History storage mode: one row with a two-button switch
+        self.history_mode_descriptions = {
+            "persistent": _(
+                "The history is stored in an SQLite database on disk, "
+                "along with images. Items are preserved when closing "
+                "the application or restarting the PC."
+            ),
+            "temporary": _(
+                "The history is kept in RAM and is lost when closing "
+                "the application or shutting down or restarting the PC. "
+                "No persistent copy of the history is saved to disk."
+            ),
+        }
 
+        self.radio_persistent = Gtk.RadioButton.new_with_label(None, _("Persistent"))
         self.radio_temporary = Gtk.RadioButton.new_with_label_from_widget(
-            self.radio_persistent, _("Temporary history")
+            self.radio_persistent, _("Temporary")
         )
-        self.radio_temporary.set_halign(Gtk.Align.START)
-        self.radio_temporary.set_margin_start(36)
+        mode_switch = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        mode_switch.get_style_context().add_class("linked")
+        mode_switch.set_valign(Gtk.Align.CENTER)
+        for button in (self.radio_persistent, self.radio_temporary):
+            # Draw the radio buttons as joined toggle buttons.
+            button.set_mode(False)
+            mode_switch.pack_start(button, False, False, 0)
 
         current_mode = self.temp_settings.get("history_mode") or "persistent"
         self.radio_persistent.set_active(current_mode == "persistent")
         self.radio_temporary.set_active(current_mode == "temporary")
 
+        self.history_mode_row = self._create_settings_row(
+            _("History mode"),
+            self.history_mode_descriptions[current_mode],
+            control=mode_switch,
+        )
+        self.history_mode_row.set_activatable(False)
+
         self.radio_persistent.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp(
-                "history_mode", "persistent"
-            )
+            "toggled", self._on_history_mode_toggled, "persistent"
         )
         self.radio_temporary.connect(
-            "toggled",
-            lambda b: b.get_active() and self._set_temp(
-                "history_mode", "temporary"
-            )
+            "toggled", self._on_history_mode_toggled, "temporary"
         )
-        lbl_persistent_desc = _(
-                "The history is stored in an SQLite database on disk, "
-                "along with images. Items are preserved when closing "
-                "the application or restarting the PC."
-        )
-        lbl_temporary_desc = _(
-                "The history is kept in RAM and is lost when closing "
-                "the application or shutting down or restarting the PC. "
-                "No persistent copy of the history is saved to disk."
-        )
-        self.persistent_info_button = self._create_info_button(
-            _("Persistent history"),
-            lbl_persistent_desc,
-        )
-        self.temporary_info_button = self._create_info_button(
-            _("Temporary history"),
-            lbl_temporary_desc,
-        )
-        self.radio_persistent.set_label("")
-        self.radio_temporary.set_label("")
 
-        persistent_row = self._create_settings_row(
-            _("Persistent history"),
-            control=self.radio_persistent,
-            info_button=self.persistent_info_button,
-        )
-        temporary_row = self._create_settings_row(
-            _("Temporary history"),
-            control=self.radio_temporary,
-            info_button=self.temporary_info_button,
-        )
-        mode_list = self._create_settings_list(
-            persistent_row,
-            temporary_row,
-        )
-        mode_list.connect(
-            "row-activated",
-            self._on_history_mode_row_activated,
-        )
+        mode_list = self._create_settings_list(self.history_mode_row)
         grid.attach(mode_list, 0, row, 2, 1)
         row += 1
 
@@ -232,6 +233,22 @@ class PreferencesWindow(Gtk.Window):
         )
         limit_list = self._create_settings_list(limit_row)
         grid.attach(limit_list, 0, row, 2, 1)
+        row += 1
+
+        # Clearing acts at once (not on Save) and always asks first.
+        self.btn_clear_history = Gtk.Button(label=_("Clear…"))
+        self.btn_clear_history.get_style_context().add_class("destructive-action")
+        self.btn_clear_history.set_valign(Gtk.Align.CENTER)
+        self.btn_clear_history.connect("clicked", self._on_clear_history_clicked)
+        self._update_clear_history_button()
+        clear_row = self._create_settings_row(
+            _("Clear history"),
+            _("Delete all unpinned history items"),
+            self.btn_clear_history,
+        )
+        clear_row.set_activatable(False)
+        clear_list = self._create_settings_list(clear_row)
+        grid.attach(clear_list, 0, row, 2, 1)
         row += 1
 
         # --- SECTION 2: CONTENT CAPTURE ---
@@ -486,9 +503,7 @@ class PreferencesWindow(Gtk.Window):
             list_box.add(row)
         return list_box
 
-    def _create_settings_row(
-        self, title, subtitle=None, control=None, tooltip=None, info_button=None
-    ):
+    def _create_settings_row(self, title, subtitle=None, control=None, tooltip=None):
         row = Gtk.ListBoxRow()
         row.set_activatable(True)
         row.get_style_context().add_class("settings-row")
@@ -514,14 +529,12 @@ class PreferencesWindow(Gtk.Window):
             subtitle_label.set_max_width_chars(55)
             subtitle_label.get_style_context().add_class("dim-label")
             text_box.pack_start(subtitle_label, False, False, 0)
+            row.subtitle_label = subtitle_label
 
         outer.pack_start(text_box, True, True, 0)
         if control is not None:
             control.set_halign(Gtk.Align.END)
             outer.pack_end(control, False, False, 0)
-
-        if info_button is not None:
-            outer.pack_end(info_button, False, False, 0)
 
         if tooltip:
             row.set_tooltip_text(tooltip)
@@ -529,42 +542,17 @@ class PreferencesWindow(Gtk.Window):
         row.add(outer)
         return row
 
-    def _create_info_button(self, title, text):
-        button = Gtk.MenuButton()
-        button.set_image(
-            Gtk.Image.new_from_icon_name(
-                "dialog-information-symbolic",
-                Gtk.IconSize.BUTTON,
-            )
-        )
-        button.set_relief(Gtk.ReliefStyle.NONE)
-        button.set_tooltip_text(title)
-        button.get_accessible().set_name(title)
-
-        popover = Gtk.Popover.new(button)
-        popover.set_position(Gtk.PositionType.BOTTOM)
-        label = Gtk.Label(label=text, xalign=0)
-        label.set_line_wrap(True)
-        label.set_size_request(280, -1)
-        label.set_max_width_chars(55)
-        label.set_margin_start(12)
-        label.set_margin_end(12)
-        label.set_margin_top(8)
-        label.set_margin_bottom(8)
-        label.show()
-        popover.add(label)
-        button.set_popover(popover)
-        return button
-
     def _create_switch_row(self, title, subtitle, switch, tooltip=None):
         row = self._create_settings_row(title, subtitle, switch, tooltip)
         return row
 
-    def _on_history_mode_row_activated(self, list_box, row):
-        if list_box.get_row_at_index(0) == row:
-            self.radio_persistent.set_active(True)
-        elif list_box.get_row_at_index(1) == row:
-            self.radio_temporary.set_active(True)
+    def _on_history_mode_toggled(self, button, mode):
+        if not button.get_active():
+            return
+        self._set_temp("history_mode", mode)
+        self.history_mode_row.subtitle_label.set_text(
+            self.history_mode_descriptions[mode]
+        )
 
     def _on_capture_row_activated(self, list_box, row):
         if list_box.get_row_at_index(0) == row:
@@ -757,6 +745,43 @@ class PreferencesWindow(Gtk.Window):
 
         return response == Gtk.ResponseType.OK
 
+    def _update_clear_history_button(self):
+        history = getattr(self.clipboard_manager, "history", None) or []
+        has_unpinned = any(not item.get("pinned", False) for item in history)
+        self.btn_clear_history.set_sensitive(has_unpinned)
+
+    def _confirm_clear_history(self):
+        dialog = Gtk.MessageDialog(
+            parent=self,
+            flags=Gtk.DialogFlags.MODAL,
+            message_type=Gtk.MessageType.WARNING,
+            buttons=Gtk.ButtonsType.NONE,
+            text=_("Clear the clipboard history?"),
+        )
+        dialog.format_secondary_text(
+            _(
+                "All unpinned items are deleted immediately and cannot be "
+                "restored. Pinned items are kept."
+            )
+        )
+        dialog.add_button(_("Cancel"), Gtk.ResponseType.CANCEL)
+        clear_button = dialog.add_button(_("Clear history"), Gtk.ResponseType.OK)
+        clear_button.get_style_context().add_class("destructive-action")
+        # Enter or Escape must never clear by accident.
+        dialog.set_default_response(Gtk.ResponseType.CANCEL)
+        dialog.get_widget_for_response(Gtk.ResponseType.CANCEL).grab_focus()
+
+        response = dialog.run()
+        dialog.destroy()
+
+        return response == Gtk.ResponseType.OK
+
+    def _on_clear_history_clicked(self, _button):
+        if not self._confirm_clear_history():
+            return
+        self.clipboard_manager.clear_history()
+        self._update_clear_history_button()
+
     def _delete_persistent_history(self):
         """Remove persistent history using ClipboardManager's implementation."""
         self.clipboard_manager._clean_persistent_storage()
@@ -800,6 +825,11 @@ class PreferencesWindow(Gtk.Window):
 
 
     def _on_save_clicked(self, btn):
+        # Keep a pause made from another window while this one was open,
+        # unless the switch was changed here.
+        if self.temp_settings["enable_history"] == self._initial_enable_history:
+            self.temp_settings["enable_history"] = self.settings.get("enable_history")
+
         old_settings = dict(self.settings.settings)
         old_mode = old_settings.get("history_mode") or "persistent"
         new_mode = self.temp_settings.get("history_mode") or "persistent"
@@ -853,7 +883,8 @@ class PreferencesWindow(Gtk.Window):
             self._show_settings_save_error()
             return
 
-        if mode_changed:
+        # Only the switch to temporary mode removes the saved history.
+        if mode_changed and new_mode == "temporary":
             try:
                 self._delete_persistent_history()
             except OSError as error:
@@ -875,6 +906,7 @@ class PreferencesWindow(Gtk.Window):
         self.clipboard_manager.apply_max_history(
             self.temp_settings["max_history"]
         )
+        self.clipboard_manager.notify_settings_changed()
 
         if self.on_shortcut_changed_callback:
             self.on_shortcut_changed_callback(

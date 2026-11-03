@@ -430,3 +430,42 @@ msgstr "No se pudieron guardar los ajustes. Inténtelo de nuevo."
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Hay una actualización de Cinnamon Clipboard disponible."
+
+msgid "Pause history recording"
+msgstr "Pausar la grabación del historial"
+
+msgid "History recording is paused. Click to resume."
+msgstr "La grabación del historial está en pausa. Haga clic para reanudar."
+
+msgid "Ignored applications"
+msgstr "Aplicaciones ignoradas"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "Lo que se copie en estas aplicaciones nunca se registra. Introduzca los nombres de clase de ventana separados por comas."
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "Para averiguar el nombre de clase de ventana de una aplicación, ejecute «xprop WM_CLASS» en una terminal y haga clic en su ventana."
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "Cinnamon Clipboard puede consultar a GitHub al iniciarse si se ha publicado una versión más reciente. GitHub ve su dirección IP, pero nunca se envía contenido del portapapeles. Puede cambiar esto más adelante en Preferencias."
+
+msgid "Persistent"
+msgstr "Persistente"
+
+msgid "Temporary"
+msgstr "Temporal"
+
+msgid "Resume"
+msgstr "Reanudar"
+
+msgid "History recording is paused."
+msgstr "La grabación del historial está en pausa."
+
+msgid "Clear…"
+msgstr "Borrar…"
+
+msgid "Clear the clipboard history?"
+msgstr "¿Borrar el historial del portapapeles?"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "Todos los elementos no anclados se eliminan de inmediato y no se pueden recuperar. Los elementos anclados se conservan."

@@ -1,17 +1,43 @@
 import json
+import logging
 import os
 import sqlite3
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 PRIVATE_DIR_MODE = 0o700
 PRIVATE_FILE_MODE = 0o600
 
 
 def ensure_private_dir(path):
-    """Create a directory readable only by the current user and fix existing permissions."""
+    """Create a directory readable only by the current user and fix existing permissions.
+
+    A symbolic link (for example from a dotfile manager) is left alone, so the permissions
+    of its target are never changed.
+    """
     path = Path(path)
     path.mkdir(mode=PRIVATE_DIR_MODE, parents=True, exist_ok=True)
-    os.chmod(path, PRIVATE_DIR_MODE)
+    if path.is_symlink():
+        logger.warning("Not changing permissions through symbolic link: %s", path)
+        return
+    # O_NOFOLLOW also covers a symlink created after the check above.
+    fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.fchmod(fd, PRIVATE_DIR_MODE)
+    finally:
+        os.close(fd)
+
+
+def restrict_private_files(path):
+    """Make the regular files directly inside path readable only by the current user."""
+    with os.scandir(path) as entries:
+        for entry in entries:
+            if (
+                entry.is_file(follow_symlinks=False)
+                and entry.stat(follow_symlinks=False).st_mode & 0o777 != PRIVATE_FILE_MODE
+            ):
+                os.chmod(entry.path, PRIVATE_FILE_MODE)
 
 
 class HistoryDatabase:
@@ -41,7 +67,10 @@ class HistoryDatabase:
             os.close(fd)
 
     def _get_connection(self):
-        return sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path)
+        # Overwrite deleted content in the file, whatever default this SQLite build uses.
+        conn.execute("PRAGMA secure_delete = ON")
+        return conn
 
     def _init_db(self):
         """Create the history table and apply migrations if required columns are missing."""

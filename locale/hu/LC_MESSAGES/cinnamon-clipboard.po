@@ -417,3 +417,42 @@ msgstr "A beállítások mentése sikertelen. Próbálja újra."
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Cinnamon Clipboard frissítése elérhető"
+
+msgid "Pause history recording"
+msgstr "Előzmények rögzítésének szüneteltetése"
+
+msgid "History recording is paused. Click to resume."
+msgstr "Az előzmények rögzítése szünetel. Kattintson a folytatáshoz."
+
+msgid "Ignored applications"
+msgstr "Kihagyott alkalmazások"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "Az ezekben az alkalmazásokban másolt tartalmat a program soha nem rögzíti. Adja meg az ablakosztályok nevét vesszővel elválasztva."
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "Egy alkalmazás ablakosztályának nevét úgy tudhatja meg, hogy egy terminálban futtatja az „xprop WM_CLASS” parancsot, majd az alkalmazás ablakára kattint."
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "A Cinnamon Clipboard indításkor megkérdezheti a GitHubtól, hogy megjelent-e újabb verzió. A GitHub látja az IP-címét, de vágólaptartalmat a program soha nem küld el. Ezt később a Beállításokban módosíthatja."
+
+msgid "Persistent"
+msgstr "Állandó"
+
+msgid "Temporary"
+msgstr "Ideiglenes"
+
+msgid "Resume"
+msgstr "Folytatás"
+
+msgid "History recording is paused."
+msgstr "Az előzmények rögzítése szünetel."
+
+msgid "Clear…"
+msgstr "Törlés…"
+
+msgid "Clear the clipboard history?"
+msgstr "Törli a vágólapelőzményeket?"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "A program minden nem kitűzött elemet azonnal töröl, és ezek nem állíthatók vissza. A kitűzött elemek megmaradnak."

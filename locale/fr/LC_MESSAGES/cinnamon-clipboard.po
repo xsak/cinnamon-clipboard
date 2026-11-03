@@ -431,3 +431,42 @@ msgstr "Vos réglages n’ont pas pu être enregistrés. Veuillez réessayer."
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Une mise à jour de Cinnamon Clipboard est disponible."
+
+msgid "Pause history recording"
+msgstr "Mettre en pause l'enregistrement de l'historique"
+
+msgid "History recording is paused. Click to resume."
+msgstr "L'enregistrement de l'historique est en pause. Cliquez pour reprendre."
+
+msgid "Ignored applications"
+msgstr "Applications ignorées"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "Les copies effectuées dans ces applications ne sont jamais enregistrées. Saisissez les noms de classe de fenêtre, séparés par des virgules."
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "Pour connaître le nom de classe de fenêtre d’une application, exécutez « xprop WM_CLASS » dans un terminal et cliquez sur sa fenêtre."
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "Cinnamon Clipboard peut demander à GitHub au démarrage si une version plus récente a été publiée. GitHub voit votre adresse IP, mais aucun contenu du presse-papiers n’est jamais envoyé. Vous pourrez modifier ce choix plus tard dans les Préférences."
+
+msgid "Persistent"
+msgstr "Persistant"
+
+msgid "Temporary"
+msgstr "Temporaire"
+
+msgid "Resume"
+msgstr "Reprendre"
+
+msgid "History recording is paused."
+msgstr "L'enregistrement de l'historique est en pause."
+
+msgid "Clear…"
+msgstr "Effacer…"
+
+msgid "Clear the clipboard history?"
+msgstr "Effacer l’historique du presse-papiers ?"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "Tous les éléments non épinglés sont supprimés immédiatement et ne peuvent pas être restaurés. Les éléments épinglés sont conservés."

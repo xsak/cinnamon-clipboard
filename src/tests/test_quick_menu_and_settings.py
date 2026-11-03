@@ -11,7 +11,7 @@ gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk, Gtk
 
 from cinnamon_clipboard.core.settings import SettingsManager
-from cinnamon_clipboard.ui.menu_window import QuickMenuWindow
+from cinnamon_clipboard.ui.menu_window import LIST_MAX_SCREEN_FRACTION, QuickMenuWindow
 from cinnamon_clipboard.ui.preferences_window import PreferencesWindow
 
 
@@ -102,6 +102,48 @@ class TestSettingsAndQuickMenu(unittest.TestCase):
         cm.copy_item_to_system.assert_called_once_with(cm.history[0])
         cm.paste_to_active_window.assert_called_once()
         self.assertEqual(cm.paste_to_active_window.call_args.kwargs.get("item_type"), "text")
+        menu.destroy()
+
+    def test_auto_paste_targets_window_focused_before_menu_opened(self):
+        cm = self._make_mock_clipboard_manager()
+        cm.get_focused_toplevel_xid.return_value = 4242
+        menu = QuickMenuWindow(cm)
+        menu.toggle_window()
+
+        event = Gdk.Event.new(Gdk.EventType.KEY_PRESS)
+        event.keyval = Gdk.KEY_Return
+        event.state = Gdk.ModifierType(0)
+
+        menu._on_key_press(menu, event)
+        self.assertEqual(cm.paste_to_active_window.call_args.kwargs.get("target_xid"), 4242)
+        menu.destroy()
+
+    def test_list_height_scales_with_screen(self):
+        cm = self._make_mock_clipboard_manager()
+        menu = QuickMenuWindow(cm)
+        menu.refresh_and_show()
+
+        screen_height = Gdk.Screen.get_default().get_monitor_geometry(0).height
+        self.assertEqual(
+            menu.scrolled.get_max_content_height(),
+            int(screen_height * LIST_MAX_SCREEN_FRACTION),
+        )
+        menu.destroy()
+
+    def test_pause_button_toggles_history_recording(self):
+        cm = self._make_mock_clipboard_manager()
+        menu = QuickMenuWindow(cm)
+        self.assertFalse(menu.btn_pause.get_active())
+
+        menu.btn_pause.set_active(True)
+        cm.set_history_paused.assert_called_with(True)
+
+        cm.settings.set("enable_history", False)
+        menu._sync_pause_button()
+        self.assertTrue(menu.btn_pause.get_active())
+
+        menu.btn_pause.set_active(False)
+        cm.set_history_paused.assert_called_with(False)
         menu.destroy()
 
     def test_enter_copies_without_auto_paste_when_disabled(self):

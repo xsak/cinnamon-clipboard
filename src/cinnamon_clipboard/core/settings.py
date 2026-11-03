@@ -5,6 +5,8 @@ import logging
 import stat
 from pathlib import Path
 
+from .database import ensure_private_dir
+
 logger = logging.getLogger(__name__)
 
 # Shared launcher entry; also installed to /usr/share/applications by the packaging.
@@ -27,11 +29,13 @@ class SettingsManager:
         "shortcut": "<Ctrl><Alt>v",
         "check_updates": True,
         "history_mode": "persistent",
+        # WM_CLASS names of applications whose copies are never recorded.
+        "ignored_apps": ["keepassxc", "keepass2", "bitwarden", "1password", "enpass", "seahorse"],
     }
 
     def __init__(self):
         config_dir = Path.home() / ".config" / "cinnamon-clipboard"
-        config_dir.mkdir(parents=True, exist_ok=True)
+        ensure_private_dir(config_dir)
         self.config_path = config_dir / "config.json"
         self.settings = self.DEFAULTS.copy()
         self.config_was_reset = False
@@ -70,6 +74,12 @@ class SettingsManager:
                     valid = False
 
             if "shortcut" in data and not isinstance(data["shortcut"], str):
+                valid = False
+
+            if "ignored_apps" in data and not (
+                isinstance(data["ignored_apps"], list)
+                and all(isinstance(name, str) for name in data["ignored_apps"])
+            ):
                 valid = False
 
             if not valid:
@@ -121,6 +131,16 @@ class SettingsManager:
                         "Could not remove temporary configuration file: %s",
                         temp_path,
                     )
+
+    @staticmethod
+    def parse_app_list(text):
+        """Turn a comma-separated list of WM_CLASS names into a clean, lower-case list."""
+        names = []
+        for name in text.split(","):
+            name = name.strip().lower()
+            if name and name not in names:
+                names.append(name)
+        return names
 
     def get(self, key):
         return self.settings.get(key, self.DEFAULTS.get(key))

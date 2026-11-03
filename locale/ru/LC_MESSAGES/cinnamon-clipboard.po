@@ -426,3 +426,42 @@ msgstr "Не удалось сохранить настройки. Повтор�
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Доступно обновление Cinnamon Clipboard"
+
+msgid "Pause history recording"
+msgstr "Приостановить запись истории"
+
+msgid "History recording is paused. Click to resume."
+msgstr "Запись истории приостановлена. Нажмите, чтобы возобновить."
+
+msgid "Ignored applications"
+msgstr "Игнорируемые приложения"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "Скопированное в этих приложениях никогда не записывается. Введите имена классов окон через запятую."
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "Чтобы узнать имя класса окна приложения, выполните «xprop WM_CLASS» в терминале и щёлкните по его окну."
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "При запуске Cinnamon Clipboard может проверять на GitHub, вышла ли новая версия. GitHub видит ваш IP-адрес, но содержимое буфера обмена никогда не отправляется. Это можно изменить позже в настройках."
+
+msgid "Persistent"
+msgstr "Постоянная"
+
+msgid "Temporary"
+msgstr "Временная"
+
+msgid "Resume"
+msgstr "Возобновить"
+
+msgid "History recording is paused."
+msgstr "Запись истории приостановлена."
+
+msgid "Clear…"
+msgstr "Очистить…"
+
+msgid "Clear the clipboard history?"
+msgstr "Очистить историю буфера обмена?"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "Все незакреплённые записи будут сразу удалены без возможности восстановления. Закреплённые записи сохранятся."

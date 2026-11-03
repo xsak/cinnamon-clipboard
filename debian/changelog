@@ -1,3 +1,83 @@
+cinnamon-clipboard (1.3.4) noble; urgency=medium
+
+  Added:
+  * Ignored applications: copies made in listed applications (password
+    managers by default) are never recorded.
+  * Pause button in the quick menu and the main window.
+  * The welcome wizard asks whether to check for updates at startup.
+
+  Changed:
+  * Build the Debian package from debian/ with dpkg-buildpackage.
+  * New maintainer: Akos Keresztes; update checks point to xsak/cinnamon-clipboard.
+  * History mode is a single Persistent | Temporary switch in Preferences.
+  * "Clear history" moved to Preferences and asks for confirmation.
+  * The quick menu shows more items, scaled to the screen height.
+  * Share a single .desktop file between the launcher and autostart.
+  * Remove RPM packaging; Linux Mint is the supported target.
+
+  Fixed:
+  * Paste on select only pastes into the window that was active when the
+    quick menu opened.
+  * Switching from temporary to persistent history no longer deletes it.
+  * The quick menu keeps the first item selected when the search field
+    gets the focus.
+  * Make the history database, images and configuration private to the user,
+    and always overwrite deleted items in the database file.
+  * Avoid freezes and dropped paste requests when copying files.
+  * Complete translations for all new text.
+
+ -- Akos Keresztes <akos.keresztes@gmail.com>  Tue, 03 Nov 2026 22:13:07 +0100
+
+cinnamon-clipboard (1.3.4~beta6) noble; urgency=medium
+
+  Added:
+  * Pause button and a "recording is paused" notice with a Resume button
+    in the main window.
+
+  Changed:
+  * Move "Clear history" to Preferences and ask for confirmation first
+    (Cancel is the default).
+
+  Fixed:
+  * Saving Preferences no longer undoes a pause made in another window.
+
+ -- Akos Keresztes <akos.keresztes@gmail.com>  Tue, 03 Nov 2026 21:54:16 +0100
+
+cinnamon-clipboard (1.3.4~beta5) noble; urgency=medium
+
+  Changed:
+  * Show the history mode in Preferences as a single row with a
+    Persistent | Temporary switch and a description of the selected mode.
+
+  Fixed:
+  * Keep the ignored applications field inside its settings box.
+
+ -- Akos Keresztes <akos.keresztes@gmail.com>  Tue, 03 Nov 2026 21:44:36 +0100
+
+cinnamon-clipboard (1.3.4~beta4) noble; urgency=medium
+
+  Added:
+  * Ignored applications: copies made in listed applications (password
+    managers by default) are never recorded.
+  * Pause button in the quick menu to stop and resume history recording.
+  * The welcome wizard asks whether to check for updates at startup.
+
+  Fixed:
+  * Always overwrite deleted history items in the database file.
+  * Make old saved images and the configuration folder private to the user.
+  * Never change permissions through a symbolic link.
+  * Pin actions/checkout in the release workflow and drop the stored token.
+
+ -- Akos Keresztes <akos.keresztes@gmail.com>  Tue, 03 Nov 2026 21:31:41 +0100
+
+cinnamon-clipboard (1.3.4~beta3) noble; urgency=medium
+
+  Fixed:
+  * Paste on select only pastes into the window that was active when the quick
+    menu opened; otherwise the item is just copied.
+
+ -- Akos Keresztes <akos.keresztes@gmail.com>  Tue, 03 Nov 2026 21:17:36 +0100
+
 cinnamon-clipboard (1.3.4~beta2) noble; urgency=medium
 
   Changed:

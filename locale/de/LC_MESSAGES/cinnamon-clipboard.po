@@ -434,3 +434,42 @@ msgstr ""
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Ein Update für Cinnamon Clipboard ist verfügbar."
+
+msgid "Pause history recording"
+msgstr "Verlaufsaufzeichnung pausieren"
+
+msgid "History recording is paused. Click to resume."
+msgstr "Die Verlaufsaufzeichnung ist pausiert. Zum Fortsetzen klicken."
+
+msgid "Ignored applications"
+msgstr "Ignorierte Anwendungen"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "Kopien aus diesen Anwendungen werden nie aufgezeichnet. Geben Sie Fensterklassennamen durch Kommas getrennt ein."
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "Um den Fensterklassennamen einer Anwendung zu ermitteln, führen Sie „xprop WM_CLASS“ in einem Terminal aus und klicken Sie auf ihr Fenster."
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "Cinnamon Clipboard kann beim Start bei GitHub nachfragen, ob eine neuere Version veröffentlicht wurde. GitHub sieht dabei Ihre IP-Adresse, aber es werden niemals Inhalte der Zwischenablage gesendet. Sie können dies später in den Einstellungen ändern."
+
+msgid "Persistent"
+msgstr "Permanent"
+
+msgid "Temporary"
+msgstr "Temporär"
+
+msgid "Resume"
+msgstr "Fortsetzen"
+
+msgid "History recording is paused."
+msgstr "Die Verlaufsaufzeichnung ist pausiert."
+
+msgid "Clear…"
+msgstr "Leeren…"
+
+msgid "Clear the clipboard history?"
+msgstr "Den Verlauf der Zwischenablage leeren?"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "Alle nicht angehefteten Einträge werden sofort gelöscht und können nicht wiederhergestellt werden. Angeheftete Einträge bleiben erhalten."

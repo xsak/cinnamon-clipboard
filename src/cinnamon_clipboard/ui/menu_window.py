@@ -20,6 +20,9 @@ from ..i18n import _
 
 logger = logging.getLogger(__name__)
 
+# The item list may use up to this share of the screen height
+# (about 12 items on a 1200 px screen); a short history keeps the menu small.
+LIST_MAX_SCREEN_FRACTION = 0.5
 
 
 class QuickMenuWindow(Gtk.Window):
@@ -32,6 +35,7 @@ class QuickMenuWindow(Gtk.Window):
         self.panel_x = None
         self.panel_y = None
         self.panel_position = None
+        self._paste_target_xid = None
 
         # Configuration for Muffin (Cinnamon)
         self.set_decorated(False)
@@ -81,16 +85,20 @@ class QuickMenuWindow(Gtk.Window):
         self.main_box.pack_start(self.separator, False, False, 0)
 
         self.bottom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        
-        self.btn_clear = Gtk.Button(label=_("Clear history"))
-        self.btn_clear.set_tooltip_text(_("Delete all unpinned history items"))
-        self.btn_clear.connect("clicked", self._on_clear_all)
-        self.bottom_box.pack_start(self.btn_clear, False, False, 0)
 
         btn_pref = Gtk.Button.new_from_icon_name("emblem-system-symbolic", Gtk.IconSize.BUTTON)
         btn_pref.set_tooltip_text(_("Preferences"))
         btn_pref.connect("clicked", self._open_preferences)
         self.bottom_box.pack_start(btn_pref, False, False, 0)
+
+        # Pause or resume recording without opening Preferences
+        self.btn_pause = Gtk.ToggleButton()
+        self.btn_pause.set_image(
+            Gtk.Image.new_from_icon_name("media-playback-pause-symbolic", Gtk.IconSize.BUTTON)
+        )
+        self._pause_handler_id = self.btn_pause.connect("toggled", self._on_pause_toggled)
+        self.bottom_box.pack_start(self.btn_pause, False, False, 0)
+        self._sync_pause_button()
 
         # Button to exit/close the app completely
         btn_exit = Gtk.Button.new_from_icon_name("application-exit-symbolic", Gtk.IconSize.BUTTON)
@@ -122,6 +130,21 @@ class QuickMenuWindow(Gtk.Window):
     def _on_destroy(self, widget):
         """Unsubscribe from the history listener when the window is destroyed to avoid memory leaks."""
         self.clipboard_manager.remove_history_listener(self._on_history_updated_external)
+
+    def _sync_pause_button(self):
+        """Show whether history recording is paused (the "Record clipboard history" setting)."""
+        paused = not self.clipboard_manager.settings.get("enable_history")
+        self.btn_pause.handler_block(self._pause_handler_id)
+        self.btn_pause.set_active(paused)
+        self.btn_pause.handler_unblock(self._pause_handler_id)
+        if paused:
+            self.btn_pause.set_tooltip_text(_("History recording is paused. Click to resume."))
+        else:
+            self.btn_pause.set_tooltip_text(_("Pause history recording"))
+
+    def _on_pause_toggled(self, button):
+        self.clipboard_manager.set_history_paused(button.get_active())
+        self._sync_pause_button()
 
     def _open_preferences(self, btn):
         self.hide_animated()
@@ -243,6 +266,8 @@ class QuickMenuWindow(Gtk.Window):
         if self.get_visible() and self.get_opacity() > 0.1:
             self.hide_animated()
         else:
+            # Remember where "paste on select" should go, before the menu takes focus.
+            self._paste_target_xid = self.clipboard_manager.get_focused_toplevel_xid()
             if self.search_entry.get_text():
                 self.search_entry.set_text("")
             self.refresh_and_show()
@@ -327,8 +352,9 @@ class QuickMenuWindow(Gtk.Window):
             max_allowed_height = (monitor_geom.y + monitor_geom.height) - self.panel_y
 
         else:
-            # Fallback when the panel position is still unknown.
-            max_allowed_height = min(500, int(monitor_geom.height * 0.45))
+            # Fallback when the panel position is still unknown: room for the
+            # list plus the search field and the buttons.
+            max_allowed_height = int(monitor_geom.height * 0.8)
 
         # Leave a small safety margin.
         max_allowed_height = max(90, max_allowed_height - 5)
@@ -386,7 +412,6 @@ class QuickMenuWindow(Gtk.Window):
         history = self.clipboard_manager.history
 
         if not history:
-            self.btn_clear.set_sensitive(False)
             self.list_box.add(
                 self._create_status_row(
                     "edit-clear-symbolic",
@@ -395,11 +420,9 @@ class QuickMenuWindow(Gtk.Window):
                 )
             )
         else:
-            self.btn_clear.set_sensitive(True)
-
             screen = Gdk.Screen.get_default()
             monitor_geom = screen.get_monitor_geometry(0)
-            max_height_limit = min(460, int(monitor_geom.height * 0.42))
+            max_height_limit = int(monitor_geom.height * LIST_MAX_SCREEN_FRACTION)
 
             self.scrolled.set_min_content_height(1)
             self.scrolled.set_max_content_height(max_height_limit)
@@ -410,6 +433,7 @@ class QuickMenuWindow(Gtk.Window):
                 row_item = self._create_item_row(item, size_group_btn)
                 self.list_box.add(row_item)
 
+        self._sync_pause_button()
         self.list_box.invalidate_filter()
         if history:
             self._update_search_status()
@@ -463,7 +487,8 @@ class QuickMenuWindow(Gtk.Window):
             if first_row is None:
                 self.search_entry.grab_focus()
         else:
-            self.list_box.unselect_all()
+            # Typing goes to the search field; Enter still picks the selected first item.
+            self._select_first_visible_row(grab_focus=False)
             self.search_entry.grab_focus()
 
     def _activate_and_focus_window(self):
@@ -548,7 +573,7 @@ class QuickMenuWindow(Gtk.Window):
                 img_widget.set_halign(Gtk.Align.START)
                 grid.attach(img_widget, 0, 0, 1, 1)
             else:
-                label = Gtk.Label(label="[Imagen]", xalign=0)
+                label = Gtk.Label(label=_("[Image]"), xalign=0)
                 grid.attach(label, 0, 0, 1, 1)
 
             spacer = Gtk.Box()
@@ -700,12 +725,6 @@ class QuickMenuWindow(Gtk.Window):
             return
 
         # 1. Release the X11 grab and hide immediately and synchronously
-        gdk_window = self.get_window()
-        menu_xid = (
-            gdk_window.get_xid()
-            if gdk_window is not None and hasattr(gdk_window, "get_xid")
-            else None
-        )
         self._release_grab()
         self.hide()  # Hide the window immediately without leaving room for thread interruptions
 
@@ -716,7 +735,7 @@ class QuickMenuWindow(Gtk.Window):
         if copied and self.clipboard_manager.settings.get("paste_on_select"):
             self.clipboard_manager.paste_to_active_window(
                 item_type=item.get("type"),
-                exclude_xid=menu_xid,
+                target_xid=self._paste_target_xid,
             )
 
     def _on_toggle_pin(self, item_id):
@@ -811,10 +830,6 @@ class QuickMenuWindow(Gtk.Window):
 
     def _on_delete_item(self, item_id):
         self.clipboard_manager.remove_item(item_id)
-        self.refresh_and_show()
-
-    def _on_clear_all(self, btn):
-        self.clipboard_manager.clear_history()
         self.refresh_and_show()
 
     def _on_open_app(self, btn):

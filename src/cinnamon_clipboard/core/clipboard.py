@@ -18,7 +18,12 @@ gi.require_version("GLib", "2.0")
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gtk
 
 from ..i18n import _
-from .database import PRIVATE_FILE_MODE, HistoryDatabase, ensure_private_dir
+from .database import (
+    PRIVATE_FILE_MODE,
+    HistoryDatabase,
+    ensure_private_dir,
+    restrict_private_files,
+)
 from .settings import SettingsManager
 from .x11_file_clipboard import X11FileClipboard
 
@@ -141,6 +146,8 @@ class ClipboardManager:
             )
             ensure_private_dir(self.data_media_dir.parent)
             ensure_private_dir(self.data_media_dir)
+            # Images saved by older versions may still be group/world readable.
+            restrict_private_files(self.data_media_dir)
             self.db = HistoryDatabase()
             self.history = self._load_history_from_db()
         else:
@@ -171,6 +178,21 @@ class ClipboardManager:
         """Notify all subscribers on the GTK main thread."""
         for cb in list(self._on_history_changed_callbacks):
             GLib.idle_add(cb)
+
+    def notify_settings_changed(self):
+        """Let open windows refresh after a setting they display (such as pause) has changed."""
+        self._notify_history_changed()
+
+    def is_history_paused(self):
+        return not self.settings.get("enable_history")
+
+    def set_history_paused(self, paused):
+        """Pause or resume recording new clipboard items and update every open window."""
+        if not self.settings.set("enable_history", not paused):
+            logger.error("Failed to save the history recording setting")
+            return False
+        self.notify_settings_changed()
+        return True
 
     def _load_history_from_db(self):
         """Load the history saved in SQLite and rebuild the objects so the interface can render them correctly."""
@@ -251,6 +273,9 @@ class ClipboardManager:
             return False
 
         if self._is_clipboard_secret():
+            return False
+
+        if self._is_from_ignored_app():
             return False
 
         # Detect files and folders.
@@ -344,16 +369,6 @@ class ClipboardManager:
         # Plain text.
         text = self.clipboard.wait_for_text()
         if text and text.strip():
-            text_lines = tuple(
-                line.strip()
-                for line in text.splitlines()
-                if line.strip()
-            )
-
-            # Ignore the text representation generated when copying files.
-            if getattr(self, "_last_file_paths", ()) and text_lines == self._last_file_paths:
-                return False
-
             signature = ("text", text.strip())
 
             if signature != self._last_content_signature:
@@ -423,12 +438,12 @@ class ClipboardManager:
                 self.is_self_copying = True
                 return True
             else:
-                print("X11 file clipboard failed to acquire ownership.")
+                logger.error("X11 file clipboard failed to acquire ownership.")
                 self.is_self_copying = False
                 return False
 
         except Exception as e:
-            print(f"X11 file clipboard error: {e}")
+            logger.error("X11 file clipboard error: %s", e)
             self.is_self_copying = False
             return False
 
@@ -660,7 +675,7 @@ class ClipboardManager:
                     )
             except Exception:
                 self.is_self_copying = False
-                logging.exception("Could not copy an image from clipboard history")
+                logger.exception("Could not copy an image from clipboard history")
                 self._show_notification(
                     _("Cinnamon Clipboard"),
                     _("The image could not be copied."),
@@ -675,35 +690,88 @@ class ClipboardManager:
         return copied
 
 
+    def _get_wm_class_names(self, win):
+        """Return the lower-case WM_CLASS names of win and its parents up to the top-level window."""
+        names = set()
+        visited = set()
+        while win and not isinstance(win, int) and win.id not in visited:
+            visited.add(win.id)
+            try:
+                wm_class = win.get_wm_class()
+                if wm_class:
+                    names.update(name.lower() for name in wm_class if name)
+                tree = win.query_tree()
+                if not tree or tree.parent == tree.root or tree.parent == win:
+                    break
+                win = tree.parent
+            except Exception:
+                break
+        return names
+
     def _is_focused_window_terminal(self, disp):
         """Return True if the currently focused X11 window belongs to a terminal emulator."""
         try:
-            focus_reply = disp.get_input_focus()
-            win = focus_reply.focus
-            if not win or isinstance(win, int):
-                return False
-
-            visited = set()
-            while win and not isinstance(win, int) and win.id not in visited:
-                visited.add(win.id)
-                try:
-                    wm_class = win.get_wm_class()
-                    if wm_class:
-                        for name in wm_class:
-                            if name and name.lower() in TERMINAL_WM_CLASSES:
-                                return True
-                    tree = win.query_tree()
-                    if not tree or tree.parent == tree.root or tree.parent == win:
-                        break
-                    win = tree.parent
-                except Exception:
-                    break
+            focus = disp.get_input_focus().focus
         except Exception:
-            pass
-        return False
+            return False
+        return bool(self._get_wm_class_names(focus) & TERMINAL_WM_CLASSES)
 
-    def paste_to_active_window(self, item_type=None, exclude_xid=None):
-        """Simulate paste shortcut (Ctrl+V or Ctrl+Shift+V for terminals) into the active X11 window."""
+    def _is_from_ignored_app(self):
+        """Return True if the new clipboard content comes from an application on the ignore list.
+
+        Cinnamon's clipboard daemon (csd-clipboard) usually takes over the clipboard right after
+        an application copies, so the focused window is checked as well as the owner window.
+        """
+        ignored = {name.lower() for name in self.settings.get("ignored_apps") or []}
+        if not ignored:
+            return False
+
+        try:
+            disp = self.x11_file_clipboard.display
+            owner = disp.get_selection_owner(disp.intern_atom("CLIPBOARD"))
+            names = self._get_wm_class_names(owner)
+            names |= self._get_wm_class_names(disp.get_input_focus().focus)
+        except Exception as e:
+            logger.debug("Could not identify the clipboard source application: %s", e)
+            return False
+
+        return bool(names & ignored)
+
+    def _get_toplevel_xid(self, win):
+        """Return the id of the top-level window (child of the root) that contains win, or None."""
+        visited = set()
+        while win and not isinstance(win, int) and win.id not in visited:
+            visited.add(win.id)
+            try:
+                tree = win.query_tree()
+            except Exception:
+                return None
+            if not tree or not tree.parent or isinstance(tree.parent, int):
+                return None  # win is the root window itself
+            if tree.parent == tree.root:
+                return win.id
+            win = tree.parent
+        return None
+
+    def get_focused_toplevel_xid(self):
+        """Return the top-level X11 window id that currently has keyboard focus, or None."""
+        try:
+            disp = self.x11_file_clipboard.display
+            return self._get_toplevel_xid(disp.get_input_focus().focus)
+        except Exception:
+            return None
+
+    def paste_to_active_window(self, item_type=None, target_xid=None):
+        """Simulate paste shortcut (Ctrl+V or Ctrl+Shift+V for terminals) into the target X11 window.
+
+        target_xid is the top-level window that had focus when the quick menu opened. The paste
+        is only sent once that window has focus again; otherwise it is cancelled and the item
+        just stays on the clipboard.
+        """
+        if target_xid is None:
+            logger.debug("Paste on select skipped: no target window was recorded")
+            return
+
         state = {"retries": 0}
 
         def _try_paste():
@@ -731,17 +799,18 @@ class ClipboardManager:
                         keys_held = True
                         break
 
-                focus_reply = disp.get_input_focus()
-                focus_win = focus_reply.focus
-                focus_xid = getattr(focus_win, "id", None)
-                focus_not_ready = (
-                    focus_xid is None
-                    or (exclude_xid is not None and focus_xid == exclude_xid)
+                focus_on_target = (
+                    self._get_toplevel_xid(disp.get_input_focus().focus) == target_xid
                 )
 
-                if (keys_held or focus_not_ready) and state["retries"] < 20:
-                    state["retries"] += 1
-                    GLib.timeout_add(25, _try_paste)
+                if keys_held or not focus_on_target:
+                    if state["retries"] < 20:
+                        state["retries"] += 1
+                        GLib.timeout_add(25, _try_paste)
+                    else:
+                        logger.debug(
+                            "Paste on select cancelled: focus did not return to the target window"
+                        )
                     return False
 
                 ctrl_kc = disp.keysym_to_keycode(XK.XK_Control_L)

@@ -385,3 +385,42 @@ msgstr ""
 
 msgid "Cinnamon Clipboard update available"
 msgstr ""
+
+msgid "Pause history recording"
+msgstr ""
+
+msgid "History recording is paused. Click to resume."
+msgstr ""
+
+msgid "Ignored applications"
+msgstr ""
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr ""
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr ""
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr ""
+
+msgid "Persistent"
+msgstr ""
+
+msgid "Temporary"
+msgstr ""
+
+msgid "Resume"
+msgstr ""
+
+msgid "History recording is paused."
+msgstr ""
+
+msgid "Clear…"
+msgstr ""
+
+msgid "Clear the clipboard history?"
+msgstr ""
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr ""

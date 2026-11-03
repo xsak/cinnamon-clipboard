@@ -27,6 +27,8 @@ Cinnamon Clipboard maintains a persistent history of copied content and provides
 - Configurable global keyboard shortcut.
 - Desktop notifications when previously copied files or images are unavailable.
 - Privacy filter for clipboard content marked as sensitive by supported password managers.
+- Ignore list: copies made in chosen applications (password managers by default) are never recorded.
+- One-click pause of history recording from the quick menu.
 - Native GTK integration with Linux desktop environments.
 - File clipboard interoperability with common Linux file managers using X11 clipboard targets.
 - Automatic checks for new releases published on GitHub.
@@ -62,7 +64,7 @@ Download the latest `.deb` package from the project's [GitHub Releases page](htt
 Install it with:
 
 ```bash
-sudo apt install ./cinnamon-clipboard_1.3.3_all.deb
+sudo apt install ./cinnamon-clipboard_1.3.4_all.deb
 ```
 
 The package installs the application, desktop entry, icon, and available translation catalogs.
@@ -182,6 +184,14 @@ The application includes a privacy filter that checks for the `x-kde-passwordMan
 **This filter is a best-effort measure, not a universal security guarantee.** Not every password manager or sensitive application necessarily provides this metadata. If the metadata is missing or cannot be read, sensitive content may still be recorded in the history.
 
 Users should not treat the privacy filter as a substitute for the security features of their password manager or operating system.
+
+Copies made in the applications listed under **Preferences → History and Privacy → Ignored applications** are never recorded. The list holds window class names (find one with `xprop WM_CLASS` and a click on the window) and comes pre-filled with common password managers: KeePassXC, KeePass 2, Bitwarden, 1Password, Enpass and Passwords and Keys (Seahorse). The pause button in the quick menu stops recording entirely until you click it again.
+
+Deleted history items are overwritten inside the database file (SQLite `secure_delete`), so they cannot be recovered from `history.db`.
+
+### Network access
+
+The only network connection the application makes on its own is the update check: at startup it asks the GitHub API for the latest release of this project. GitHub sees your IP address and the application name; no clipboard content or settings are sent. The welcome wizard asks whether to enable it, and it can be turned off at any time under **Preferences → Updates → Check for updates at startup**.
 
 ## Development and AI assistance
 

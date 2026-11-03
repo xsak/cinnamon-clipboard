@@ -416,3 +416,42 @@ msgstr "設定を保存できませんでした。もう一度お試しくださ
 
 msgid "Cinnamon Clipboard update available"
 msgstr "Cinnamon Clipboard の更新があります。"
+
+msgid "Pause history recording"
+msgstr "履歴の記録を一時停止"
+
+msgid "History recording is paused. Click to resume."
+msgstr "履歴の記録は一時停止中です。クリックすると再開します。"
+
+msgid "Ignored applications"
+msgstr "除外するアプリケーション"
+
+msgid "Copies made in these applications are never recorded. Enter window class names, separated by commas."
+msgstr "これらのアプリケーションでコピーした内容は記録されません。ウィンドウクラス名をカンマ区切りで入力してください。"
+
+msgid "To find an application's window class name, run \"xprop WM_CLASS\" in a terminal and click its window."
+msgstr "アプリケーションのウィンドウクラス名を調べるには、端末で「xprop WM_CLASS」を実行し、そのウィンドウをクリックしてください。"
+
+msgid "Cinnamon Clipboard can ask GitHub at startup whether a newer version has been released. GitHub sees your IP address, but no clipboard content is ever sent. You can change this later in Preferences."
+msgstr "Cinnamon Clipboard は起動時に、新しいバージョンが公開されているかを GitHub に問い合わせることができます。GitHub には IP アドレスが伝わりますが、クリップボードの内容が送信されることはありません。この設定は後から「設定」で変更できます。"
+
+msgid "Persistent"
+msgstr "永続"
+
+msgid "Temporary"
+msgstr "一時"
+
+msgid "Resume"
+msgstr "再開"
+
+msgid "History recording is paused."
+msgstr "履歴の記録は一時停止中です。"
+
+msgid "Clear…"
+msgstr "消去…"
+
+msgid "Clear the clipboard history?"
+msgstr "クリップボードの履歴を消去しますか？"
+
+msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
+msgstr "固定されていない項目はすべてすぐに削除され、元に戻せません。固定された項目は残ります。"
