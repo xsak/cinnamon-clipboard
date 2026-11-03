@@ -18,7 +18,7 @@ jobs:
           persist-credentials: false
 
       - name: Install build dependencies
-        run: sudo apt-get update && sudo apt-get install -y debhelper gettext
+        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper gettext
 
       - name: Check release tag matches the package version
         run: |
