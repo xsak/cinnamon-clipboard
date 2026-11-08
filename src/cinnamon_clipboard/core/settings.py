@@ -9,6 +9,9 @@ from .database import ensure_private_dir
 
 logger = logging.getLogger(__name__)
 
+# Tray menu width presets in pixels: Normal, Wide, Extra wide.
+MENU_WIDTHS = (340, 440, 560)
+
 # Shared launcher entry; also installed to /usr/share/applications by the packaging.
 DESKTOP_FILE = (
     Path(__file__).resolve().parent.parent / "data" / "cinnamon-clipboard.desktop"
@@ -29,6 +32,7 @@ class SettingsManager:
         "shortcut": "<Ctrl><Alt>v",
         "check_updates": True,
         "history_mode": "persistent",
+        "menu_width": MENU_WIDTHS[0],
         # WM_CLASS names of applications whose copies are never recorded.
         "ignored_apps": ["keepassxc", "keepass2", "bitwarden", "1password", "enpass", "seahorse"],
     }
@@ -60,6 +64,15 @@ class SettingsManager:
 
             if "history_mode" in data and data["history_mode"] not in ("persistent", "temporary"):
                 valid = False
+
+            # A bad width only falls back to the default width; it does not
+            # reset the other settings.
+            if "menu_width" in data and (
+                isinstance(data["menu_width"], bool)
+                or data["menu_width"] not in MENU_WIDTHS
+            ):
+                logger.warning("Ignoring invalid menu_width: %r", data["menu_width"])
+                del data["menu_width"]
 
             for key in (
                 "autostart",

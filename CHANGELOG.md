@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Preferences → System and Shortcut has a "Tray menu width" setting: Normal (340 px, as before), Wide (440 px) or Extra wide (560 px). An invalid width in `config.json` falls back to Normal without resetting the other settings.
+
+### Changed
+- The quick menu list is a bit shorter: it can use up to 40% of the screen height (about 10 one-line items on a 1200 px screen) instead of half of it.
+- Text previews in the quick menu wrap to the menu width and show at most three lines; the expand button appears only when there is more to show. File names use the full width before they are shortened.
+
+### Fixed
+- Long lines in quick menu previews are no longer broken in the middle of words.
+- The quick menu is centred on the panel icon using its real width.
+
 ## [1.3.4] - 2026-11-03
 
 ### Added

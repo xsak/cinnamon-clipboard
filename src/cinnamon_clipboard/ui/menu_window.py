@@ -16,13 +16,20 @@ try:
 except (ValueError, ImportError):
     HAS_GDKX11 = False
 
+from ..core.settings import MENU_WIDTHS
 from ..i18n import _
 
 logger = logging.getLogger(__name__)
 
 # The item list may use up to this share of the screen height
-# (about 12 items on a 1200 px screen); a short history keeps the menu small.
-LIST_MAX_SCREEN_FRACTION = 0.5
+# (about 10 one-line items on a 1200 px screen); a short history keeps the menu small.
+LIST_MAX_SCREEN_FRACTION = 0.4
+
+# Text previews show at most this many lines before the expand button.
+PREVIEW_LINES = 3
+# Width taken in a text row by everything except the text: menu and row
+# margins, the text icon, and the expand, pin and delete buttons.
+TEXT_ROW_OVERHEAD = 180
 
 
 class QuickMenuWindow(Gtk.Window):
@@ -45,7 +52,8 @@ class QuickMenuWindow(Gtk.Window):
         self.set_type_hint(Gdk.WindowTypeHint.DROPDOWN_MENU)
         self.set_keep_above(True)
 
-        self.set_default_size(340, -1)
+        self._menu_width = MENU_WIDTHS[0]
+        self.set_size_request(self._menu_width, -1)
 
         # Outer frame with native shadow
         frame = Gtk.Frame()
@@ -341,7 +349,7 @@ class QuickMenuWindow(Gtk.Window):
         # Maximum menu height limit.
         _, req_height = self.get_preferred_height()
 
-        win_w = 340
+        win_w = max(self.get_allocated_width(), self.get_preferred_width()[0], self._menu_width)
 
         # Calculate how much vertical space we actually have
         # based on the panel position.
@@ -403,11 +411,25 @@ class QuickMenuWindow(Gtk.Window):
 
         self.move(pos_x, pos_y)
 
+    def _apply_menu_width(self):
+        """Use the width chosen in Preferences, limited to the screen width."""
+        width = self.clipboard_manager.settings.get("menu_width")
+        if isinstance(width, bool) or width not in MENU_WIDTHS:
+            width = MENU_WIDTHS[0]
+
+        monitor_geom = Gdk.Screen.get_default().get_monitor_geometry(0)
+        self._menu_width = int(max(MENU_WIDTHS[0], min(width, monitor_geom.width - 20)))
+        self.set_size_request(self._menu_width, -1)
+        # Shrink back when a narrower width was chosen since the last opening.
+        self.resize(self._menu_width, 1)
+
     def refresh_and_show(self):
         """Safely populate or update the list and show the menu."""
 
         for child in self.list_box.get_children():
             self.list_box.remove(child)
+
+        self._apply_menu_width()
 
         history = self.clipboard_manager.history
 
@@ -590,15 +612,18 @@ class QuickMenuWindow(Gtk.Window):
             label = Gtk.Label(label=item["preview"], xalign=0)
             label.set_line_wrap(True)
             label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-            label.set_max_width_chars(22)
+            # Ask for the text column's width, so the list height is measured
+            # at the width the label really gets.
+            label.set_max_width_chars(1)
+            label.set_size_request(self._text_width(), -1)
             label.set_ellipsize(Pango.EllipsizeMode.END)
 
             box_file.pack_start(label, True, True, 0)
+            box_file.set_hexpand(True)
             grid.attach(box_file, 0, 0, 1, 1)
 
             spacer = Gtk.Box()
             size_group_btn.add_widget(spacer)
-            spacer.set_hexpand(True)
             grid.attach(spacer, 1, 0, 1, 1)
 
         # 3. TEXT
@@ -606,25 +631,11 @@ class QuickMenuWindow(Gtk.Window):
             full_text = item["data"].strip()
 
             raw_lines = full_text.splitlines()
-            preview_lines = []
-
-            for line in raw_lines:
-                if len(line) > 70:
-                    chunks = [line[i:i + 70] for i in range(0, len(line), 70)]
-                    preview_lines.extend(chunks)
-                else:
-                    preview_lines.append(line)
-
-                if len(preview_lines) >= 3:
-                    break
-
-            preview_lines = preview_lines[:3]
-            preview_text = "\n".join(preview_lines)
-
-            needs_expand = len(raw_lines) > 3 or len(full_text) > 210
-
-            if needs_expand:
-                preview_text = preview_text.rstrip() + "..."
+            # Long lines are cut here only to keep the layout cheap;
+            # the label wraps the rest to the menu width.
+            preview_text = "\n".join(line[:500] for line in raw_lines[:PREVIEW_LINES])
+            if len(raw_lines) > PREVIEW_LINES:
+                preview_text = preview_text.rstrip() + "…"
 
             # Text indicator icon
             icon_text = Gtk.Image.new_from_icon_name("edit-paste-symbolic", Gtk.IconSize.BUTTON)
@@ -633,19 +644,29 @@ class QuickMenuWindow(Gtk.Window):
             label = Gtk.Label(label=preview_text, xalign=0)
             label.set_line_wrap(True)
             label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-
-            label.set_size_request(190, -1)
+            label.set_lines(PREVIEW_LINES)
+            label.set_ellipsize(Pango.EllipsizeMode.END)
+            # Ask for the text column's width, so the list height is measured
+            # at the width the label really gets.
+            label.set_max_width_chars(1)
+            label.set_size_request(self._text_width(), -1)
             label.set_hexpand(True)
-            label.set_halign(Gtk.Align.START)
+            label.set_halign(Gtk.Align.FILL)
             label.set_valign(Gtk.Align.START)
             label.set_selectable(False)
 
             box_text = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
             box_text.pack_start(icon_text, False, False, 0)
             box_text.pack_start(label, True, True, 0)
+            box_text.set_hexpand(True)
 
             grid.attach(box_text, 0, 0, 1, 1)
 
+            needs_expand = (
+                len(raw_lines) > PREVIEW_LINES
+                or preview_text != full_text
+                or self._wrapped_line_count(label, preview_text) > PREVIEW_LINES
+            )
             if needs_expand:
                 btn_expand = Gtk.Button.new_from_icon_name("pan-down-symbolic", Gtk.IconSize.BUTTON)
                 btn_expand.set_relief(Gtk.ReliefStyle.NONE)
@@ -702,15 +723,30 @@ class QuickMenuWindow(Gtk.Window):
         list_row.add(grid)
         return list_row
 
+    def _text_width(self):
+        """Width of the text column in an item row."""
+        return max(1, self._menu_width - TEXT_ROW_OVERHEAD)
+
+    def _wrapped_line_count(self, label, text):
+        """Estimate how many lines the text wraps to in the menu's text column."""
+        layout = label.create_pango_layout(text)
+        layout.set_width(self._text_width() * Pango.SCALE)
+        layout.set_wrap(Pango.WrapMode.WORD_CHAR)
+        return layout.get_line_count()
+
     def _toggle_text_expand(self, button, label, full_text, preview_text):
         """Expand or collapse text by showing the full content or its 3-line preview."""
         if not getattr(button, "expanded", False):
             button.expanded = True
+            label.set_lines(-1)
+            label.set_ellipsize(Pango.EllipsizeMode.NONE)
             label.set_text(full_text)
             button.set_image(Gtk.Image.new_from_icon_name("pan-up-symbolic", Gtk.IconSize.BUTTON))
             button.set_tooltip_text(_("Collapse content"))
         else:
             button.expanded = False
+            label.set_ellipsize(Pango.EllipsizeMode.END)
+            label.set_lines(PREVIEW_LINES)
             label.set_text(preview_text)
             button.set_image(Gtk.Image.new_from_icon_name("pan-down-symbolic", Gtk.IconSize.BUTTON))
             button.set_tooltip_text(_("Show full content"))

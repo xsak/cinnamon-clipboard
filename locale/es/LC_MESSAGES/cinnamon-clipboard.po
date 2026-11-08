@@ -469,3 +469,18 @@ msgstr "¿Borrar el historial del portapapeles?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Todos los elementos no anclados se eliminan de inmediato y no se pueden recuperar. Los elementos anclados se conservan."
+
+msgid "Tray menu width"
+msgstr "Ancho del menú de la bandeja"
+
+msgid "Wider menus show more of each item."
+msgstr "Un menú más ancho muestra más de cada elemento."
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Wide"
+msgstr "Ancho"
+
+msgid "Extra wide"
+msgstr "Muy ancho"

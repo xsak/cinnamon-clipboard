@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk
 
 logger = logging.getLogger(__name__)
 
+from ..core.settings import MENU_WIDTHS
 from ..i18n import _
 from ..update_checker import check_for_updates
 from ..installation import PACKAGE_MANAGED
@@ -49,6 +50,7 @@ class PreferencesWindow(Gtk.Window):
             "shortcut": self.settings.get("shortcut"),
             "check_updates": self.settings.get("check_updates"),
             "ignored_apps": list(self.settings.get("ignored_apps") or []),
+            "menu_width": self.settings.get("menu_width"),
         }
         self._initial_enable_history = self.temp_settings["enable_history"]
 
@@ -388,11 +390,29 @@ class PreferencesWindow(Gtk.Window):
             self.switch_paste_select,
         )
 
+        self.combo_menu_width = Gtk.ComboBoxText()
+        self.combo_menu_width.set_halign(Gtk.Align.END)
+        self.combo_menu_width.set_valign(Gtk.Align.CENTER)
+        width_names = (_("Normal"), _("Wide"), _("Extra wide"))
+        for width, name in zip(MENU_WIDTHS, width_names):
+            self.combo_menu_width.append(str(width), name)
+        current_width = self.temp_settings["menu_width"]
+        if current_width not in MENU_WIDTHS:
+            current_width = MENU_WIDTHS[0]
+        self.combo_menu_width.set_active_id(str(current_width))
+        self.combo_menu_width.connect("changed", self._on_menu_width_changed)
+        width_row = self._create_settings_row(
+            _("Tray menu width"),
+            _("Wider menus show more of each item."),
+            self.combo_menu_width,
+        )
+
         system_list = self._create_settings_list(
             autostart_row,
             shortcut_row,
             focus_row,
             paste_row,
+            width_row,
         )
         system_list.connect("row-activated", self._on_system_row_activated)
         grid.attach(system_list, 0, row, 1, 1)
@@ -573,6 +593,8 @@ class PreferencesWindow(Gtk.Window):
             self.switch_paste_select.set_active(
                 not self.switch_paste_select.get_active()
             )
+        elif list_box.get_row_at_index(4) == row:
+            self.combo_menu_width.popup()
 
     def _on_updates_row_activated(self, list_box, row):
         if list_box.get_row_at_index(0) == row:
@@ -591,6 +613,11 @@ class PreferencesWindow(Gtk.Window):
         active_id = combo.get_active_id()
         if active_id:
             self._set_temp("max_history", int(active_id))
+
+    def _on_menu_width_changed(self, combo):
+        active_id = combo.get_active_id()
+        if active_id:
+            self._set_temp("menu_width", int(active_id))
 
     def _on_check_updates_clicked(self, button):
         if self.app is None:

@@ -424,3 +424,18 @@ msgstr ""
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr ""
+
+msgid "Tray menu width"
+msgstr ""
+
+msgid "Wider menus show more of each item."
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Wide"
+msgstr ""
+
+msgid "Extra wide"
+msgstr ""

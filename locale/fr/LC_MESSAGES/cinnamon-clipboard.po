@@ -470,3 +470,18 @@ msgstr "Effacer l’historique du presse-papiers ?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Tous les éléments non épinglés sont supprimés immédiatement et ne peuvent pas être restaurés. Les éléments épinglés sont conservés."
+
+msgid "Tray menu width"
+msgstr "Largeur du menu de la zone de notification"
+
+msgid "Wider menus show more of each item."
+msgstr "Un menu plus large affiche une plus grande partie de chaque élément."
+
+msgid "Normal"
+msgstr "Normale"
+
+msgid "Wide"
+msgstr "Large"
+
+msgid "Extra wide"
+msgstr "Très large"

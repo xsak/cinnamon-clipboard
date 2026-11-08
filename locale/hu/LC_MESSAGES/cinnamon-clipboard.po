@@ -456,3 +456,18 @@ msgstr "Törli a vágólapelőzményeket?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "A program minden nem kitűzött elemet azonnal töröl, és ezek nem állíthatók vissza. A kitűzött elemek megmaradnak."
+
+msgid "Tray menu width"
+msgstr "Tálca menü szélessége"
+
+msgid "Wider menus show more of each item."
+msgstr "Szélesebb menüben az egyes elemekből több látszik."
+
+msgid "Normal"
+msgstr "Normál"
+
+msgid "Wide"
+msgstr "Széles"
+
+msgid "Extra wide"
+msgstr "Extra széles"

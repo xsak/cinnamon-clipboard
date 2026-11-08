@@ -465,3 +465,18 @@ msgstr "Очистить историю буфера обмена?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Все незакреплённые записи будут сразу удалены без возможности восстановления. Закреплённые записи сохранятся."
+
+msgid "Tray menu width"
+msgstr "Ширина меню в системном лотке"
+
+msgid "Wider menus show more of each item."
+msgstr "В более широком меню видно больше текста каждого элемента."
+
+msgid "Normal"
+msgstr "Обычная"
+
+msgid "Wide"
+msgstr "Широкая"
+
+msgid "Extra wide"
+msgstr "Очень широкая"

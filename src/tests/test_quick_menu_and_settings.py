@@ -10,8 +10,12 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk, Gtk
 
-from cinnamon_clipboard.core.settings import SettingsManager
-from cinnamon_clipboard.ui.menu_window import LIST_MAX_SCREEN_FRACTION, QuickMenuWindow
+from cinnamon_clipboard.core.settings import MENU_WIDTHS, SettingsManager
+from cinnamon_clipboard.ui.menu_window import (
+    LIST_MAX_SCREEN_FRACTION,
+    PREVIEW_LINES,
+    QuickMenuWindow,
+)
 from cinnamon_clipboard.ui.preferences_window import PreferencesWindow
 
 
@@ -64,6 +68,12 @@ class TestSettingsAndQuickMenu(unittest.TestCase):
         })
         self.assertTrue(settings3.config_was_reset)
         self.assertTrue(settings3.get("focus_first_item"))
+
+    def test_invalid_menu_width_keeps_other_settings(self):
+        settings = self._make_settings({"menu_width": 9999, "paste_on_select": False})
+        self.assertFalse(settings.config_was_reset)
+        self.assertEqual(settings.get("menu_width"), MENU_WIDTHS[0])
+        self.assertFalse(settings.get("paste_on_select"))
 
     def test_open_focuses_and_selects_first_item_by_default(self):
         cm = self._make_mock_clipboard_manager()
@@ -128,6 +138,63 @@ class TestSettingsAndQuickMenu(unittest.TestCase):
             menu.scrolled.get_max_content_height(),
             int(screen_height * LIST_MAX_SCREEN_FRACTION),
         )
+        menu.destroy()
+
+    def test_menu_width_follows_setting(self):
+        settings = self._make_settings()
+        cm = self._make_mock_clipboard_manager(settings=settings)
+        menu = QuickMenuWindow(cm)
+        # Wide first, then narrower again, as when the setting is changed later.
+        for width in (MENU_WIDTHS[2], MENU_WIDTHS[1], MENU_WIDTHS[0]):
+            settings.set("menu_width", width)
+            menu.refresh_and_show()
+            self.assertEqual(menu.get_preferred_width()[0], width)
+        menu.destroy()
+
+    def test_menu_is_centred_on_panel_icon_at_its_real_width(self):
+        settings = self._make_settings({"menu_width": MENU_WIDTHS[2]})
+        cm = self._make_mock_clipboard_manager(settings=settings)
+        menu = QuickMenuWindow(cm)
+        menu.refresh_and_show()
+
+        menu.panel_position = Gtk.PositionType.BOTTOM
+        menu.panel_x = 800
+        menu.panel_y = 1000
+        with patch.object(menu, "move") as move:
+            menu._update_position()
+        self.assertEqual(move.call_args.args[0], 800 - MENU_WIDTHS[2] // 2)
+        menu.destroy()
+
+    def test_long_text_preview_is_limited_and_expandable(self):
+        long_text = "word " * 200
+        history = [
+            {"id": 1, "type": "text", "data": long_text, "preview": long_text, "pinned": False},
+            {"id": 2, "type": "text", "data": "short", "preview": "short", "pinned": False},
+        ]
+        cm = self._make_mock_clipboard_manager(history=history)
+        menu = QuickMenuWindow(cm)
+        menu.refresh_and_show()
+
+        def expand_buttons(row):
+            return [
+                child for child in row.get_child().get_children()
+                if isinstance(child, Gtk.Button)
+                and child.get_tooltip_text() == "Show full content"
+            ]
+
+        long_row, short_row = menu.list_box.get_children()
+        self.assertEqual(len(expand_buttons(long_row)), 1)
+        self.assertEqual(expand_buttons(short_row), [])
+
+        label = next(
+            child for child in long_row.get_child().get_children()[-1].get_children()
+            if isinstance(child, Gtk.Label)
+        )
+        self.assertEqual(label.get_lines(), PREVIEW_LINES)
+
+        expand_buttons(long_row)[0].clicked()
+        self.assertEqual(label.get_lines(), -1)
+        self.assertEqual(label.get_text(), long_text.strip())
         menu.destroy()
 
     def test_pause_button_toggles_history_recording(self):
@@ -198,12 +265,16 @@ class TestSettingsAndQuickMenu(unittest.TestCase):
         self.assertTrue(prefs.switch_focus_first.get_active())
         self.assertTrue(prefs.switch_paste_select.get_active())
 
+        self.assertEqual(prefs.combo_menu_width.get_active_id(), str(MENU_WIDTHS[0]))
+
         prefs.switch_focus_first.set_active(False)
         prefs.switch_paste_select.set_active(False)
+        prefs.combo_menu_width.set_active_id(str(MENU_WIDTHS[1]))
         prefs._on_save_clicked(None)
 
         self.assertFalse(settings.get("focus_first_item"))
         self.assertFalse(settings.get("paste_on_select"))
+        self.assertEqual(settings.get("menu_width"), MENU_WIDTHS[1])
 
 
 if __name__ == "__main__":

@@ -455,3 +455,18 @@ msgstr "クリップボードの履歴を消去しますか？"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "固定されていない項目はすべてすぐに削除され、元に戻せません。固定された項目は残ります。"
+
+msgid "Tray menu width"
+msgstr "トレイメニューの幅"
+
+msgid "Wider menus show more of each item."
+msgstr "幅を広げると、各項目をより多く表示できます。"
+
+msgid "Normal"
+msgstr "標準"
+
+msgid "Wide"
+msgstr "広い"
+
+msgid "Extra wide"
+msgstr "とても広い"

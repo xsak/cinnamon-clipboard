@@ -467,3 +467,18 @@ msgstr "Cancellare la cronologia degli appunti?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Tutti gli elementi non fissati vengono eliminati subito e non possono essere ripristinati. Gli elementi fissati vengono mantenuti."
+
+msgid "Tray menu width"
+msgstr "Larghezza del menu dell’area di notifica"
+
+msgid "Wider menus show more of each item."
+msgstr "Un menu più largo mostra una parte maggiore di ogni elemento."
+
+msgid "Normal"
+msgstr "Normale"
+
+msgid "Wide"
+msgstr "Largo"
+
+msgid "Extra wide"
+msgstr "Molto largo"

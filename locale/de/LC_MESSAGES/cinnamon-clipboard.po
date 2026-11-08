@@ -473,3 +473,18 @@ msgstr "Den Verlauf der Zwischenablage leeren?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Alle nicht angehefteten Einträge werden sofort gelöscht und können nicht wiederhergestellt werden. Angeheftete Einträge bleiben erhalten."
+
+msgid "Tray menu width"
+msgstr "Breite des Tray-Menüs"
+
+msgid "Wider menus show more of each item."
+msgstr "In einem breiteren Menü ist mehr von jedem Eintrag zu sehen."
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Wide"
+msgstr "Breit"
+
+msgid "Extra wide"
+msgstr "Extra breit"

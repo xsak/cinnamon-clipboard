@@ -468,3 +468,18 @@ msgstr "Limpar o histórico da área de transferência?"
 
 msgid "All unpinned items are deleted immediately and cannot be restored. Pinned items are kept."
 msgstr "Todos os itens não fixados são excluídos imediatamente e não podem ser restaurados. Os itens fixados são mantidos."
+
+msgid "Tray menu width"
+msgstr "Largura do menu da bandeja"
+
+msgid "Wider menus show more of each item."
+msgstr "Um menu mais largo mostra mais de cada item."
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Wide"
+msgstr "Largo"
+
+msgid "Extra wide"
+msgstr "Extra largo"
